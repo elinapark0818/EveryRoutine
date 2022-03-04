@@ -11,6 +11,9 @@ import MyPage from "./components/MyPage";
 import SignUp from "./components/SignUp";
 import UserMain from "./User/UserMain";
 import UserDelete from "./User/UserDelete";
+import Routines from "./Routines/Routines";
+import UserRoutine from "./Routines/UserRoutine";
+import GroupRoutine from "./Routines/GroupRoutine";
 
 function App() {
   useEffect(() => {
@@ -22,7 +25,7 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home />}></Route>
         <Route path="/about" element={<About />} />
 
         <Route path="/myPage" element={<MyPage />}>
@@ -30,11 +33,25 @@ function App() {
           <Route path="userDelete" element={<UserDelete />} />
         </Route>
 
+        <Route path="/routines" element={<Routines />}>
+          <Route path="" element={<UserRoutine />} />
+          <Route path="groupRoutine" element={<GroupRoutine />} />
+        </Route>
+
         <Route path="/signUp" element={<SignUp />} />
+
         <Route
           path="*"
           element={
-            <main style={{ padding: "1rem" }}>
+            <main
+              style={{
+                padding: "1rem",
+                backgroundColor: "orange",
+                width: "500px",
+                height: "500px",
+                textAlign: "center",
+              }}
+            >
               <p>There's nothing here!</p>
             </main>
           }

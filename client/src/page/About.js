@@ -1,7 +1,45 @@
 import React from "react";
-import { AboutContainer, AboutTop, AboutBottom } from "../styles/About.style";
-
 import LogoImg from "../assets/big_logo.png";
+
+import styled from "styled-components";
+
+const AboutContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 1em;
+
+  & h1 {
+    display: flex;
+    justify-content: center;
+    font-weight: 400;
+    font-size: 70px;
+    height: 30px;
+    padding: 1em;
+    transform: translateY(-40px);
+  }
+
+  & p {
+    display: flex;
+    justify-content: center;
+    padding: 1em;
+  }
+`;
+
+const AboutTop = styled.div`
+  margin-top: 5em;
+  width: 100%;
+  height: 45%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const AboutBottom = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10em;
+`;
 
 function About() {
   return (
