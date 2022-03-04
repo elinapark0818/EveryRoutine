@@ -1,18 +1,101 @@
 import { React, useState, useEffect } from "react";
 import LogoImg from "../assets/er_logo.svg";
+import styled from "styled-components";
 
-import {
-  NavbarContainer,
-  LeftContainer,
-  RightContainer,
-  NavbarInnerContainer,
-  NavbarLinkContainer,
-  NavbarLink,
-  Logo,
-  OpenLinksButton,
-  NavbarLinkExtended,
-  NavbarExtendedContainer,
-} from "../styles/Navbar.style";
+import { Link } from "react-router-dom";
+
+const NavbarContainer = styled.nav`
+  width: 100%;
+  height: ${(props) => (props.extendNavbar ? "35vh" : "80px")};
+  background-color: beige;
+  display: flex;
+  flex-direction: column;
+`;
+
+const LeftContainer = styled.div`
+  flex: 30%;
+  display: flex;
+  padding-right: 15%;
+`;
+
+const RightContainer = styled.div`
+  flex: 70%;
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 50px;
+`;
+
+const NavbarInnerContainer = styled.div`
+  width: 100%;
+  height: 80px;
+  display: flex;
+`;
+
+const NavbarLinkContainer = styled.div`
+  display: flex;
+`;
+
+const NavbarLink = styled(Link)`
+  color: mediumseagreen;
+  font-size: x-large;
+  text-decoration: none;
+  margin: 10px;
+  padding: 10px 10px;
+
+  &:hover {
+    background-color: mediumseagreen;
+    color: #fff;
+    transition: 0.5s ease-in;
+  }
+  @media (max-width: 700px) {
+    display: none;
+  }
+`;
+
+const NavbarLinkExtended = styled(Link)`
+  color: mediumseagreen;
+  font-size: x-large;
+  text-decoration: none;
+  /* margin: 10px; */
+  padding: 10px 10px;
+
+  &:hover {
+    background-color: mediumseagreen;
+    color: #fff;
+    transition: 0.5s ease-in;
+  }
+`;
+
+const Logo = styled.img`
+  margin: 10px;
+  max-width: 100px;
+  height: auto;
+`;
+
+const OpenLinksButton = styled.button`
+  width: 70px;
+  height: 50px;
+  background: none;
+  border: none;
+  color: mediumseagreen;
+  font-size: 45px;
+  cursor: pointer;
+
+  @media (min-width: 700px) {
+    display: none;
+  }
+`;
+
+const NavbarExtendedContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (min-width: 700px) {
+    display: none;
+  }
+`;
 
 function Navbar() {
   const [scrollTop, setScrollTop] = useState(0);
@@ -80,9 +163,10 @@ function Navbar() {
       {extendNavbar && (
         <NavbarExtendedContainer>
           <NavbarLinkExtended to="/"> HOME</NavbarLinkExtended>
-          <NavbarLinkExtended to="/"> ABOUT</NavbarLinkExtended>
-          <NavbarLinkExtended to="/"> MY PAGE</NavbarLinkExtended>
-          <NavbarLinkExtended to="/"> SIGN IN</NavbarLinkExtended>
+          <NavbarLinkExtended to="/about"> ABOUT</NavbarLinkExtended>
+          <NavbarLinkExtended to="/myPage"> MY PAGE</NavbarLinkExtended>
+          <NavbarLinkExtended to="/signUp"> SIGN IN</NavbarLinkExtended>
+          <NavbarLink to="/routines">ROUTINES</NavbarLink>
         </NavbarExtendedContainer>
       )}
     </NavbarContainer>
