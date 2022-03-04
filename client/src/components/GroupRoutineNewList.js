@@ -5,7 +5,7 @@ import Slider from "react-slick";
 import "../../node_modules/slick-carousel/slick/slick.css";
 import "../../node_modules/slick-carousel/slick/slick-theme.css";
 
-export default function GroupRoutineNewList() {
+export default function GroupRoutineNewList({ Link }) {
   const CardCon = styled(Slider)`
     .slick-track {
       display: flex;
@@ -46,16 +46,18 @@ export default function GroupRoutineNewList() {
 
   return (
     <CardCon {...settings}>
-      <Card>
-        <CardImg src={logo} alt="Card image" />
-        <CardBody>
-          <CardTitle>줄넘기 1000개</CardTitle>
-          <CardSubtitle>
-            안녕하세요! 우리 함께 줄넘기 하고 건강을 되찾아요!! 화이팅!!
-          </CardSubtitle>
-          <CardText>#건강 #운동</CardText>
-        </CardBody>
-      </Card>
+      <Link to="/groupRoutine">
+        <Card>
+          <CardImg src={logo} alt="Card image" />
+          <CardBody>
+            <CardTitle>줄넘기 1000개</CardTitle>
+            <CardSubtitle>
+              안녕하세요! 우리 함께 줄넘기 하고 건강을 되찾아요!! 화이팅!!
+            </CardSubtitle>
+            <CardText>#건강 #운동</CardText>
+          </CardBody>
+        </Card>
+      </Link>
 
       <Card>
         <CardImg src={logo} alt="Card image" />
