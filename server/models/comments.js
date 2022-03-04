@@ -8,10 +8,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      comment.belongsTo(models.group_cal, {
-        as: "user_id",
-        foreignKey: "checked_id",
-      });
+      // comment.belongsTo(models.group_cal, {
+      //   as: "user_id",
+      //   foreignKey: "checked_id",
+      // });
       // define association here
     }
   }

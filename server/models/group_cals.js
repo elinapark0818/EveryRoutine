@@ -8,13 +8,13 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      group_cal.belongsToMany(user, {
-        through: "UserGroupCal",
-        as: "user_id",
-        foreignKey: user,
-      });
-      group_cal.hasMany(models.comment);
-      // define association here
+      // group_cal.belongsToMany(user, {
+      //   through: "UserGroupCal",
+      //   as: "user_id",
+      //   foreignKey: user,
+      // });
+      // group_cal.hasMany(models.comment);
+      // // define association here
     }
   }
   group_cal.init(
