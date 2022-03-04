@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-export default function ModalUserRoutine() {
+export default function ModalUserRoutine({ closeUserRoutineModal }) {
   const Button = styled.button`
     color: white;
     font-weight: 700;
@@ -102,7 +102,14 @@ export default function ModalUserRoutine() {
               </ButtonCon>
             </RoutineLi>
           </ul>
-          <Button className="loginBtn">수정 완료</Button>
+          <Button
+            className="loginBtn"
+            onClick={() => {
+              closeUserRoutineModal();
+            }}
+          >
+            수정 완료
+          </Button>
         </ModalCon>
       </div>
     </div>

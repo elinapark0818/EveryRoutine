@@ -41,7 +41,7 @@ function Routines() {
     <Container>
       <MyRoutineContainer>
         <MyRoutineLink to="">내 루틴</MyRoutineLink>
-        <MyRoutineLink to="groupRoutine">그룹 루틴</MyRoutineLink>
+        <MyRoutineLink to="groupRoutines">그룹 루틴</MyRoutineLink>
 
         <RoutineEditWrap>
           <Outlet />

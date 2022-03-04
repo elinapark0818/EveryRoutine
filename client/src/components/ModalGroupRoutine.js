@@ -1,30 +1,30 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-export default function ModalGroupRoutine() {
-  const Button = styled.button`
-    color: white;
-    font-weight: 700;
-    font-size: 1em;
-    margin: 1em;
-    padding: 0.7em 3em;
-    background-color: #697f6e;
-    border: none;
-    border-radius: 5em;
-  `;
+const Button = styled.button`
+  color: white;
+  font-weight: 700;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.7em 3em;
+  background-color: #697f6e;
+  border: none;
+  border-radius: 5em;
+`;
 
-  const ModalCon = styled.div`
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-    color: #697f6e;
-  `;
+const ModalCon = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  color: #697f6e;
+`;
 
-  const StyledInput = styled.input`
-    margin-bottom: 20px;
-  `;
+const StyledInput = styled.input`
+  margin-bottom: 20px;
+`;
 
+export default function ModalGroupRoutine({ closeGroupRoutineModal }) {
   const [groupRoutineTitle, setgroupRoutineTitle] = useState("");
 
   const titleChange = (e) => {
@@ -65,7 +65,14 @@ export default function ModalGroupRoutine() {
             type="file"
             value=""
           />
-          <Button className="loginBtn">루틴 시작하기!</Button>
+          <Button
+            className="loginBtn"
+            onClick={() => {
+              closeGroupRoutineModal();
+            }}
+          >
+            루틴 시작하기!
+          </Button>
         </ModalCon>
       </div>
     </div>

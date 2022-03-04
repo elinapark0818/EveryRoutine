@@ -63,7 +63,9 @@ const Container = styled.div`
 `;
 
 const MyRoutineContainer = styled.div`
+  flex: 1 1 100%;
   display: flex;
+  flex-wrap: wrap;
 `;
 
 const MyRoutineLink = styled(Link)`
@@ -83,44 +85,61 @@ const MyRoutineLink = styled(Link)`
 `;
 
 const RoutineEditWrap = styled.div`
-  display: flex;
+  flex: 1 1 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 `;
 
-function Home() {
-  // const [isLogin, setIsLogin] = useState(false);
+function Home({ settingModalIsOpen }) {
+  const [isLogin, setIsLogin] = useState(false);
 
   return (
     <div>
+      <button onClick={() => setIsLogin(true)}>로그인 성공</button>
+      <button onClick={() => setIsLogin(false)}>로그인 실패</button>
+
       <Container>
         <MyRoutineContainer>
-          <MyRoutineLink to="userRoutine">내 루틴</MyRoutineLink>
-          <MyRoutineLink to="groupRoutine">그룹 루틴</MyRoutineLink>
+          <MyRoutineLink to="">내 루틴</MyRoutineLink>
+          <MyRoutineLink to="groupRoutines">그룹 루틴</MyRoutineLink>
 
           <RoutineEditWrap>
             <Outlet />
           </RoutineEditWrap>
         </MyRoutineContainer>
       </Container>
-      <HomeBody>
-        <HomeContainer>
-          <h1>
-            Every Routine <br />
-            <p>Make a Smart life</p>
-          </h1>
-          <img
-            style={{ width: 500 }}
-            src={LogoImg}
-            alt="About_logo_image"
-          ></img>
 
-          <Link to="/ModalLogin">
-            <HomeButton>시작하기</HomeButton>
-          </Link>
-        </HomeContainer>
-      </HomeBody>
+      {/* {isLogin ? (
+        <Container>
+          <MyRoutineContainer>
+            <MyRoutineLink to="">내 루틴</MyRoutineLink>
+            <MyRoutineLink to="groupRoutines">그룹 루틴</MyRoutineLink>
+
+            <RoutineEditWrap>
+              <Outlet />
+            </RoutineEditWrap>
+          </MyRoutineContainer>
+        </Container>
+      ) : (
+        <HomeBody>
+          <HomeContainer>
+            <h1>
+              Every Routine <br />
+              <p>Make a Smart life</p>
+            </h1>
+            <img
+              style={{ width: 500 }}
+              src={LogoImg}
+              alt="About_logo_image"
+            ></img>
+
+            <HomeButton onClick={() => settingModalIsOpen()}>
+              시작하기
+            </HomeButton>
+          </HomeContainer>
+        </HomeBody>
+      )} */}
     </div>
   );
 }

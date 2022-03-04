@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import logo from "../assets/er_logo.svg";
 import styled from "styled-components";
 
-export default function ModalLogin() {
+export default function ModalLogin({ settingModalIsClose }) {
   const Button = styled.button`
     color: white;
     font-weight: 700;
@@ -42,7 +42,9 @@ export default function ModalLogin() {
     //로그인 기능 수행하기
   };
   const toJoinModalHandler = () => {
-    // 회원가입 모달로 보내버리기
+    // 로그인은 닫힙니다.
+    // 조인은 열립니다.
+    settingModalIsClose();
   };
 
   return (

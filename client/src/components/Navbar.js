@@ -97,7 +97,7 @@ const NavbarExtendedContainer = styled.div`
   }
 `;
 
-function Navbar() {
+function Navbar({ settingModalIsOpen }) {
   const [scrollTop, setScrollTop] = useState(0);
   const [extendNavbar, setExtendNavbar] = useState(false);
 
@@ -154,7 +154,7 @@ function Navbar() {
               </NavbarLink>
               <NavbarLink to="/about"> ABOUT</NavbarLink>
               <NavbarLink to="/myPage"> MY PAGE</NavbarLink>
-              <NavbarLink to="/signUp"> SIGN IN</NavbarLink>
+              <button onClick={() => settingModalIsOpen()}> SIGN IN</button>
             </NavbarLinkContainer>
           )}
         </RightContainer>
@@ -165,7 +165,7 @@ function Navbar() {
           <NavbarLinkExtended to="/"> HOME</NavbarLinkExtended>
           <NavbarLinkExtended to="/about"> ABOUT</NavbarLinkExtended>
           <NavbarLinkExtended to="/myPage"> MY PAGE</NavbarLinkExtended>
-          <NavbarLinkExtended to="/signUp"> SIGN IN</NavbarLinkExtended>
+          <button onClick={() => settingModalIsOpen()}> SIGN IN</button>
           <NavbarLink to="/routines">ROUTINES</NavbarLink>
         </NavbarExtendedContainer>
       )}
