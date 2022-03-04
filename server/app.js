@@ -6,14 +6,14 @@ const userRouter = require("./app/routes/users");
 app.set("port", process.env.PORT || 4000);
 app.set("view engine", "html");
 
-sequelize
-  .sync({ force: false })
-  .then(() => {
-    console.log("데이터베이스 연결됨.");
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+// sequelize
+//   .sync({ force: false })
+//   .then(() => {
+//     console.log("데이터베이스 연결됨.");
+//   })
+//   .catch((err) => {
+//     console.error(err);
+//   });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

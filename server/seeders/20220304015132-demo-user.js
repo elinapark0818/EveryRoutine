@@ -19,12 +19,16 @@ module.exports = {
           email: "evenabee@gmail.com",
           password: "1234",
           profile: "",
+          createdAt: new Date(),
+          updatedAt: new Date()
         },
         {
           name: "Doe",
           email: "rose7103@gmail.com",
           password: "1234",
           profile: "",
+          createdAt: new Date(),
+          updatedAt: new Date()
         },
       ],
       {}

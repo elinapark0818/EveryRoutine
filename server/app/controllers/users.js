@@ -1,10 +1,11 @@
-const db = require("../../models/users");
+const { users } = require('../../models');
 
 module.exports = {
   users: {
     get: (req, res) => {
-      db.findAll().then((data) => res.status(200).json(data));
-      console.log(users);
+      // console.log(models);
+      users.findAll().then((data) => res.status(200).json(data));
+      
     },
     // post: (req, res) => {
     //   utils.getUrlTitle(req.body.url, (err, title) => {
