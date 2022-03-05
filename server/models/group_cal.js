@@ -1,54 +1,51 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class group_routine extends Model {
+  class group_cal extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // group_routine.belongsToMany(models.user, {
-      //   through: "UserGroupRoutine",
-      //   as: "user_id",
-      //   foreignKey: user,
+      // group_cal.belongsToMany(models.user, {
+      //   through: "UserGroupCal",
+      //   targetKey: "user_id",
+      //   foreignKey: "id",
       // });
+      // group_cal.hasMany(models.comment);
+      // // define association here
+
+      // group_cal.hasMany(models.user, { foreignKey: "user_id" });
+
     }
   }
-  group_routine.init(
+  group_cal.init(
     {
-      routine_name: {
-        type: DataTypes.STRING,
+      date: {
+        type: DataTypes.DATE,
         allowNull: false,
-        unique: false,
       },
       user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         unique: true,
       },
-      editor_id: {
+      group_routine_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         unique: true,
       },
-      tag_name: {
-        type: DataTypes.STRING,
-      },
-      image: {
-        type: DataTypes.STRING,
+      checked_id: {
+        type: DataTypes.INTEGER,
         allowNull: false,
-      },
-      contents: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: false,
+        unique: true,
       },
     },
     {
       sequelize,
-      modelName: "group_routine",
+      modelName: "group_cal",
     }
   );
-  return group_routine;
+  return group_cal;
 };
