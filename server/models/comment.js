@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       //   foreignKey: "checked_id",
       // });
       // define association here
+
+      // comment.belongsTo(models.user);
+      // models.user.hasMany(comment)
     }
   }
   comment.init(

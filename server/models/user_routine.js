@@ -9,7 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // user_routine.belongsTo(models.user, { as: "user_id", foreignKey: user });
-      // define association here
+      // user_routine.belongsTo(models.user, { foreignKey: "user_id" });
+
+
     }
   }
   user_routine.init(
@@ -23,6 +25,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         unique: true,
+        // references: {
+        //   model: "user",
+        //   key: "id"
+        // }
+      },
+      user_cal_id: {
+        type: DataTypes.INTEGER,
       },
       daily_check: {
         type: DataTypes.BOOLEAN,

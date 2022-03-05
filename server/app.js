@@ -1,7 +1,8 @@
 const express = require("express");
-const { sequelize } = require("./models"); // db.sequelize
+// const { sequelize } = require("./models"); // db.sequelize
 const app = express();
 const userRouter = require("./app/routes/users");
+
 
 app.set("port", process.env.PORT || 4000);
 app.set("view engine", "html");

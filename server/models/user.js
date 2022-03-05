@@ -1,23 +1,18 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class users extends Model {
+  class user extends Model {
     static associate(models) {
-      users.hasMany(models.comment);
-      // users.belongsToMany(models.group_cal, { through: "UserGroupCal" });
-      // users.belongsToMany(models.group_routine, {
-      //   through: "UserGroupRoutine",
-      // });
-      
-      // users.hasMany(models.user_routine);
-      // users.belongsToMany(models.user_group_routine, {
-      //   through: "UserUserGroupRoutine",
-      // });
+
+      // user.belongsToMany(models.group_cal, { foreignKey: "user_id" });
+      // user.belongsToMany(models.group_routine, { foreignKey: "user_id" });
+      // user.hasOne(models.user_routine);
+
     }
   }
-  users.init(
+  user.init(
     {
-      name: {
+      nickname: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
@@ -37,8 +32,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "users",
+      modelName: "user",
     }
   );
-  return users;
+  return user;
 };

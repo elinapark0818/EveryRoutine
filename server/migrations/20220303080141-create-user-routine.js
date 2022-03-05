@@ -17,6 +17,13 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         unique: true,
+        references: {
+          model: "users",
+          key: "id"
+        }
+      },
+      user_cal_id: {
+        type: Sequelize.INTEGER,
       },
       daily_check: {
         type: Sequelize.BOOLEAN,

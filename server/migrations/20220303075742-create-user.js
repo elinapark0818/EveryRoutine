@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
+      nickname: {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
@@ -34,6 +34,7 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+    
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable("users");
