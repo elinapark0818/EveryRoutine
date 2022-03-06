@@ -1,7 +1,7 @@
 require('dotenv').config();
 const env = process.env;
 
-const development_local = {
+const development = {
   username: env.DATABASE_USERNAME,
   //env.DATABASE_USERNAME은 불러오고자 하는 데이터의 키값이므로 자유롭게 이름설정이 가능하다.
   password: env.DATABASE_PASSWORD,
@@ -11,11 +11,11 @@ const development_local = {
   //port: env.MYSQL_PORT
 };
 
-const development_aws = {
+const developmentaws = {
   username: env.DATABASE_USERNAME,
   //env.DATABASE_USERNAME은 불러오고자 하는 데이터의 키값이므로 자유롭게 이름설정이 가능하다.
   password: env.DATABASE_PASSWORD,
-  database: "db_dev_everyroutine",
+  database: "db_dev_everyroutine_aws",
   host: env.DATABASE_HOST,
   dialect: "mysql",
   //port: env.MYSQL_PORT
@@ -39,7 +39,7 @@ const test = {
   //port: env.MYSQL_PORT
 };
 
-module.exports = { development_local, development_aws, production, test };
+module.exports = { development, developmentaws, production, test };
 
 
 // {
