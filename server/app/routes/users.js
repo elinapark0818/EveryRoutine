@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const controller = require("../controllers/users");
 
+
 // test : show whole user data
 router.get("/", controller.users.get);
 
@@ -14,14 +15,16 @@ router.post("/signup", controller.signup.post);
 router.post("/resign", controller.resign.post);
 
 // user login
-router.post("/login", controller.login.post)
+router.post("/login", controller.login.post);
 
 // user logout
-router.get("/logout", controller.logout.get)
+router.get("/logout", controller.logout.get);
 
 // get user info
-router.get("/user-info/:email", controller.userInfo.get) 
+router.get("/user-info/", controller.userInfo.get);
 
+// edit user info
+router.post("/user-edit/:email", controller.editUserInfo.post);
 
 
 module.exports = router;

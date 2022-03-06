@@ -28,7 +28,7 @@ const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development_local';  // aws 작업시 'development_local' -> 'development_aws'
+const env = process.env.NODE_ENV || 'development';  // aws 작업시 'development_local' -> 'development_aws'
 const config = require(__dirname + '/../config/config.js')[env];
 const db = {};
 
