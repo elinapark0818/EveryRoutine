@@ -2,6 +2,7 @@ const express = require("express");
 // const { sequelize } = require("./models"); // db.sequelize
 const app = express();
 const userRouter = require("./app/routes/users");
+const cors = require("cors");
 
 
 app.set("port", process.env.PORT || 4000);
@@ -16,6 +17,19 @@ app.set("view engine", "html");
 //     console.error(err);
 //   });
 
+app.use(
+  cors({
+    origin: true,
+    methods: ["GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS"],
+    credentials: true,
+    cookie: {
+      maxAge: 24 * 6 * 60 * 10000,
+      httpOnly: false,
+      secure: true,
+      sameSite: "None",
+    },
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/", userRouter);
