@@ -5,45 +5,44 @@ import Slider from "react-slick";
 import "../../node_modules/slick-carousel/slick/slick.css";
 import "../../node_modules/slick-carousel/slick/slick-theme.css";
 
+const CardCon = styled(Slider)`
+  .slick-track {
+    display: flex;
+  }
+  .slick-list {
+    flex: 1 0 0;
+    margin: 0 auto;
+  }
+  .slick-slide {
+  }
+  .slick-slide div {
+    margin-right: 10px;
+    padding: 10px;
+    cursor: pointer;
+  }
+`;
+const Card = styled.div`
+  border-radius: 1em;
+  background-color: #ddeede;
+  min-height: 370px;
+`;
+const CardImg = styled.img`
+  background-color: white;
+`;
+const CardBody = styled.div`
+  padding-top: 10px;
+`;
+const CardTitle = styled.div``;
+const settings = {
+  dots: false,
+  infinite: false,
+  speed: 500,
+  slidesToShow: 3,
+  slidesToScroll: 1,
+};
+const CardSubtitle = styled.div``;
+const CardText = styled.div``;
 export default function GroupRoutineNewList({ Link }) {
-  const CardCon = styled(Slider)`
-    .slick-track {
-      display: flex;
-    }
-    .slick-list {
-      flex: 1 0 0;
-      margin: 0 auto;
-    }
-    .slick-slide {
-    }
-    .slick-slide div {
-      margin-right: 10px;
-      padding: 10px;
-      cursor: pointer;
-    }
-  `;
-  const Card = styled.div`
-    border-radius: 1em;
-    background-color: #ddeede;
-    min-height: 370px;
-  `;
-  const CardImg = styled.img`
-    background-color: white;
-  `;
-  const CardBody = styled.div`
-    padding-top: 10px;
-  `;
-  const CardTitle = styled.div``;
-  const settings = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-  };
-  const CardSubtitle = styled.div``;
-  const CardText = styled.div``;
-
   return (
     <CardCon {...settings}>
       <Link to="/groupRoutine">

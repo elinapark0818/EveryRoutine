@@ -3,45 +3,44 @@ import styled from "styled-components";
 import ProgressBar from "@ramonak/react-progress-bar";
 import DateSlider from "./DateSlider";
 
+const GroupProgress = styled(ProgressBar)``;
+const Label = styled.div``;
+const GroupInfo = styled.div`
+  background-color: #ddeede;
+`;
+const GroupInfoTitle = styled.div`
+  background-color: #697f6e;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 30px;
+`;
+const Button = styled.button`
+  color: white;
+  font-weight: 700;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.7em 3em;
+  background-color: #697f6e;
+  border: none;
+  border-radius: 5em;
+`;
+const GroupCommentAdd = styled.div``;
+const GroupCommentList = styled.ul``;
+const GroupComment = styled.li``;
+const GroupCommentNick = styled.div`
+  display: inline;
+  padding: 0 10px;
+`;
+const GroupCommentContent = styled.div`
+  display: inline;
+  padding: 0 10px;
+`;
+const GroupCommentTime = styled.div`
+  display: inline;
+  padding: 0 10px;
+`;
 export default function GroupRoutineOurs() {
-  const GroupProgress = styled(ProgressBar)``;
-  const Label = styled.div``;
-  const GroupInfo = styled.div`
-    background-color: #ddeede;
-  `;
-  const GroupInfoTitle = styled.div`
-    background-color: #697f6e;
-    color: white;
-    font-size: 20px;
-    font-weight: 700;
-    padding: 30px;
-  `;
-  const Button = styled.button`
-    color: white;
-    font-weight: 700;
-    font-size: 1em;
-    margin: 1em;
-    padding: 0.7em 3em;
-    background-color: #697f6e;
-    border: none;
-    border-radius: 5em;
-  `;
-  const GroupCommentAdd = styled.div``;
-  const GroupCommentList = styled.ul``;
-  const GroupComment = styled.li``;
-  const GroupCommentNick = styled.div`
-    display: inline;
-    padding: 0 10px;
-  `;
-  const GroupCommentContent = styled.div`
-    display: inline;
-    padding: 0 10px;
-  `;
-  const GroupCommentTime = styled.div`
-    display: inline;
-    padding: 0 10px;
-  `;
-
   return (
     <div>
       <GroupInfo>

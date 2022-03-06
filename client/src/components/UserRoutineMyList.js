@@ -10,50 +10,88 @@ const Button = styled.button`
   font-weight: 700;
   font-size: 1em;
   margin: 1em;
-  padding: 0.7em 3em;
+  width: 50px;
+  height: 50px;
+  /* padding: 0.7em 1.5em; */
   background-color: #697f6e;
   border: none;
-  border-radius: 5em;
+  border-radius: 70%;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
 `;
+const UserRoutineListCon = styled.div`
+  min-height: 300px;
+  position: relative;
+`;
+
 const UserRotineList = styled.ul`
-  margin: 0;
   list-style: none;
-  float: left;
+  margin-top: 20px;
+  padding: 30px;
+  background-color: #f3f8f2;
 `;
-const UserRoutine = styled.li``;
+const RoutineListItemLi = styled.li`
+  padding: 5px 0;
+  text-decoration: underline dotted;
+`;
+
+const RoutineCheck = styled.input`
+  margin-right: 10px;
+`;
 
 export default function UserRoutineMyList() {
   const [userRoutineIsOpen, setUserRoutineIsOpen] = useState(false);
+  const [checkedItems, setCheckedItems] = useState(new Set());
+  const [routineItems, setRoutineItems] = useState([
+    { id: "item_id_from_db", content: "아침 7시에 일어나기" },
+    { id: "item_id_from_db", content: "물 2L 마시기" },
+    { id: "item_id_from_db", content: "스트레칭 하기" },
+  ]);
+
+  const editRoutineItems = (newRoutineItem) => {
+    setRoutineItems([
+      ...routineItems,
+      { id: "new_item_id_from_db", content: newRoutineItem },
+    ]);
+  };
 
   const closeUserRoutineModal = () => {
     setUserRoutineIsOpen(false);
   };
 
+  const checkedItemHandler = (id, isChecked) => {
+    if (isChecked) {
+      checkedItems.add(id);
+      setCheckedItems(checkedItems);
+    } else if (!isChecked && checkedItems.has(id)) {
+      checkedItems.delete(id);
+      setCheckedItems(checkedItems);
+    }
+    console.log(checkedItems);
+  };
+
   return (
     <div>
       <DateSlider />
-      <UserRotineList>
-        <UserRoutine>
-          <input type="checkbox" />
-          아침 7시에 일어나기
-        </UserRoutine>
 
-        <UserRoutine>
-          <input type="checkbox" />물 2L 마시기
-        </UserRoutine>
+      <UserRoutineListCon>
+        <UserRotineList>
+          <UserRoutine
+            checkedItemHandler={checkedItemHandler}
+            routineItems={routineItems}
+          />
+        </UserRotineList>
 
-        <UserRoutine>
-          <input type="checkbox" />
-          스트레칭 하기
-        </UserRoutine>
-      </UserRotineList>
-      <Button
-        onClick={() => {
-          setUserRoutineIsOpen(true);
-        }}
-      >
-        +
-      </Button>
+        <Button
+          onClick={() => {
+            setUserRoutineIsOpen(true);
+          }}
+        >
+          +
+        </Button>
+      </UserRoutineListCon>
 
       <Modal
         style={{
@@ -68,8 +106,44 @@ export default function UserRoutineMyList() {
         isOpen={userRoutineIsOpen}
         onRequestClose={() => setUserRoutineIsOpen(false)}
       >
-        <ModalUserRoutine closeUserRoutineModal={closeUserRoutineModal} />
+        <ModalUserRoutine
+          closeUserRoutineModal={closeUserRoutineModal}
+          routineItems={routineItems}
+          editRoutineItems={editRoutineItems}
+        />
       </Modal>
     </div>
+  );
+}
+
+function UserRoutine({ checkedItemHandler, routineItems }) {
+  return routineItems.map((el, idx) => (
+    <RoutineListItem
+      key={idx}
+      checkedItemHandler={checkedItemHandler}
+      el={el.content}
+      id={el.id}
+      idx={idx}
+    />
+  ));
+}
+
+function RoutineListItem({ checkedItemHandler, el, idx }) {
+  const [bChecked, setChecked] = useState(false);
+
+  const checkHandler = (e) => {
+    setChecked(!bChecked);
+    checkedItemHandler(e.target.id, e.target.checked);
+  };
+  return (
+    <RoutineListItemLi>
+      <RoutineCheck
+        type="checkbox"
+        id={idx}
+        checked={bChecked}
+        onChange={(e) => checkHandler(e)}
+      />
+      <label htmlFor={idx}>{el}</label>
+    </RoutineListItemLi>
   );
 }
