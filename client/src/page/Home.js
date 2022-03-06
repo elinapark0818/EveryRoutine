@@ -68,20 +68,23 @@ const MyRoutineContainer = styled.div`
   flex-wrap: wrap;
 `;
 
+const MyRoutineLinkWrap = styled.div`
+  width: 60%;
+  /* margin-left: 20%; */
+  margin: 10px 20%;
+`;
+
 const MyRoutineLink = styled(Link)`
   color: white;
   font-weight: bold;
-  font-size: x-large;
   text-decoration: none;
   text-align: center;
-  padding: 10px 10px;
-  border: 3px solid blue;
+  padding: 10px 30px;
+  /* border-radius: 0 20% 0 0; */
   outline: none;
-  margin-top: 5em;
-  width: 10em;
-  height: 3em;
-  background-color: skyblue;
+  background-color: #697f6e;
   cursor: pointer;
+  margin-right: 5px;
 `;
 
 const RoutineEditWrap = styled.div`
@@ -101,8 +104,10 @@ function Home({ settingModalIsOpen }) {
 
       <Container>
         <MyRoutineContainer>
-          <MyRoutineLink to="">내 루틴</MyRoutineLink>
-          <MyRoutineLink to="groupRoutines">그룹 루틴</MyRoutineLink>
+          <MyRoutineLinkWrap>
+            <MyRoutineLink to="">내 루틴</MyRoutineLink>
+            <MyRoutineLink to="groupRoutines">그룹 루틴</MyRoutineLink>
+          </MyRoutineLinkWrap>
 
           <RoutineEditWrap>
             <Outlet />
