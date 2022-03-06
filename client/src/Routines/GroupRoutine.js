@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 const Container = styled.div`
   border: 3px solid black;
-  width: 60%;
+  width: 70%;
   padding: 30px;
 `;
 const Con = styled.div`

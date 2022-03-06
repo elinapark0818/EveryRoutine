@@ -2,46 +2,45 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ProgressBar from "@ramonak/react-progress-bar";
 
+const GroupProgress = styled(ProgressBar)``;
+const Label = styled.div``;
+const GroupMembers = styled.div``;
+const GroupInfo = styled.div`
+  background-color: #ddeede;
+`;
+const GroupInfoTitle = styled.div`
+  background-color: #697f6e;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 30px;
+`;
+const GroupInfoContents = styled.div`
+  padding: 30px;
+`;
+const GroupInfoTags = styled.div`
+  padding: 30px;
+`;
+const TagButton = styled.button`
+  color: white;
+  font-size: 1em;
+  margin: 0.5em;
+  padding: 0.7em 2em;
+  background-color: #697f6e;
+  border: none;
+  border-radius: 5em;
+`;
+const Button = styled.button`
+  color: white;
+  font-weight: 700;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.7em 3em;
+  background-color: #697f6e;
+  border: none;
+  border-radius: 5em;
+`;
 export default function GroupRoutineInfo() {
-  const GroupProgress = styled(ProgressBar)``;
-  const Label = styled.div``;
-  const GroupMembers = styled.div``;
-  const GroupInfo = styled.div`
-    background-color: #ddeede;
-  `;
-  const GroupInfoTitle = styled.div`
-    background-color: #697f6e;
-    color: white;
-    font-size: 20px;
-    font-weight: 700;
-    padding: 30px;
-  `;
-  const GroupInfoContents = styled.div`
-    padding: 30px;
-  `;
-  const GroupInfoTags = styled.div`
-    padding: 30px;
-  `;
-  const TagButton = styled.button`
-    color: white;
-    font-size: 1em;
-    margin: 0.5em;
-    padding: 0.7em 2em;
-    background-color: #697f6e;
-    border: none;
-    border-radius: 5em;
-  `;
-  const Button = styled.button`
-    color: white;
-    font-weight: 700;
-    font-size: 1em;
-    margin: 1em;
-    padding: 0.7em 3em;
-    background-color: #697f6e;
-    border: none;
-    border-radius: 5em;
-  `;
-
   return (
     <div>
       <GroupInfo>

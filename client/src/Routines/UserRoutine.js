@@ -6,6 +6,7 @@ function UserRoutine() {
   const Container = styled.div`
     display: block;
     border: 3px solid black;
+    margin-left: 20%;
     width: 60%;
     padding: 30px;
   `;

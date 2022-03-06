@@ -8,7 +8,8 @@ import GroupRoutineSearch from "./GroupRoutineSearch";
 
 const Container = styled.div`
   border: 3px solid black;
-  width: 60%;
+  max-width: 60%;
+  margin-left: 20%;
   padding: 30px;
 `;
 
