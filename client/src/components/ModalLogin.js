@@ -44,12 +44,30 @@ const StyledInput = styled.input`
   border-bottom: 2px solid #697f6e;
 `;
 
+const StyledPassInput = styled.input`
+  margin-bottom: 10px;
+  width: 80%;
+  margin-left: 10%;
+  border: 0;
+  border-bottom: 2px solid #697f6e;
+  display: ${(props) => (props.passwordStep ? "block" : "none")};
+`;
+
 const StyledLabel = styled.label`
   text-align: left;
   margin-left: 10%;
   font-size: 15px;
   padding: 5px 0;
   font-weight: 500;
+`;
+
+const StyledPassLabel = styled.label`
+  text-align: left;
+  margin-left: 10%;
+  font-size: 15px;
+  padding: 5px 0;
+  font-weight: 500;
+  display: ${(props) => (props.passwordStep ? "block" : "none")};
 `;
 
 const EmailCheck = styled.div`
@@ -80,6 +98,8 @@ const serverURL = "http://localhost:4000";
 export default function ModalLogin({ settingModalIsClose }) {
   const [isLoginEmailOk, setIsLoginEmailOk] = useState(true);
   const [isRightUser, setIsRightUser] = useState(true);
+  const [passwordStep, setPasswordStep] = useState(false);
+  const [userPassword, setUserPassword] = useState("");
   const [userEmail, setUserEmail] = useState("");
 
   const loginHandler = () => {
@@ -87,9 +107,8 @@ export default function ModalLogin({ settingModalIsClose }) {
       setIsLoginEmailOk(false);
     } else {
       setIsLoginEmailOk(true);
-      if (checkRightUserInDb(userEmail)) {
-        // 아이디가 있으므로 비밀번호 입력 창을 띄우면 됩니다.
-        console.log("비밀번호 입력창 필요");
+      if (checkRightUserInDb(userEmail) !== null) {
+        setPasswordStep(true);
       } else {
         setIsRightUser(false);
       }
@@ -99,7 +118,7 @@ export default function ModalLogin({ settingModalIsClose }) {
   const checkRightUserInDb = (userEmail) => {
     axios
       .post(serverURL + "/signup-check", { email: userEmail })
-      .then((result) => console.log(result.status));
+      .then((result) => checkRightUserInDb(result.data.data));
     // userEmail을 db로 보낸 후, db에 있는 email인지 검증받습니다.
     // 검증결과는 위 loginHandler로 전달합니다.
   };
@@ -136,6 +155,20 @@ export default function ModalLogin({ settingModalIsClose }) {
           <EmailUserCheck isRightUser={isRightUser}>
             ! 등록되지 않은 사용자 이메일입니다.
           </EmailUserCheck>
+
+          <StyledPassLabel htmlFor="password" passwordStep={passwordStep}>
+            비밀번호
+          </StyledPassLabel>
+          <StyledPassInput
+            passwordStep={passwordStep}
+            id="password"
+            className="loginPw"
+            type="password"
+            value={userPassword}
+            onChange={(e) => {
+              setUserPassword(e.target.value);
+            }}
+          />
 
           <Button className="loginBtn" onClick={loginHandler}>
             이메일로 로그인하기
