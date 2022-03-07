@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 const env = process.env;
 
 const development = {
@@ -41,7 +41,6 @@ const test = {
 
 module.exports = { development, developmentaws, production, test };
 
-
 // {
 //   "development": {
 //     "username": "root",
@@ -65,7 +64,3 @@ module.exports = { development, developmentaws, production, test };
 //     "dialect": "mysql"
 //   }
 // }
-
-
-
-

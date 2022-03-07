@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const userRouter = require("./app/routes/users");
 const cors = require("cors");
+var DataTypes = require("sequelize/lib/data-types");
 
 app.set("port", process.env.PORT || 4000);
 // app.set("view engine", "html");

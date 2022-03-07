@@ -1,9 +1,11 @@
 const express = require("express");
-const router = express.Router();
+const router = require("express").Router();
 const usersRouter = require("./users");
-
-// TODO: Endpoint에 따라 적절한 Router로 연결해야 합니다.
+// const personalRoutineRouter = require("./personal_routines");
+// const groupRoutineRouter = require("./group_routines");
 
 router.use("/users", usersRouter);
+// router.use("/user-routine", personalRoutineRouter);
+// router.use("/group-routine", groupRoutineRouter);
 
 module.exports = router;
