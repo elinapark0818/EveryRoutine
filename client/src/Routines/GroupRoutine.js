@@ -4,7 +4,7 @@ import GroupRoutineOurs from "../components/GroupRoutineOurs";
 import styled from "styled-components";
 
 const Container = styled.div`
-  border: 3px solid black;
+  border: 3px solid #697f6e;
   width: 70%;
   padding: 30px;
 `;

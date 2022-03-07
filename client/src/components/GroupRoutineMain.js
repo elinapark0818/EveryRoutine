@@ -7,9 +7,9 @@ import GroupRoutineNewList from "./GroupRoutineNewList";
 import GroupRoutineSearch from "./GroupRoutineSearch";
 
 const Container = styled.div`
-  border: 3px solid black;
-  max-width: 60%;
-  margin-left: 20%;
+  border: 3px solid #697f6e;
+  width: 800px;
+  margin-left: calc((100% - 800px) / 2);
   padding: 30px;
 `;
 

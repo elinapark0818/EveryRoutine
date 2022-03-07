@@ -69,12 +69,13 @@ const MyRoutineContainer = styled.div`
 `;
 
 const MyRoutineLinkWrap = styled.div`
-  width: 60%;
-  /* margin-left: 20%; */
-  margin: 10px 20%;
+  width: 800px;
+  margin-left: calc((100% - 800px) / 2 + 10px);
+  margin-top: 50px;
+  margin-bottom: 9px;
 `;
 
-const MyRoutineLink = styled(Link)`
+const MyRoutineLinkUser = styled(Link)`
   color: white;
   font-weight: bold;
   text-decoration: none;
@@ -82,7 +83,20 @@ const MyRoutineLink = styled(Link)`
   padding: 10px 30px;
   /* border-radius: 0 20% 0 0; */
   outline: none;
-  background-color: #697f6e;
+  background-color: ${(props) => (props.userMode ? "#697f6e" : "gray")};
+  cursor: pointer;
+  margin-right: 5px;
+`;
+
+const MyRoutineLinkGroup = styled(Link)`
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  padding: 10px 30px;
+  /* border-radius: 0 20% 0 0; */
+  outline: none;
+  background-color: ${(props) => (props.userMode ? "gray" : "#697f6e")};
   cursor: pointer;
   margin-right: 5px;
 `;
@@ -95,29 +109,34 @@ const RoutineEditWrap = styled.div`
 `;
 
 function Home({ settingModalIsOpen, isLogin }) {
+  const [userMode, setUserMode] = useState(true);
+  const changeModeToUser = () => {
+    setUserMode(true);
+  };
+  const changeModeToGroup = () => {
+    setUserMode(false);
+  };
   return (
     <div>
-      {/* <button onClick={() => setIsLogin(true)}>로그인 성공</button>
-      <button onClick={() => setIsLogin(false)}>로그인 실패</button>
-
-      <Container>
-        <MyRoutineContainer>
-          <MyRoutineLinkWrap>
-            <MyRoutineLink to="">내 루틴</MyRoutineLink>
-            <MyRoutineLink to="groupRoutines">그룹 루틴</MyRoutineLink>
-          </MyRoutineLinkWrap>
-
-          <RoutineEditWrap>
-            <Outlet />
-          </RoutineEditWrap>
-        </MyRoutineContainer>
-      </Container> */}
-
       {isLogin ? (
         <Container>
           <MyRoutineContainer>
-            <MyRoutineLink to="">내 루틴</MyRoutineLink>
-            <MyRoutineLink to="groupRoutines">그룹 루틴</MyRoutineLink>
+            <MyRoutineLinkWrap>
+              <MyRoutineLinkUser
+                onClick={() => changeModeToUser()}
+                userMode={userMode}
+                to=""
+              >
+                내 루틴
+              </MyRoutineLinkUser>
+              <MyRoutineLinkGroup
+                onClick={() => changeModeToGroup()}
+                userMode={userMode}
+                to="groupRoutines"
+              >
+                그룹 루틴
+              </MyRoutineLinkGroup>
+            </MyRoutineLinkWrap>
 
             <RoutineEditWrap>
               <Outlet />

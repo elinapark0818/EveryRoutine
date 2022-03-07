@@ -5,9 +5,9 @@ import styled from "styled-components";
 function UserRoutine({ settingLogin }) {
   const Container = styled.div`
     display: block;
-    border: 3px solid black;
-    margin-left: 20%;
-    width: 60%;
+    border: 3px solid #697f6e;
+    width: 800px;
+    margin-left: calc((100% - 800px) / 2);
     padding: 30px;
   `;
 

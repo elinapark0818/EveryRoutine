@@ -64,6 +64,7 @@ function UserDelete({settingLogout}) {
       <p style={{ marginLeft: "1em", marginBottom: "5em" }}>
         회원탈퇴를 위한 페이지입니다.
       </p>
+      <button onClick={() => testClick()}>클릭해보세요</button>
       <UserDeleteInfo
         style={{
           display: "flex",
