@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const NavbarContainer = styled.nav`
   width: 100%;
   height: ${(props) => (props.extendNavbar ? "35vh" : "80px")};
-  background-color: beige;
+  background-color: #f3f8f2;
   display: flex;
   flex-direction: column;
 `;
@@ -27,7 +27,8 @@ const RightContainer = styled.div`
 `;
 
 const NavbarInnerContainer = styled.div`
-  width: 100%;
+  margin-left: 5%;
+  width: 90%;
   height: 80px;
   display: flex;
 `;
@@ -37,14 +38,32 @@ const NavbarLinkContainer = styled.div`
 `;
 
 const NavbarLink = styled(Link)`
-  color: mediumseagreen;
-  font-size: x-large;
+  color: #697f6e;
+  font-size: large;
   text-decoration: none;
   margin: 10px;
   padding: 10px 10px;
 
   &:hover {
-    background-color: mediumseagreen;
+    background-color: #697f6e;
+    color: #fff;
+    transition: 0.5s ease-in;
+  }
+  @media (max-width: 700px) {
+    display: none;
+  }
+`;
+
+const NavbarDivLink = styled.div`
+  color: #697f6e;
+  font-size: large;
+  text-decoration: none;
+  margin: 10px;
+  padding: 10px 10px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #697f6e;
     color: #fff;
     transition: 0.5s ease-in;
   }
@@ -54,14 +73,14 @@ const NavbarLink = styled(Link)`
 `;
 
 const NavbarLinkExtended = styled(Link)`
-  color: mediumseagreen;
-  font-size: x-large;
+  color: #697f6e;
+  font-weight: 500;
   text-decoration: none;
   /* margin: 10px; */
   padding: 10px 10px;
 
   &:hover {
-    background-color: mediumseagreen;
+    background-color: #697f6e;
     color: #fff;
     transition: 0.5s ease-in;
   }
@@ -80,7 +99,7 @@ const OpenLinksButton = styled.button`
   height: 50px;
   background: none;
   border: none;
-  color: mediumseagreen;
+  color: #697f6e;
   font-size: 45px;
   cursor: pointer;
 
@@ -135,19 +154,16 @@ function Navbar({ settingModalIsOpen, isLogin, settingLogout }) {
                 {extendNavbar ? <>&#10005;</> : <>&#8801;</>}
               </OpenLinksButton>
 
-              {/* <NavbarLink to="/" exact>
-                HOME
-              </NavbarLink> */}
               <NavbarLink to="/about"> ABOUT</NavbarLink>
               <NavbarLink to="/myPage"> MY PAGE</NavbarLink>
-              <button
+              <NavbarDivLink
                 onClick={() => {
                   settingLogout();
                 }}
               >
                 {" "}
                 SIGN OUT
-              </button>
+              </NavbarDivLink>
             </NavbarLinkContainer>
           ) : (
             <NavbarLinkContainer>
@@ -159,11 +175,11 @@ function Navbar({ settingModalIsOpen, isLogin, settingLogout }) {
                 {extendNavbar ? <>&#10005;</> : <>&#8801;</>}
               </OpenLinksButton>
 
-              {/* <NavbarLink to="/" exact>
-                HOME
-              </NavbarLink> */}
               <NavbarLink to="/about"> ABOUT</NavbarLink>
-              <button onClick={() => settingModalIsOpen()}> SIGN IN</button>
+              <NavbarDivLink onClick={() => settingModalIsOpen()}>
+                {" "}
+                SIGN IN
+              </NavbarDivLink>
             </NavbarLinkContainer>
           )}
         </RightContainer>
