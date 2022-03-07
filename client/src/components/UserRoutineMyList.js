@@ -41,7 +41,7 @@ const RoutineCheck = styled.input`
   margin-right: 10px;
 `;
 
-export default function UserRoutineMyList() {
+export default function UserRoutineMyList({ settingLogin }) {
   const [userRoutineIsOpen, setUserRoutineIsOpen] = useState(false);
   const [checkedItems, setCheckedItems] = useState(new Set());
   const [routineItems, setRoutineItems] = useState([

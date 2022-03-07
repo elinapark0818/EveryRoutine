@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import logo from "../assets/er_logo.svg";
 import styled from "styled-components";
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
 
 const Button = styled.button`
   color: white;
@@ -68,6 +71,14 @@ const EmailCheck = styled.div`
   display: ${(props) => (props.isEmailOk ? "none" : "block")};
 `;
 
+const EmailUserCheck = styled.div`
+  text-align: left;
+  font-size: 12px;
+  color: red;
+  margin-left: 10%;
+  display: ${(props) => (props.isRightUser ? "none" : "block")};
+`;
+
 const PassCheck = styled.div`
   text-align: left;
   font-size: 12px;
@@ -97,6 +108,8 @@ const isMatch = (pass1, pass2) => {
   return pass1 === pass2;
 };
 
+const serverURL = "http://localhost:4000";
+
 export default function ModalSignup() {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
@@ -105,6 +118,7 @@ export default function ModalSignup() {
 
   const [isValid, setIsValid] = useState(false);
   const [everythingIsOk, setEverythingIsOk] = useState(false);
+  const [isRightUser, setIsRightUser] = useState(true);
 
   const [isEmailOk, setIsEmailOk] = useState(true);
   const [isPassOk, setIsPassOk] = useState(true);
@@ -117,7 +131,8 @@ export default function ModalSignup() {
     if (!userEmail.match(regExp)) {
       setIsEmailOk(false);
     } else {
-      setIsValid(true);
+      // db에 등록된 이메일 경우 -> 에러 메시지 처리
+      getUsers();
     }
     // 3. 둘 다 통과할 경우 -> 다음으로 넘기기 (isValid true로)
   };
@@ -147,9 +162,37 @@ export default function ModalSignup() {
     }
   };
 
-  const joinHandler = () => {
-    // 회원가입 처리
-  };
+  async function getUsers() {
+    const response = await axios
+      .post(serverURL + "/signup-check", {
+        email: userEmail,
+      })
+      .catch((err) => {
+        setIsRightUser(false);
+      });
+    console.log(response);
+    if (response.status === 200) {
+      setIsValid(true);
+      setIsRightUser(true);
+    } else {
+      setIsRightUser(false);
+    }
+    return response.data;
+  }
+
+  async function joinHandler() {
+    const response = await axios
+      .post(serverURL + "/signup", {
+        email: userEmail,
+        password: userPassword,
+        nickname: userNickName,
+      })
+      .then((result) => console.log(result.data))
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   const toFindModalHandler = () => {
     // 비밀번호 찾기 모달로 보내버리기
   };
@@ -247,6 +290,9 @@ export default function ModalSignup() {
             <EmailCheck isEmailOk={isEmailOk}>
               ! 이메일 주소를 정확히 입력해주세요.
             </EmailCheck>
+            <EmailUserCheck isRightUser={isRightUser}>
+              ! 이미 등록된 사용자입니다.
+            </EmailUserCheck>
 
             <Button className="loginBtn" onClick={validHandler}>
               이메일로 가입하기

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logo from "../assets/er_logo.svg";
 import styled from "styled-components";
 import axios from "axios";
+import useAsync from "../userAsync";
 
 axios.defaults.withCredentials = true;
 
@@ -95,32 +96,67 @@ const regExp =
   /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
 const serverURL = "http://localhost:4000";
-export default function ModalLogin({ settingModalIsClose }) {
+
+export default function ModalLogin({
+  settingLogin,
+  settingModalIsClose,
+  settingModalIsJustClose,
+}) {
   const [isLoginEmailOk, setIsLoginEmailOk] = useState(true);
   const [isRightUser, setIsRightUser] = useState(true);
   const [passwordStep, setPasswordStep] = useState(false);
   const [userPassword, setUserPassword] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [finalButton, setFinalButton] = useState(true);
+  const [state, refetch] = useAsync(getUsers, [], true);
+
+  async function loginUser() {
+    const response = await axios
+      .post(serverURL + "/login", {
+        email: userEmail,
+        password: userPassword,
+      })
+      .catch((err) => console.log(err));
+    console.log("response", response);
+    if (response.status === 200) {
+      settingModalIsJustClose();
+      settingLogin();
+    }
+    return;
+  }
+
+  async function getUsers() {
+    const response = await axios
+      .post(serverURL + "/signup-check", {
+        email: userEmail,
+      })
+      .catch((err) => {
+        setPasswordStep(true);
+        setIsRightUser(true);
+      });
+    if (response) {
+      if (response.status === 200) {
+        setIsRightUser(false);
+      } else {
+        setPasswordStep(true);
+        setIsRightUser(true);
+      }
+    }
+    return;
+  }
 
   const loginHandler = () => {
     if (!userEmail.match(regExp)) {
       setIsLoginEmailOk(false);
     } else {
       setIsLoginEmailOk(true);
-      if (checkRightUserInDb(userEmail) !== null) {
-        setPasswordStep(true);
-      } else {
-        setIsRightUser(false);
-      }
+      getUsers();
     }
   };
 
-  const checkRightUserInDb = (userEmail) => {
-    axios
-      .post(serverURL + "/signup-check", { email: userEmail })
-      .then((result) => checkRightUserInDb(result.data.data));
-    // userEmail을 db로 보낸 후, db에 있는 email인지 검증받습니다.
-    // 검증결과는 위 loginHandler로 전달합니다.
+  const finalLoginHandler = () => {
+    // console.log("click");
+    loginUser();
   };
 
   const toJoinModalHandler = () => {
@@ -153,7 +189,7 @@ export default function ModalLogin({ settingModalIsClose }) {
             ! 이메일 주소를 정확히 입력해주세요.
           </EmailCheck>
           <EmailUserCheck isRightUser={isRightUser}>
-            ! 등록되지 않은 사용자 이메일입니다.
+            ! 등록되지 않은 사용자입니다.
           </EmailUserCheck>
 
           <StyledPassLabel htmlFor="password" passwordStep={passwordStep}>
@@ -169,10 +205,16 @@ export default function ModalLogin({ settingModalIsClose }) {
               setUserPassword(e.target.value);
             }}
           />
+          {passwordStep ? (
+            <Button className="finalLoginBtn" onClick={finalLoginHandler}>
+              이메일로 로그인하기2
+            </Button>
+          ) : (
+            <Button className="loginBtn" onClick={loginHandler}>
+              이메일로 로그인하기
+            </Button>
+          )}
 
-          <Button className="loginBtn" onClick={loginHandler}>
-            이메일로 로그인하기
-          </Button>
           <Hrstyle />
           <div className="socialBox">
             <div className="kakaoLogin">카카오 계정으로 로그인하기</div>
