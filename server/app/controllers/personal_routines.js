@@ -1,30 +1,31 @@
 const { user, user_routine, user_cal, march22_date } = require("../../models");
 const jwt = require("jsonwebtoken");
+const { Op } = require("sequelize");
 
 module.exports = {
   user_routine: {
     get: async (req, res) => {
-      const { date } = req.body; // { date = 23 }
+      const { date, email } = req.body; // { date : 23 }
 
-      function getCookie(name) {
-        let matches = req.headers.cookie.match(
-          new RegExp(
-            "(?:^|; )" +
-              name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-              "=([^;]*)"
-          )
-        );
-        return matches ? decodeURIComponent(matches[1]) : undefined;
-      }
-      const accessToken = getCookie("accessToken");
-      const { email } = jwt.verify(accessToken, process.env.ACCESS_SECRET);
+      //   function getCookie(name) {
+      //     let matches = req.headers.cookie.match(
+      //       new RegExp(
+      //         "(?:^|; )" +
+      //           name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+      //           "=([^;]*)"
+      //       )
+      //     );
+      //     return matches ? decodeURIComponent(matches[1]) : undefined;
+      //   }
+      //   const accessToken = getCookie("accessToken");
+      //   const { email } = jwt.verify(accessToken, process.env.ACCESS_SECRET);
 
       const dateInfo = await march22_date.findAll({
         where: { date: { [Op.lte]: date } }, //date의 인덱스(id) 기준으로 열다섯개
         limit: 15,
       });
 
-      console.log(dateInfo);
+      console.log(dateInfo[0].march22_date);
 
       const thisDateRoutineDetails = await user_routine.findOne({
         where: { date },
@@ -49,7 +50,7 @@ module.exports = {
     },
 
     post: async (req, res) => {
-      const { list, date } = req.body; //list는 string들의 array형식
+      const { list, date } = req.body; // { contents : ["물 2L 마시기", "스트레칭 하기"], date : 3 }
 
       function getCookie(name) {
         let matches = req.headers.cookie.match(
@@ -88,7 +89,7 @@ module.exports = {
     },
 
     patch: async (req, res) => {
-      const { daily_check, date } = req.body; //daily_check는 list 길이와 같은 array
+      const { daily_check, date } = req.body; // { daily_check : [1, 1], date : 3 }
 
       function getCookie(name) {
         let matches = req.headers.cookie.match(

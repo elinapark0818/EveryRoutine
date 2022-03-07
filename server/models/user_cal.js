@@ -21,8 +21,9 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
     },
+    { timestamps: false },
     {
-      sequelize,
+      sequelize: sequelize,
       modelName: "user_cal",
     }
   );
