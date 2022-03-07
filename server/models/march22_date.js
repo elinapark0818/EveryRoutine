@@ -10,9 +10,9 @@ module.exports = (sequelize, DataTypes) => {
       date: { type: DataTypes.INTEGER, allowNull: false, unique: false },
       yo_il: { type: DataTypes.STRING, allowNull: false, unique: false },
     },
-    { timestamps: false },
+    // { timestamps: false },
     {
-      sequelize: sequelize,
+      sequelize,
       modelName: "march22_date",
     }
   );

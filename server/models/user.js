@@ -31,9 +31,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
     },
-    { timestamps: false },
+    // { timestamps: false },
     {
-      sequelize: sequelize,
+      sequelize,
       modelName: "user",
     }
   );
