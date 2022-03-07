@@ -12,7 +12,7 @@ router.post("/signup-check", controller.signupCheck.post);
 router.post("/signup", controller.signup.post);
 
 // delete a user data
-router.post("/resign", controller.resign.post);
+router.get("/resign", controller.resign.get);
 
 // user login
 router.post("/login", controller.login.post);
@@ -21,10 +21,10 @@ router.post("/login", controller.login.post);
 router.get("/logout", controller.logout.get);
 
 // get user info
-router.get("/user-info/", controller.userInfo.get);
+router.get("/user-info", controller.userInfo.get);
 
 // edit user info
-router.post("/user-edit/", controller.editUserInfo.post);  
+router.post("/user-edit", controller.editUserInfo.post);  
 
 
 module.exports = router;

@@ -35,9 +35,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     },
-    { timestamps: false },
+    // { timestamps: false },
     {
-      sequelize: sequelize,
+      sequelize,
       modelName: "user_routine",
     }
   );

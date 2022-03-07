@@ -22,9 +22,9 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
     },
-    { timestamps: false },
+    // { timestamps: false },
     {
-      sequelize: sequelize,
+      sequelize,
       modelName: "comment",
     }
   );
