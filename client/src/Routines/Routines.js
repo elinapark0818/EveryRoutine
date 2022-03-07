@@ -10,7 +10,8 @@ const Container = styled.div`
 `;
 
 const MyRoutineContainer = styled.div`
-  display: flex;
+  margin-left: calc((100%-800px) / 2);
+  /* display: flex; */
 `;
 
 const MyRoutineLink = styled(Link)`

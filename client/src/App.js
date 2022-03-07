@@ -73,7 +73,10 @@ function App() {
 
         <Route path="/myPage" element={<MyPage />}>
           <Route path="" element={<UserMain />} />
-          <Route path="userDelete" element={<UserDelete />} />
+          <Route
+            path="userDelete"
+            element={<UserDelete settingLogout={settingLogout} />}
+          />
         </Route>
 
         <Route

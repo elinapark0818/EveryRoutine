@@ -17,13 +17,17 @@ const UserDeleteContainer = styled.div`
 const UserDeleteInfo = styled.div`
   margin-left: 50px;
 `;
-function UserDelete() {
+function UserDelete({ settingLogout }) {
+  const testClick = () => {
+    settingLogout();
+  };
   return (
     <UserDeleteContainer>
       <h1 style={{ marginTop: "0.5em", marginLeft: "0.5em" }}>회원 탈퇴</h1>
       <p style={{ marginLeft: "1em", marginBottom: "5em" }}>
         회원탈퇴를 위한 페이지입니다.
       </p>
+      <button onClick={() => testClick()}>클릭해보세요</button>
       <UserDeleteInfo
         style={{
           display: "flex",
