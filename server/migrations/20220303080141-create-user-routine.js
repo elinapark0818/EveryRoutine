@@ -11,7 +11,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       list: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false,
         unique: false,
       },
@@ -19,16 +19,16 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         unique: true,
-        references: {
-          model: "users",
-          key: "id",
-        },
+        // references: {
+        //   model: "users",
+        //   key: "id",
+        // },
       },
       user_cal_id: {
         type: Sequelize.INTEGER,
       },
       daily_check: {
-        type: DataTypes.STRING, //list 길이와 같은 array
+        type: Sequelize.STRING, //list 길이와 같은 array
         allowNull: false,
       },
     });

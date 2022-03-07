@@ -1,20 +1,32 @@
 const { user, user_routine, user_cal, march22_date } = require("../../models");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
   user_routine: {
     get: async (req, res) => {
-      const { date } = req.body;
-      const accessToken = await req.headers.authorization;
+      const { date } = req.body; // { date = 23 }
+
+      function getCookie(name) {
+        let matches = req.headers.cookie.match(
+          new RegExp(
+            "(?:^|; )" +
+              name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+              "=([^;]*)"
+          )
+        );
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+      }
+      const accessToken = getCookie("accessToken");
       const { email } = jwt.verify(accessToken, process.env.ACCESS_SECRET);
 
       const dateInfo = await march22_date.findAll({
-        where: { date: { [Op.lte]: date } },
+        where: { date: { [Op.lte]: date } }, //date의 인덱스(id) 기준으로 열다섯개
         limit: 15,
       });
 
       console.log(dateInfo);
 
-      const thisDateRoutineDetails = await user_cal.findOne({
+      const thisDateRoutineDetails = await user_routine.findOne({
         where: { date },
       });
       const thisDateRoutineList = await thisDateRoutineDetails.findOne({
@@ -30,7 +42,6 @@ module.exports = {
         // 오늘 날짜 (포함 이전 15일), 오늘 날짜의 루틴 리스트 (체크여부 포함) => 객체 형태
         return res.status(200).json({
           dateInfo,
-          thisDateRoutineDetails,
           thisDateRoutineList,
           message: "Success. you can see your personal routines of that date",
         });
@@ -39,7 +50,18 @@ module.exports = {
 
     post: async (req, res) => {
       const { list, date } = req.body; //list는 string들의 array형식
-      const accessToken = await req.headers.authorization;
+
+      function getCookie(name) {
+        let matches = req.headers.cookie.match(
+          new RegExp(
+            "(?:^|; )" +
+              name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+              "=([^;]*)"
+          )
+        );
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+      }
+      const accessToken = getCookie("accessToken");
       const { email } = jwt.verify(accessToken, process.env.ACCESS_SECRET);
 
       const uncheckedArray = new Array(list.length).fill(0);
@@ -68,7 +90,17 @@ module.exports = {
     patch: async (req, res) => {
       const { daily_check, date } = req.body; //daily_check는 list 길이와 같은 array
 
-      const accessToken = await req.headers.authorization;
+      function getCookie(name) {
+        let matches = req.headers.cookie.match(
+          new RegExp(
+            "(?:^|; )" +
+              name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+              "=([^;]*)"
+          )
+        );
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+      }
+      const accessToken = getCookie("accessToken");
       const { email } = jwt.verify(accessToken, process.env.ACCESS_SECRET);
 
       const findUser = await user.findOne({ where: { email } });
