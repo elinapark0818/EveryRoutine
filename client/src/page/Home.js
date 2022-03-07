@@ -94,12 +94,10 @@ const RoutineEditWrap = styled.div`
   justify-content: center;
 `;
 
-function Home({ settingModalIsOpen }) {
-  const [isLogin, setIsLogin] = useState(false);
-
+function Home({ settingModalIsOpen, isLogin }) {
   return (
     <div>
-      <button onClick={() => setIsLogin(true)}>로그인 성공</button>
+      {/* <button onClick={() => setIsLogin(true)}>로그인 성공</button>
       <button onClick={() => setIsLogin(false)}>로그인 실패</button>
 
       <Container>
@@ -113,9 +111,9 @@ function Home({ settingModalIsOpen }) {
             <Outlet />
           </RoutineEditWrap>
         </MyRoutineContainer>
-      </Container>
+      </Container> */}
 
-      {/* {isLogin ? (
+      {isLogin ? (
         <Container>
           <MyRoutineContainer>
             <MyRoutineLink to="">내 루틴</MyRoutineLink>
@@ -144,7 +142,7 @@ function Home({ settingModalIsOpen }) {
             </HomeButton>
           </HomeContainer>
         </HomeBody>
-      )} */}
+      )}
     </div>
   );
 }

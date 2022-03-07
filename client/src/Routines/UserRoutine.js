@@ -2,7 +2,7 @@ import React from "react";
 import UserRoutineMyList from "../components/UserRoutineMyList";
 import styled from "styled-components";
 
-function UserRoutine() {
+function UserRoutine({ settingLogin }) {
   const Container = styled.div`
     display: block;
     border: 3px solid black;
@@ -13,7 +13,7 @@ function UserRoutine() {
 
   return (
     <Container>
-      <UserRoutineMyList />
+      <UserRoutineMyList settingLogin={settingLogin} />
     </Container>
   );
 }

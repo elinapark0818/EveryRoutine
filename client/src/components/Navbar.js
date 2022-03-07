@@ -71,6 +71,8 @@ const Logo = styled.img`
   margin: 10px;
   max-width: 100px;
   height: auto;
+  display: block;
+  width: 300px;
 `;
 
 const OpenLinksButton = styled.button`
@@ -97,7 +99,7 @@ const NavbarExtendedContainer = styled.div`
   }
 `;
 
-function Navbar({ settingModalIsOpen }) {
+function Navbar({ settingModalIsOpen, isLogin, settingLogout }) {
   const [scrollTop, setScrollTop] = useState(0);
   const [extendNavbar, setExtendNavbar] = useState(false);
 
@@ -113,13 +115,13 @@ function Navbar({ settingModalIsOpen }) {
     setScrollTop(scrollTop);
   };
 
-  const isLogin = false;
-
   return (
     <NavbarContainer extendNavbar={extendNavbar}>
       <NavbarInnerContainer>
         <LeftContainer>
-          <Logo src={LogoImg}></Logo>
+          <Link to="/" exact>
+            <Logo src={LogoImg}></Logo>
+          </Link>
         </LeftContainer>
 
         <RightContainer>
@@ -133,11 +135,19 @@ function Navbar({ settingModalIsOpen }) {
                 {extendNavbar ? <>&#10005;</> : <>&#8801;</>}
               </OpenLinksButton>
 
-              <NavbarLink to="/" exact>
+              {/* <NavbarLink to="/" exact>
                 HOME
-              </NavbarLink>
+              </NavbarLink> */}
               <NavbarLink to="/about"> ABOUT</NavbarLink>
               <NavbarLink to="/myPage"> MY PAGE</NavbarLink>
+              <button
+                onClick={() => {
+                  settingLogout();
+                }}
+              >
+                {" "}
+                SIGN OUT
+              </button>
             </NavbarLinkContainer>
           ) : (
             <NavbarLinkContainer>
@@ -149,11 +159,10 @@ function Navbar({ settingModalIsOpen }) {
                 {extendNavbar ? <>&#10005;</> : <>&#8801;</>}
               </OpenLinksButton>
 
-              <NavbarLink to="/" exact>
+              {/* <NavbarLink to="/" exact>
                 HOME
-              </NavbarLink>
+              </NavbarLink> */}
               <NavbarLink to="/about"> ABOUT</NavbarLink>
-              <NavbarLink to="/myPage"> MY PAGE</NavbarLink>
               <button onClick={() => settingModalIsOpen()}> SIGN IN</button>
             </NavbarLinkContainer>
           )}

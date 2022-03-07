@@ -19,14 +19,27 @@ import ModalLogin from "./components/ModalLogin";
 import ModalSignup from "./components/ModalSingup";
 
 function App() {
+  const [isLogin, setIsLogin] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [signModalIsOpen, setSignModalIsOpen] = useState(false);
+
+  const settingLogin = () => {
+    setIsLogin(true);
+  };
+
+  const settingLogout = () => {
+    setIsLogin(false);
+  };
+
   const settingModalIsOpen = () => {
     setModalIsOpen(true);
   };
   const settingModalIsClose = () => {
     setModalIsOpen(false);
     setSignModalIsOpen(true);
+  };
+  const settingModalIsJustClose = () => {
+    setModalIsOpen(false);
   };
 
   Modal.setAppElement("#root");
@@ -36,12 +49,18 @@ function App() {
 
   return (
     <Router>
-      <Navbar settingModalIsOpen={settingModalIsOpen} />
+      <Navbar
+        isLogin={isLogin}
+        settingLogout={settingLogout}
+        settingModalIsOpen={settingModalIsOpen}
+      />
 
       <Routes>
         <Route
           path="/"
-          element={<Home settingModalIsOpen={settingModalIsOpen} />}
+          element={
+            <Home isLogin={isLogin} settingModalIsOpen={settingModalIsOpen} />
+          }
         >
           <Route path="" element={<UserRoutine />} />
           <Route path="groupRoutine" element={<GroupRoutine />} />
@@ -91,6 +110,8 @@ function App() {
         <ModalLogin
           settingModalIsOpen={settingModalIsOpen}
           settingModalIsClose={settingModalIsClose}
+          settingModalIsJustClose={settingModalIsJustClose}
+          settingLogin={settingLogin}
         />
       </Modal>
 
