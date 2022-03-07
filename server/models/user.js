@@ -1,11 +1,15 @@
 "use strict";
 const { Model } = require("sequelize");
+const user_routine = require("./user_routine");
 module.exports = (sequelize, DataTypes) => {
   class user extends Model {
     static associate(models) {
       // user.belongsToMany(models.group_cal, { foreignKey: "user_id" });
       // user.belongsToMany(models.group_routine, { foreignKey: "user_id" });
-      user.hasOne(models.user_routine);
+      // user.hasMany(models.user_routine, {
+      //   foreignKey: "user_id",
+      //   sourceKey: "id",
+      // });
     }
   }
   user.init(

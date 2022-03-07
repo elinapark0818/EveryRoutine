@@ -1,9 +1,12 @@
 "use strict";
 const { Model } = require("sequelize");
+const user = require("./user");
 module.exports = (sequelize, DataTypes) => {
   class user_routine extends Model {
     static associate(models) {
-      user_routine.belongsTo(models.user, { foreignKey: "user_id" });
+      // user_routine.belongsTo(models.user, {
+      //   foreignKey: "id",
+      // });
     }
   }
   user_routine.init(
@@ -17,10 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         unique: true,
-        references: {
-          model: "user",
-          key: "id",
-        },
+        // references: {
+        //   model: "users",
+        //   key: "id",
+        // },
       },
       user_cal_id: {
         type: DataTypes.INTEGER,
