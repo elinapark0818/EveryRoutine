@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import DateSlider from "./DateSlider";
 import axios from "axios";
@@ -42,34 +42,61 @@ const RoutineCheck = styled.input`
   margin-right: 10px;
 `;
 
-const serverURL = "http://localhost:4000";
+const serverURL = "http://localhost:4000/users";
+
+function getCookie(name) {
+  let matches = document.cookie.match(
+    new RegExp(
+      "(?:^|; )" +
+        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+        "=([^;]*)"
+    )
+  );
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+const accessToken = getCookie("accessToken");
+
+const dummyData = {
+  checked: [0, 1, 1],
+  contents: ["물 2L 마시기", "스트레칭 하기", "아침 7시에 일어나기"],
+};
 
 export default function UserRoutineMyList({ settingLogin }) {
   const [userRoutineIsOpen, setUserRoutineIsOpen] = useState(false);
-  const [checkedItems, setCheckedItems] = useState(new Set());
-  const [routineItems, setRoutineItems] = useState([
-    { id: "item_id_from_db", content: "아침 7시에 일어나기" },
-    { id: "item_id_from_db", content: "물 2L 마시기" },
-    { id: "item_id_from_db", content: "스트레칭 하기" },
-  ]);
+  const [checkedItems, setCheckedItems] = useState(dummyData.checked);
+  const [routineItems, setRoutineItems] = useState(dummyData.contents);
 
-  async function getRoutine() {
-    const response = await axios
-      .post(serverURL + "/user-routine", {
-        // 뭐 보내야하는지 아직 결정 안됨
-      })
-      .catch((err) => {
-        // 통신 오류 시
-      });
-    if (response) {
-      if (response.status === 200) {
-        // 정보 받아오기
-      } else {
-        // 통신 오류 외의 다른 오류 있을 때
-      }
-    }
-    return;
-  }
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // useEffect(() => {
+  //   const fetchRoutineItems = async () => {
+  //     try {
+  //       // 요청이 시작 할 때에는 error 와 routineItems 를 초기화하고
+  //       setError(null);
+  //       setRoutineItems(dummyData.contents);
+  //       setCheckedItems(dummyData.checked);
+  //       // loading 상태를 true 로 바꿉니다.
+  //       setLoading(true);
+  //       const response = await axios.post(
+  //         serverURL + "/user-routine",
+  //         {
+  //           date: Date(),
+  //         },
+  //         {
+  //           headers: { authorization: accessToken },
+  //         }
+  //       );
+  //       setRoutineItems(response.data); // 데이터는 response.data 안에 들어있습니다.
+  //     } catch (e) {
+  //       setError(e);
+  //     }
+  //     setLoading(false);
+  //   };
+
+  //   fetchRoutineItems();
+  // }, []);
 
   const editRoutineItems = (newRoutineItem) => {
     setRoutineItems([
@@ -82,15 +109,25 @@ export default function UserRoutineMyList({ settingLogin }) {
     setUserRoutineIsOpen(false);
   };
 
-  const checkedItemHandler = (id, isChecked) => {
-    if (isChecked) {
-      checkedItems.add(id);
-      setCheckedItems(checkedItems);
-    } else if (!isChecked && checkedItems.has(id)) {
-      checkedItems.delete(id);
-      setCheckedItems(checkedItems);
+  const checkedItemHandler = (idx, checked) => {
+    console.log("idx====>", idx);
+    if (checked) {
+      let newCheckSet = [
+        ...checkedItems.slice(0, idx),
+        0,
+        ...checkedItems.slice(idx + 1),
+      ];
+      setCheckedItems(newCheckSet);
+      // 클릭한 아이템이 원래 체크상태 였다면 (언체크 후 array 0으로 바꿔줌)
+    } else {
+      let newCheckSet = [
+        ...checkedItems.slice(0, idx),
+        1,
+        ...checkedItems.slice(idx + 1),
+      ];
+      setCheckedItems(newCheckSet);
     }
-    console.log(checkedItems);
+    // 아이템 하나가 체크될 때마다 axios patch 날려준 후 응답을 리스트에 업데이트 함
   };
 
   return (
@@ -102,6 +139,7 @@ export default function UserRoutineMyList({ settingLogin }) {
           <UserRoutine
             checkedItemHandler={checkedItemHandler}
             routineItems={routineItems}
+            checkedItems={checkedItems}
           />
         </UserRotineList>
 
@@ -137,32 +175,33 @@ export default function UserRoutineMyList({ settingLogin }) {
   );
 }
 
-function UserRoutine({ checkedItemHandler, routineItems }) {
+function UserRoutine({ checkedItemHandler, checkedItems, routineItems }) {
   return routineItems.map((el, idx) => (
     <RoutineListItem
       key={idx}
       checkedItemHandler={checkedItemHandler}
-      el={el.content}
-      id={el.id}
+      el={el}
+      // id={el.id}
       idx={idx}
+      checked={checkedItems[idx]}
     />
   ));
 }
 
-function RoutineListItem({ checkedItemHandler, el, idx }) {
-  const [bChecked, setChecked] = useState(false);
+function RoutineListItem({ checkedItemHandler, idx, el, checked }) {
+  // const [bChecked, setChecked] = useState(false);
 
-  const checkHandler = (e) => {
-    setChecked(!bChecked);
-    checkedItemHandler(e.target.id, e.target.checked);
-  };
+  // const checkHandler = (e) => {
+  //   setChecked(!bChecked);
+  //   checkedItemHandler(e.target.id, e.target.checked);
+  // };
   return (
     <RoutineListItemLi>
       <RoutineCheck
         type="checkbox"
         id={idx}
-        checked={bChecked}
-        onChange={(e) => checkHandler(e)}
+        checked={checked ? true : false}
+        onChange={() => checkedItemHandler(idx, checked)}
       />
       <label htmlFor={idx}>{el}</label>
     </RoutineListItemLi>

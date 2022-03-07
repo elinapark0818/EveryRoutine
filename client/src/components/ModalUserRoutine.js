@@ -67,12 +67,33 @@ export default function ModalUserRoutine({
   routineItems,
   editRoutineItems,
 }) {
+  const [newRoutineList, setNewRoutineList] = useState(routineItems);
   const [newRoutineItem, setNewRoutineItem] = useState("");
 
+  const routineDelButtonHandler = (idx) => {
+    console.log(idx);
+    let newListFromModal = [
+      ...newRoutineList.slice(0, idx),
+      ...newRoutineList.slice(idx + 1),
+    ];
+    console.log(newListFromModal);
+    setNewRoutineList(newListFromModal);
+  };
+
+  const routineFixButtonHandler = (idx, item) => {
+    let newListFromModal = [
+      ...newRoutineList.slice(0, idx),
+      item,
+      ...newRoutineList.slice(idx + 1),
+    ];
+    setNewRoutineList(newListFromModal);
+  };
+
   const routineAddButtonHandler = () => {
+    console.log(newRoutineItem);
     if (newRoutineItem === "") {
     } else {
-      editRoutineItems(newRoutineItem);
+      setNewRoutineList([...newRoutineList, newRoutineItem]);
     }
   };
 
@@ -82,8 +103,14 @@ export default function ModalUserRoutine({
         <span className="modalClose">&times;</span>
         <ModalCon className="modalContents">
           <RoutineUl>
-            {routineItems.map((el, idx) => (
-              <RoutineList key={idx} el={el.content} idx={idx} />
+            {newRoutineList.map((el, idx) => (
+              <RoutineList
+                key={idx}
+                el={el}
+                idx={idx}
+                routineFixButtonHandler={routineFixButtonHandler}
+                routineDelButtonHandler={routineDelButtonHandler}
+              />
             ))}
 
             <RoutineLi>
@@ -102,7 +129,8 @@ export default function ModalUserRoutine({
           <Button
             className="loginBtn"
             onClick={() => {
-              closeUserRoutineModal();
+              console.log(newRoutineList);
+              // closeUserRoutineModal();
             }}
           >
             수정 완료
@@ -113,7 +141,12 @@ export default function ModalUserRoutine({
   );
 }
 
-function RoutineList({ el }) {
+function RoutineList({
+  el,
+  idx,
+  routineFixButtonHandler,
+  routineDelButtonHandler,
+}) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [singleRoutine, setSingleRoutine] = useState(el);
   return (
@@ -130,11 +163,18 @@ function RoutineList({ el }) {
       <ButtonCon>
         <ModButton
           isEditMode={isEditMode}
-          onClick={() => setIsEditMode(!isEditMode)}
+          onClick={
+            isEditMode
+              ? () => {
+                  setIsEditMode(!isEditMode);
+                  routineFixButtonHandler(idx, singleRoutine);
+                }
+              : () => setIsEditMode(!isEditMode)
+          }
         >
           {isEditMode ? "완료" : "수정"}
         </ModButton>
-        <DelButton>삭제</DelButton>
+        <DelButton onClick={() => routineDelButtonHandler(idx)}>삭제</DelButton>
       </ButtonCon>
     </RoutineLi>
   );

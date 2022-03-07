@@ -95,7 +95,7 @@ const TextLink = styled.div`
 const regExp =
   /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
-const serverURL = "http://localhost:4000";
+const serverURL = "http://localhost:4000/users";
 
 export default function ModalLogin({
   settingLogin,

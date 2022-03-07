@@ -42,10 +42,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const serverURL = "http://localhost:4000";
-
-
-
+const serverURL = "http://localhost:4000/users";
 
 function UserMain() {
   const [image, setImage] = useState("");
@@ -55,7 +52,6 @@ function UserMain() {
   // 로그인된 데이터를 불러와서 초기값으로 설정으로 해줘야 할 거 같은데..
   // 닉네임, 비밀번호 [수정] -> 유효성 검사
   // [수정완료] -> 알럿으로 "{닉네임 | 비밀번호} 수정이 완료되었습니다."
-
 
   // function getCookie(name) {
   //   let matches = document.cookie.match(
@@ -88,21 +84,17 @@ function UserMain() {
       withCredentials: true,
     };
     await axios
-    .post(
-      serverURL + "/user-edit",
-      { nickname: name },
-      cookieOption
-    ).then((res) => {
-      console.log(res);
-      if (res.status === 200) {
-        setName(name)
-        console.log(res.data);
-        alert("닉네임이 변경되었습니다.", res.data.data.nickname)
-      }
-    })
-    .catch((err) => console.log(err))
+      .post(serverURL + "/user-edit", { nickname: name }, cookieOption)
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          setName(name);
+          console.log(res.data);
+          alert("닉네임이 변경되었습니다.", res.data.data.nickname);
+        }
+      })
+      .catch((err) => console.log(err));
   };
-
 
   const SendPwdData = async () => {
     console.log("찍혔음!");
@@ -115,23 +107,22 @@ function UserMain() {
       withCredentials: true,
     };
     await axios
-    .post(
-      serverURL + "/user-edit",
-      { password: password,
-        newPassword: passwordConfirm },
-      cookieOption
-    ).then((res) => {
-      console.log("비밀번호 응답res", res);
-      if (res.status === 200) {
-        setPassword(password)
-        setPasswordConfirm(passwordConfirm)
-        console.log(res.data);
-        alert("비밀번호가 변경되었습니다.", res.data.data.password)
-      }
-    })
-    .catch((err) => console.log(err))
+      .post(
+        serverURL + "/user-edit",
+        { password: password, newPassword: passwordConfirm },
+        cookieOption
+      )
+      .then((res) => {
+        console.log("비밀번호 응답res", res);
+        if (res.status === 200) {
+          setPassword(password);
+          setPasswordConfirm(passwordConfirm);
+          console.log(res.data);
+          alert("비밀번호가 변경되었습니다.", res.data.data.password);
+        }
+      })
+      .catch((err) => console.log(err));
   };
-
 
   const SendImgData = async () => {
     const cookieOption = {
@@ -143,18 +134,15 @@ function UserMain() {
       withCredentials: true,
     };
     await axios
-    .post(
-      serverURL + "/user-edit",
-      { profile: image },
-      cookieOption
-    ).then((res) => {
-      if (res.status === 200) {
-        setImage(image)
-        console.log(res.data);
-        alert("프로필 이미지가 변경되었습니다.", res.data.data.profile)
-      }
-    })
-    .catch((err) => console.log(err))
+      .post(serverURL + "/user-edit", { profile: image }, cookieOption)
+      .then((res) => {
+        if (res.status === 200) {
+          setImage(image);
+          console.log(res.data);
+          alert("프로필 이미지가 변경되었습니다.", res.data.data.profile);
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   // const onChange = (e) => {
@@ -165,24 +153,24 @@ function UserMain() {
 
   // * onChange
   const handleChangeName = (item) => {
-    setName(item)
+    setName(item);
     console.log(name);
-  }
+  };
 
   const handleChangePwd = (item) => {
-    setPassword(item)
+    setPassword(item);
     console.log(password);
-  }
+  };
 
   const handleChangePwdConfirm = (item) => {
-    setPasswordConfirm(item)
+    setPasswordConfirm(item);
     console.log(passwordConfirm);
-  }
+  };
 
   const handleChangeImg = (item) => {
-    setImage(item)
+    setImage(item);
     console.log(image);
-  }
+  };
 
   // const samePassword = (password, confirmPassword) => {
   //   return password === confirmPassword
@@ -200,7 +188,6 @@ function UserMain() {
             alt="logo"
             style={{ width: "100px", height: "100px" }}
           ></img>
-
 
           <label
             for="file"
@@ -220,29 +207,23 @@ function UserMain() {
             style={{ display: "none" }}
             onChange={(e) => handleChangeImg(e.target.value)}
           />
-          <Button onClick={()=>SendImgData()}>수정</Button>
-
+          <Button onClick={() => SendImgData()}>수정</Button>
 
           <UserMainInfoWrap>
             <h3>이메일 : </h3>
             <p style={{ marginLeft: "0.5em" }}>elina@yof.com</p>
           </UserMainInfoWrap>
 
-
-
           <UserMainInfoWrap>
             <h3>닉네임 : </h3>
-            <input 
-              type="text" 
+            <input
+              type="text"
               value={name}
-              style={{ marginLeft: "0.5em" }} 
+              style={{ marginLeft: "0.5em" }}
               onChange={(e) => handleChangeName(e.target.value)}
             />
-            <Button onClick={(e)=>SendNameData(e)}>수정</Button>
+            <Button onClick={(e) => SendNameData(e)}>수정</Button>
           </UserMainInfoWrap>
-
-
-
         </div>
       </UserInfo>
 
@@ -252,22 +233,22 @@ function UserMain() {
         <h1>비밀번호 변경</h1>
         <div style={{ margin: "1em" }}>
           <h3>
-            기존 비밀번호 : 
-              <input 
-                type="password"
-                value={password}
-                onChange={(e)=>handleChangePwd(e.target.value)}
-              />
+            기존 비밀번호 :
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => handleChangePwd(e.target.value)}
+            />
           </h3>
 
           <h3>
-            새로운 비밀번호 : 
-            <input 
+            새로운 비밀번호 :
+            <input
               type="password"
               value={passwordConfirm}
-              onChange={(e)=>handleChangePwdConfirm(e.target.value)}
+              onChange={(e) => handleChangePwdConfirm(e.target.value)}
             />
-            <Button onClick={()=>SendPwdData()}>수정</Button>
+            <Button onClick={() => SendPwdData()}>수정</Button>
           </h3>
         </div>
       </UserInfo>
