@@ -207,7 +207,7 @@ export default function ModalLogin({
           />
           {passwordStep ? (
             <Button className="finalLoginBtn" onClick={finalLoginHandler}>
-              이메일로 로그인하기2
+              이메일로 로그인하기
             </Button>
           ) : (
             <Button className="loginBtn" onClick={loginHandler}>

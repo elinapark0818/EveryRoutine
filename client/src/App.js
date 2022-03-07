@@ -41,6 +41,9 @@ function App() {
   const settingModalIsJustClose = () => {
     setModalIsOpen(false);
   };
+  const settingSignModalIsClose = () => {
+    setSignModalIsOpen(false);
+  };
 
   Modal.setAppElement("#root");
   useEffect(() => {
@@ -129,7 +132,10 @@ function App() {
         isOpen={signModalIsOpen}
         onRequestClose={() => setSignModalIsOpen(false)}
       >
-        <ModalSignup />
+        <ModalSignup
+          settingSignModalIsClose={settingSignModalIsClose}
+          settingLogin={settingLogin}
+        />
       </Modal>
     </Router>
   );

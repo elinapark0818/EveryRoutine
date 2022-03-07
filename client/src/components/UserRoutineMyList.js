@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import DateSlider from "./DateSlider";
+import axios from "axios";
 
 import Modal from "react-modal";
 import ModalUserRoutine from "../components/ModalUserRoutine";
@@ -41,6 +42,8 @@ const RoutineCheck = styled.input`
   margin-right: 10px;
 `;
 
+const serverURL = "http://localhost:4000";
+
 export default function UserRoutineMyList({ settingLogin }) {
   const [userRoutineIsOpen, setUserRoutineIsOpen] = useState(false);
   const [checkedItems, setCheckedItems] = useState(new Set());
@@ -49,6 +52,24 @@ export default function UserRoutineMyList({ settingLogin }) {
     { id: "item_id_from_db", content: "물 2L 마시기" },
     { id: "item_id_from_db", content: "스트레칭 하기" },
   ]);
+
+  async function getRoutine() {
+    const response = await axios
+      .post(serverURL + "/user-routine", {
+        // 뭐 보내야하는지 아직 결정 안됨
+      })
+      .catch((err) => {
+        // 통신 오류 시
+      });
+    if (response) {
+      if (response.status === 200) {
+        // 정보 받아오기
+      } else {
+        // 통신 오류 외의 다른 오류 있을 때
+      }
+    }
+    return;
+  }
 
   const editRoutineItems = (newRoutineItem) => {
     setRoutineItems([

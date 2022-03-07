@@ -110,7 +110,7 @@ const isMatch = (pass1, pass2) => {
 
 const serverURL = "http://localhost:4000";
 
-export default function ModalSignup() {
+export default function ModalSignup({ settingLogin, settingSignModalIsClose }) {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [userPasswordRetype, setUserPasswordRetype] = useState("");
@@ -170,27 +170,39 @@ export default function ModalSignup() {
       .catch((err) => {
         setIsRightUser(false);
       });
-    console.log(response);
-    if (response.status === 200) {
-      setIsValid(true);
-      setIsRightUser(true);
-    } else {
-      setIsRightUser(false);
+    // console.log(response);
+    if (response) {
+      if (response.status === 200) {
+        setIsValid(true);
+        setIsRightUser(true);
+      } else {
+        setIsRightUser(false);
+      }
     }
-    return response.data;
+    return;
   }
 
   async function joinHandler() {
+    console.log("click!");
     const response = await axios
       .post(serverURL + "/signup", {
         email: userEmail,
         password: userPassword,
         nickname: userNickName,
       })
-      .then((result) => console.log(result.data))
       .catch((err) => {
         console.log(err);
       });
+    if (response) {
+      console.log(response);
+      if (response.status === 201) {
+        console.log("회원가입 성공, 로그인 된 상태로 메인으로 돌아갑니다.");
+        settingLogin();
+        settingSignModalIsClose();
+      } else {
+        console.log("회원가입 실패");
+      }
+    }
   }
 
   const toFindModalHandler = () => {
