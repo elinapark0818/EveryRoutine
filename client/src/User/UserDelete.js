@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import LogoImg from "../assets/yof.jpg";
 import styled from "styled-components";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 const UserDeleteContainer = styled.div`
   border: 5px solid black;
@@ -22,9 +22,9 @@ const UserDeleteInfo = styled.div`
 
 const serverURL = "http://localhost:4000";
 
-function UserDelete({settingLogout}) {
-  const [email, setEmail] = useState("")
-  const navigate = useNavigate()
+function UserDelete({ settingLogout }) {
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
 
   //  이메일과 비밀번호 받아서 삭제요청 보내기
   const handleDelete = async (e) => {
@@ -38,25 +38,22 @@ function UserDelete({settingLogout}) {
       withCredentials: true,
     };
     await axios
-    .get(
-      serverURL + "/resign",
-      { email: email},
-      cookieOption
-    ).then((res) => {
-      console.log(res);
-      if (res.status === 200) {
-        alert("회원탈퇴완료. 잘가~", res.data.data)
-        // 로그아웃 시키기
-        settingLogout()
-        // 홈화면으로 이동하기
-        navigate('/')
-      }
-    })
-  }
+      .get(serverURL + "/resign", { email: email }, cookieOption)
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          alert("회원탈퇴완료. 잘가~", res.data.data);
+          // 로그아웃 시키기
+          settingLogout();
+          // 홈화면으로 이동하기
+          navigate("/");
+        }
+      });
+  };
 
   const handleChange = (e) => {
-    setEmail(e)
-  }
+    setEmail(e);
+  };
 
   return (
     <UserDeleteContainer>
@@ -64,7 +61,6 @@ function UserDelete({settingLogout}) {
       <p style={{ marginLeft: "1em", marginBottom: "5em" }}>
         회원탈퇴를 위한 페이지입니다.
       </p>
-      <button onClick={() => testClick()}>클릭해보세요</button>
       <UserDeleteInfo
         style={{
           display: "flex",
@@ -86,7 +82,7 @@ function UserDelete({settingLogout}) {
         >
           <h3>이메일</h3>
 
-          <input value={email} onChange={(e) => handleChange(e.target.value)}/>
+          <input value={email} onChange={(e) => handleChange(e.target.value)} />
         </div>
       </UserDeleteInfo>
 
