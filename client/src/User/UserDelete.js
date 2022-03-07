@@ -20,7 +20,7 @@ const UserDeleteInfo = styled.div`
   margin-left: 50px;
 `;
 
-const serverURL = "http://localhost:4000";
+const serverURL = "http://localhost:4000/users";
 
 function UserDelete({ settingLogout }) {
   const [email, setEmail] = useState("");
