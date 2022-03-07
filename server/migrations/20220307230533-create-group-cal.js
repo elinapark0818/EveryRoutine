@@ -1,39 +1,43 @@
 "use strict";
-var DataTypes = require("sequelize/lib/data-types");
-
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("user_routines", {
+    await queryInterface.createTable("group_cals", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      list: {
-        type: Sequelize.STRING,
+      date: {
+        type: Sequelize.DATE,
         allowNull: false,
-        unique: false,
       },
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         unique: true,
-        // references: {
-        //   model: "users",
-        //   key: "id",
-        // },
       },
-      user_cal_id: {
+      group_routine_id: {
         type: Sequelize.INTEGER,
-      },
-      daily_check: {
-        type: Sequelize.STRING, //list 길이와 같은 array
         allowNull: false,
+        unique: true,
+      },
+      checked_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        unique: true,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("user_routines");
+    await queryInterface.dropTable("group_cals");
   },
 };
