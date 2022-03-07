@@ -4,9 +4,8 @@ const app = express();
 const userRouter = require("./app/routes/users");
 const cors = require("cors");
 
-
 app.set("port", process.env.PORT || 4000);
-app.set("view engine", "html");
+// app.set("view engine", "html");
 
 // sequelize
 //   .sync({ force: false })
@@ -30,6 +29,9 @@ app.use(
     },
   })
 );
+
+// app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/", userRouter);

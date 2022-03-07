@@ -160,6 +160,14 @@ module.exports = {
 
       // 쿠키에서 토큰 가져오기
       const { accessToken } = await req.cookie;
+
+      // function getCookie(name) {
+      //   let matches = document.cookie.match(new RegExp(
+      //     "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+      //   ));
+      //   return matches ? decodeURIComponent(matches[1]) : undefined;
+      // }
+
       // 쿠키에서 user email 가져오기
       const { email } = jwt.verify(accessToken, process.env.ACCESS_SECRET);
 

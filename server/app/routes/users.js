@@ -24,7 +24,7 @@ router.get("/logout", controller.logout.get);
 router.get("/user-info/", controller.userInfo.get);
 
 // edit user info
-router.post("/user-edit/:email", controller.editUserInfo.post);
+router.post("/user-edit/", controller.editUserInfo.post);  
 
 
 module.exports = router;
