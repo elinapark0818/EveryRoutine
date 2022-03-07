@@ -35,7 +35,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     },
-    // { timestamps: false },
     {
       sequelize,
       modelName: "user_routine",
