@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import LogoImg from "../assets/yof.jpg";
 import styled from "styled-components";
+import axios from "axios";
+import { useNavigate } from "react-router-dom"
 
 const UserDeleteContainer = styled.div`
   border: 5px solid black;
@@ -17,10 +19,45 @@ const UserDeleteContainer = styled.div`
 const UserDeleteInfo = styled.div`
   margin-left: 50px;
 `;
-function UserDelete({ settingLogout }) {
-  const testClick = () => {
-    settingLogout();
-  };
+
+const serverURL = "http://localhost:4000";
+
+function UserDelete({settingLogout}) {
+  const [email, setEmail] = useState("")
+  const navigate = useNavigate()
+
+  //  이메일과 비밀번호 받아서 삭제요청 보내기
+  const handleDelete = async (e) => {
+    console.log("찍히나?!");
+    const cookieOption = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Cache: "no-cache",
+      },
+      withCredentials: true,
+    };
+    await axios
+    .get(
+      serverURL + "/resign",
+      { email: email},
+      cookieOption
+    ).then((res) => {
+      console.log(res);
+      if (res.status === 200) {
+        alert("회원탈퇴완료. 잘가~", res.data.data)
+        // 로그아웃 시키기
+        settingLogout()
+        // 홈화면으로 이동하기
+        navigate('/')
+      }
+    })
+  }
+
+  const handleChange = (e) => {
+    setEmail(e)
+  }
+
   return (
     <UserDeleteContainer>
       <h1 style={{ marginTop: "0.5em", marginLeft: "0.5em" }}>회원 탈퇴</h1>
@@ -48,9 +85,8 @@ function UserDelete({ settingLogout }) {
           }}
         >
           <h3>이메일</h3>
-          <p>elinapark0818@gmail.com</p>
-          <h3>닉네임</h3>
-          <p>오늘저녁은 샤브샤브</p>
+
+          <input value={email} onChange={(e) => handleChange(e.target.value)}/>
         </div>
       </UserDeleteInfo>
 
@@ -67,6 +103,7 @@ function UserDelete({ settingLogout }) {
             borderRadius: "5px",
             cursor: "pointer",
           }}
+          onClick={(e) => handleDelete(e)}
         >
           회원탈퇴
         </button>

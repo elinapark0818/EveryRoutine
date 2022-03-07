@@ -40,8 +40,9 @@ module.exports = (sequelize, DataTypes) => {
         unique: false,
       },
     },
+    { timestamps: false },
     {
-      sequelize,
+      sequelize: sequelize,
       modelName: "group_routine",
     }
   );
