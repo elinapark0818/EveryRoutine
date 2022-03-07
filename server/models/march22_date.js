@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
   march22_date.init(
     {
       month: { type: DataTypes.INTEGER, allowNull: false, unique: false },
-      date: { type: DataTypes.INTEGER, allowNull: false, unique: true },
+      date: { type: DataTypes.INTEGER, allowNull: false, unique: false },
+      yo_il: { type: DataTypes.STRING, allowNull: false, unique: false },
     },
     {
       sequelize,

@@ -2,11 +2,10 @@ const express = require("express");
 // const { sequelize } = require("./models"); // db.sequelize
 const app = express();
 const userRouter = require("./app/routes/users");
+const personalRoutineRouter = require("./app/routes/personal_routines");
 const cors = require("cors");
-var DataTypes = require("sequelize/lib/data-types");
 
 app.set("port", process.env.PORT || 4000);
-// app.set("view engine", "html");
 
 // sequelize
 //   .sync({ force: false })
@@ -36,7 +35,8 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/", userRouter);
+app.use("/user-routine", personalRoutineRouter);
 
 app.listen(app.get("port"), () => {
-  console.log(app.get("port"), "번 포트에서 대기 중");
+  console.log(app.get("port"), "port opened.");
 });

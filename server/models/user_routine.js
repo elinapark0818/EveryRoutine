@@ -24,6 +24,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       user_cal_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+        unique: true,
       },
       daily_check: {
         type: DataTypes.STRING, //list 길이와 같은 array

@@ -16,7 +16,12 @@ module.exports = {
       date: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
+        unique: false,
+      },
+      yo_il: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: false,
       },
       createdAt: {
         allowNull: false,
