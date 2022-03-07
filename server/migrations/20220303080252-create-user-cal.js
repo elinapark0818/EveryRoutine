@@ -22,10 +22,6 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      check: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-      },
     });
   },
   async down(queryInterface, Sequelize) {

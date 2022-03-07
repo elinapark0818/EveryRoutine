@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   user_cal.init(
     {
       date: {
-        type: DataTypes.DATE,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       user_id: {
@@ -19,10 +19,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         unique: true,
-      },
-      check: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
       },
     },
     {
