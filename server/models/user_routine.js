@@ -2,21 +2,13 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class user_routine extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // user_routine.belongsTo(models.user, { as: "user_id", foreignKey: user });
-      // user_routine.belongsTo(models.user, { foreignKey: "user_id" });
-
-
+      user_routine.belongsTo(models.user, { foreignKey: "user_id" });
     }
   }
   user_routine.init(
     {
-      routine_name: {
+      list: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: false,
@@ -25,16 +17,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         unique: true,
-        // references: {
-        //   model: "user",
-        //   key: "id"
-        // }
+        references: {
+          model: "user",
+          key: "id",
+        },
       },
       user_cal_id: {
         type: DataTypes.INTEGER,
       },
       daily_check: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.STRING, //list 길이와 같은 array
         allowNull: false,
       },
     },

@@ -1,22 +1,17 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class comment extends Model {
-    static associate(models) {
-      // comment.belongsTo(models.group_cal, {
-      //   as: "user_id",
-      //   foreignKey: "checked_id",
-      // });
-    }
+  class march22_dates extends Model {
+    static associate(models) {}
   }
-  comment.init(
+  march22_dates.init(
     {
-      user_id: {
+      month: {
         type: DataTypes.INTEGER,
         allowNull: false,
         unique: true,
       },
-      group_routine_id: {
+      date: {
         type: DataTypes.INTEGER,
         allowNull: false,
         unique: true,
@@ -24,8 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "comment",
+      modelName: "march22_dates",
     }
   );
-  return comment;
+  return march22_dates;
 };

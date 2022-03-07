@@ -3,11 +3,9 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class user extends Model {
     static associate(models) {
-
       // user.belongsToMany(models.group_cal, { foreignKey: "user_id" });
       // user.belongsToMany(models.group_routine, { foreignKey: "user_id" });
-      // user.hasOne(models.user_routine);
-
+      user.hasOne(models.user_routine);
     }
   }
   user.init(

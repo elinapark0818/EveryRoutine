@@ -2,11 +2,6 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class group_cal extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       // group_cal.belongsToMany(models.user, {
       //   through: "UserGroupCal",
@@ -14,10 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       //   foreignKey: "id",
       // });
       // group_cal.hasMany(models.comment);
-      // // define association here
-
       // group_cal.hasMany(models.user, { foreignKey: "user_id" });
-
     }
   }
   group_cal.init(
