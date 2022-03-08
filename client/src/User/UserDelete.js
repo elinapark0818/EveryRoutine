@@ -5,13 +5,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const UserDeleteContainer = styled.div`
-  border: 5px solid black;
+  border: 5px solid #f3f8f2;
   min-width: 580px;
   width: 100%;
   height: 80vh;
   margin-top: -140px;
   margin-left: 200px;
-  background-color: cornsilk;
   display: flex;
   flex-direction: column;
 `;
@@ -20,7 +19,20 @@ const UserDeleteInfo = styled.div`
   margin-left: 50px;
 `;
 
-const serverURL = "http://localhost:4000";
+const Button = styled.button`
+  background-color: #697f6e;
+  margin-left: 1em;
+  width: 70px;
+  height: 30px;
+  border: none;
+  color: white;
+  font-size: 1em;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+`;
+
+const serverURL = "http://localhost:4000/users";
 
 function UserDelete({ settingLogout }) {
   const [email, setEmail] = useState("");
@@ -57,8 +69,8 @@ function UserDelete({ settingLogout }) {
 
   return (
     <UserDeleteContainer>
-      <h1 style={{ marginTop: "0.5em", marginLeft: "0.5em" }}>회원 탈퇴</h1>
-      <p style={{ marginLeft: "1em", marginBottom: "5em" }}>
+      <h1 style={{color:"#697f6e", marginTop: "0.5em", marginLeft: "0.5em" }}>회원 탈퇴</h1>
+      <p style={{ color:"#697f6e", marginLeft: "1em", marginBottom: "5em" }}>
         회원탈퇴를 위한 페이지입니다.
       </p>
       <UserDeleteInfo
@@ -80,29 +92,16 @@ function UserDelete({ settingLogout }) {
             marginTop: "-6em",
           }}
         >
-          <h3>이메일</h3>
+          <h3 style={{color:"#697f6e"}}>이메일 <input placeholder="이메일을 입력하세요." style={{width:"20em"}} value={email} onChange={(e) => handleChange(e.target.value)} /></h3>
 
-          <input value={email} onChange={(e) => handleChange(e.target.value)} />
+          
         </div>
       </UserDeleteInfo>
 
       <div style={{ margin: "2em 20em" }}>
-        <button
-          style={{
-            backgroundColor: "salmon",
-            width: "100px",
-            height: "30px",
-            border: "none",
-            color: "white",
-            fontSize: "1em",
-            fontWeight: "bold",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
-          onClick={(e) => handleDelete(e)}
-        >
+        <Button onClick={(e) => handleDelete(e)} >
           회원탈퇴
-        </button>
+        </Button>
       </div>
     </UserDeleteContainer>
   );

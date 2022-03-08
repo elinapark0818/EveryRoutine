@@ -22,15 +22,15 @@ const MyPageButtonWrap = styled.div`
 `;
 
 const MyPageLink = styled(Link)`
-  color: mediumseagreen;
+  color: #697f6e;
   font-size: x-large;
   text-decoration: none;
   margin: 10px;
   padding: 10px 10px;
-  border: none;
+  border: 5px solid #f3f8f2;
   outline: none;
-  width: 10em;
-  background-color: bisque;
+  width: 7em;
+  
 `;
 
 function MyPage() {
