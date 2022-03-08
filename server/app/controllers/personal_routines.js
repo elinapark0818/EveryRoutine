@@ -6,7 +6,7 @@ const sequelize = require("sequelize");
 module.exports = {
   user_routine: {
     post: async (req, res) => {
-      const { date } = req.body; //  { "date" : { "month" : 3, "date" : 31 } }
+      const { date } = req.body; //  { "date" : { "month" : 3, "date" : 1 } }
 
       function getCookie(name) {
         let matches = req.headers.cookie.match(
@@ -20,9 +20,6 @@ module.exports = {
       }
       const accessToken = getCookie("accessToken");
       const { email } = jwt.verify(accessToken, process.env.ACCESS_SECRET);
-
-      console.log(email);
-      console.log(date);
 
       const dateInfo = await march22_date.findOne({
         where: {
@@ -53,6 +50,15 @@ module.exports = {
 
       console.log(thisDateRoutineList.dataValues);
 
+      const isChecked = await user_routine.findOne({
+        daily_check: {
+          where: {
+            user_cal_id: thisDateRoutineDetails.id,
+          },
+        },
+      });
+
+      const realIsChecked = isChecked.dataValues.daily_check;
       const onlyThisDateRoutineList = thisDateRoutineList.dataValues.list;
 
       const findUser = await user.findOne({ where: { email } });
@@ -66,6 +72,7 @@ module.exports = {
         return res.status(200).json({
           findDateInfo,
           onlyThisDateRoutineList,
+          realIsChecked,
           message: "Success. you can see your personal routines of that date",
         });
       }
@@ -106,18 +113,16 @@ module.exports = {
 
         //Response example
 
-        //{
-        //     "uncheckedArray": [
-        //       0,
-        //       0
-        //   ],
-        //   "message": "A personal routine successfully created"
-        // }
+        //   {
+        //     "message": "Successfully Modified"
+        //   }
 
         //date 들어온 날짜에 daily_check array를 들어온 바디로 덮어 씌워서 반환 => 객체형태
         return res.status(200).json({ message: "Successfully Modified" });
       }
     },
+
+    get: async (req, res) => {},
   },
   user_routine_details: {
     post: async (req, res) => {
