@@ -5,7 +5,7 @@ const sequelize = require("sequelize");
 
 module.exports = {
   user_routine: {
-    get: async (req, res) => {
+    post: async (req, res) => {
       const { date } = req.body; //  { "date" : { "month" : 3, "date" : 31 } }
 
       function getCookie(name) {
@@ -71,6 +71,55 @@ module.exports = {
       }
     },
 
+    patch: async (req, res) => {
+      const { daily_check, date } = req.body; // { "daily_check" : [1, 1], "date" : 1 }
+
+      function getCookie(name) {
+        let matches = req.headers.cookie.match(
+          new RegExp(
+            "(?:^|; )" +
+              name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+              "=([^;]*)"
+          )
+        );
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+      }
+      const accessToken = getCookie("accessToken");
+      const { email } = jwt.verify(accessToken, process.env.ACCESS_SECRET);
+
+      const findUser = await user.findOne({ where: { email } });
+      if (!findUser) {
+        return res.status(204).json({ message: "Bad request : user error" });
+      } else if (!daily_check) {
+        return res.status(203).json({ message: "Bad request. No check list" });
+      } else if (!date) {
+        return res.status(203).json({ message: "Bad request : date error" });
+      } else {
+        await user_cal.update(
+          { daily_check: JSON.stringify(daily_check) },
+          {
+            where: {
+              date: JSON.stringify({ month: 3, date: date }),
+            },
+          }
+        );
+
+        //Response example
+
+        //{
+        //     "uncheckedArray": [
+        //       0,
+        //       0
+        //   ],
+        //   "message": "A personal routine successfully created"
+        // }
+
+        //date 들어온 날짜에 daily_check array를 들어온 바디로 덮어 씌워서 반환 => 객체형태
+        return res.status(200).json({ message: "Successfully Modified" });
+      }
+    },
+  },
+  user_routine_details: {
     post: async (req, res) => {
       const { list, date } = req.body; // { "list" : ["물 2L 마시기", "스트레칭 하기"], "date" : 3 }
 
@@ -145,54 +194,6 @@ module.exports = {
           uncheckedArray,
           message: "A personal routine successfully created",
         });
-      }
-    },
-
-    patch: async (req, res) => {
-      const { daily_check, date } = req.body; // { "daily_check" : [1, 1], "date" : 1 }
-
-      function getCookie(name) {
-        let matches = req.headers.cookie.match(
-          new RegExp(
-            "(?:^|; )" +
-              name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-              "=([^;]*)"
-          )
-        );
-        return matches ? decodeURIComponent(matches[1]) : undefined;
-      }
-      const accessToken = getCookie("accessToken");
-      const { email } = jwt.verify(accessToken, process.env.ACCESS_SECRET);
-
-      const findUser = await user.findOne({ where: { email } });
-      if (!findUser) {
-        return res.status(204).json({ message: "Bad request : user error" });
-      } else if (!daily_check) {
-        return res.status(203).json({ message: "Bad request. No check list" });
-      } else if (!date) {
-        return res.status(203).json({ message: "Bad request : date error" });
-      } else {
-        await user_cal.update(
-          { daily_check: JSON.stringify(daily_check) },
-          {
-            where: {
-              date: JSON.stringify({ month: 3, date: date }),
-            },
-          }
-        );
-
-        //Response example
-
-        //{
-        //     "uncheckedArray": [
-        //       0,
-        //       0
-        //   ],
-        //   "message": "A personal routine successfully created"
-        // }
-
-        //date 들어온 날짜에 daily_check array를 들어온 바디로 덮어 씌워서 반환 => 객체형태
-        return res.status(200).json({ message: "Successfully Modified" });
       }
     },
   },
