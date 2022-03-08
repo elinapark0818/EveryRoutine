@@ -5,7 +5,8 @@ import styled from "styled-components";
 
 const Container = styled.div`
   border: 3px solid #697f6e;
-  width: 70%;
+  width: 800px;
+  margin-left: calc((100% - 800px) / 2);
   padding: 30px;
 `;
 const Con = styled.div`
@@ -22,8 +23,8 @@ function GroupRoutine() {
   };
   return (
     <>
-      <button onClick={handleClickTrue}>내 그룹 모두</button>
-      <button onClick={handleClickFalse}>남의 그룹 모드</button>
+      {/* <button onClick={handleClickTrue}>내 그룹 모두</button>
+      <button onClick={handleClickFalse}>남의 그룹 모드</button> */}
       {isMyGroup ? (
         <Container>
           <div>
