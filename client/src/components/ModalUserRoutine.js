@@ -71,7 +71,6 @@ const serverURL = "http://localhost:4000/user-routine";
 export default function ModalUserRoutine({
   closeUserRoutineModal,
   routineItems,
-  editRoutineItems,
 }) {
   const [newRoutineList, setNewRoutineList] = useState(routineItems);
   const [newRoutineItem, setNewRoutineItem] = useState("");
@@ -87,8 +86,8 @@ export default function ModalUserRoutine({
       console.log(response.data);
     } else {
       console.log(response.status);
-      return;
     }
+    closeUserRoutineModal();
   }
 
   const routineDelButtonHandler = (idx) => {
@@ -101,6 +100,7 @@ export default function ModalUserRoutine({
     setNewRoutineList(newListFromModal);
   };
 
+  // 아이템 수정 버튼
   const routineFixButtonHandler = (idx, item) => {
     let newListFromModal = [
       ...newRoutineList.slice(0, idx),
@@ -110,6 +110,7 @@ export default function ModalUserRoutine({
     setNewRoutineList(newListFromModal);
   };
 
+  // 아이템 추가 버튼
   const routineAddButtonHandler = () => {
     console.log(newRoutineItem);
     if (newRoutineItem === "") {
@@ -151,7 +152,6 @@ export default function ModalUserRoutine({
             className="loginBtn"
             onClick={() => {
               postUserRoutineList();
-              closeUserRoutineModal();
             }}
           >
             수정 완료

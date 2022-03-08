@@ -57,19 +57,45 @@ export default function UserRoutineMyList({ settingLogin }) {
   const [userRoutineIsOpen, setUserRoutineIsOpen] = useState(false);
   const [checkedItems, setCheckedItems] = useState(dummyData.checked);
   const [routineItems, setRoutineItems] = useState(dummyData.contents);
+  const [selectDate, setSelectDate] = useState({
+    date: today,
+    month: todayMonth,
+  });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const changeSelectDate = (selected) => {
+    console.log("1", selected);
+    setSelectDate(selected);
+    andThen();
+  };
+
+  const andThen = () => {
+    console.log("2", selectDate);
+    console.log(
+      selectDate.month +
+        "월" +
+        selectDate.date +
+        "일의 루틴리스토로 변경합니다."
+    );
+    getRoutineListOfThatDate();
+  };
+
+  const closeUserRoutineModal = () => {
+    setUserRoutineIsOpen(false);
+  };
 
   useEffect(() => {
     const fetchRoutineItems = async () => {
       try {
         // 요청이 시작 할 때에는 error 와 routineItems 를 초기화하고
         setError(null);
-        setRoutineItems(dummyData.contents);
-        setCheckedItems(dummyData.checked);
+        // setRoutineItems(dummyData.contents);
+        // setCheckedItems(dummyData.checked);
         // loading 상태를 true 로 바꿉니다.
         setLoading(true);
+        console.log("데이터 불러오는 중~");
         const response = await axios({
           method: "post",
           url: serverURL,
@@ -79,13 +105,13 @@ export default function UserRoutineMyList({ settingLogin }) {
           const todayRoutineInfo = JSON.parse(
             response.data.onlyThisDateRoutineList
           );
-          const todayCheckInfo = new Array(
-            todayRoutineInfo.contents.length
-          ).fill(0);
+          const todayCheckInfo = JSON.parse(response.data.realIsChecked);
+          console.log(todayCheckInfo.checked);
+          console.log(todayRoutineInfo.contents);
           // 받아온 루틴리스트로 루틴 리스트 렌더링
           setRoutineItems(todayRoutineInfo.contents);
-          // 0으로 채워진 배열로 루틴 체크 리스트 렌더링
-          setCheckedItems(todayCheckInfo);
+          // 받아온 체크 배열로 루틴 체크 리스트 렌더링
+          setCheckedItems(todayCheckInfo.checked);
         }
       } catch (e) {
         console.log(e);
@@ -96,6 +122,26 @@ export default function UserRoutineMyList({ settingLogin }) {
 
     fetchRoutineItems();
   }, [userRoutineIsOpen]);
+
+  async function getRoutineListOfThatDate() {
+    const response = await axios
+      .post(serverURL, {
+        date: { month: selectDate.month, date: selectDate.date },
+      })
+      .catch((err) => console.log(err));
+    if (response.status === 200) {
+      const thatDayRoutineInfo = JSON.parse(
+        response.data.onlyThisDateRoutineList
+      );
+      const thatDayCheckInfo = JSON.parse(response.data.realIsChecked);
+      setRoutineItems(thatDayRoutineInfo.contents);
+      // 받아온 체크 배열로 루틴 체크 리스트 렌더링
+      setCheckedItems(thatDayCheckInfo.checked);
+    } else {
+      console.log(response.status);
+    }
+    return;
+  }
 
   async function fetchCheckBoxes() {
     const response = await axios
@@ -111,17 +157,6 @@ export default function UserRoutineMyList({ settingLogin }) {
     }
     return;
   }
-
-  const editRoutineItems = (newRoutineItem) => {
-    setRoutineItems([
-      ...routineItems,
-      { id: "new_item_id_from_db", content: newRoutineItem },
-    ]);
-  };
-
-  const closeUserRoutineModal = () => {
-    setUserRoutineIsOpen(false);
-  };
 
   const checkedItemHandler = (idx, checked) => {
     console.log("idx====>", idx);
@@ -148,7 +183,7 @@ export default function UserRoutineMyList({ settingLogin }) {
 
   return (
     <div>
-      <DateSlider />
+      <DateSlider selectDate={selectDate} changeSelectDate={changeSelectDate} />
 
       <UserRoutineListCon>
         <UserRotineList>
@@ -184,7 +219,6 @@ export default function UserRoutineMyList({ settingLogin }) {
         <ModalUserRoutine
           closeUserRoutineModal={closeUserRoutineModal}
           routineItems={routineItems}
-          editRoutineItems={editRoutineItems}
         />
       </Modal>
     </div>
@@ -205,12 +239,6 @@ function UserRoutine({ checkedItemHandler, checkedItems, routineItems }) {
 }
 
 function RoutineListItem({ checkedItemHandler, idx, el, checked }) {
-  // const [bChecked, setChecked] = useState(false);
-
-  // const checkHandler = (e) => {
-  //   setChecked(!bChecked);
-  //   checkedItemHandler(e.target.id, e.target.checked);
-  // };
   return (
     <RoutineListItemLi>
       <RoutineCheck
