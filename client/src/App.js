@@ -71,9 +71,12 @@ function App() {
         </Route>
         <Route path="/about" element={<About />} />
 
-        <Route path="/myPage" element={<MyPage />}>
+        <Route path="/myPage" element={<MyPage isLogin={isLogin} />}>
           <Route path="" element={<UserMain />} />
-          <Route path="userDelete" element={<UserDelete settingLogout={settingLogout}/>} />
+          <Route
+            path="userDelete"
+            element={<UserDelete settingLogout={settingLogout} />}
+          />
         </Route>
 
         <Route
