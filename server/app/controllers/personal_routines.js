@@ -45,9 +45,12 @@ module.exports = {
       });
 
       const thisDateRoutineList = await user_routine.findOne({
-        id: thisDateRoutineDetails.dataValues.user_routine_id,
+        where: {
+          id: thisDateRoutineDetails.dataValues.user_routine_id,
+        },
       });
 
+      console.log(thisDateRoutineDetails.dataValues);
       console.log(thisDateRoutineList.dataValues);
 
       const isChecked = await user_routine.findOne({

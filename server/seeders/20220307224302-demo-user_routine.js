@@ -10,8 +10,98 @@ module.exports = {
             contents: ["물 2L 마시기", "스트레칭 하기", "산책 30분 하기"],
           }),
           user_id: 1,
+          user_cal_id: 1, //2월 20일
+          daily_check: JSON.stringify({ checked: [0, 0, 0] }),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          list: JSON.stringify({
+            contents: ["물 2L 마시기", "스트레칭 하기", "산책 30분 하기"],
+          }),
+          user_id: 1,
+          user_cal_id: 2, //2월 21일
+          daily_check: JSON.stringify({ checked: [0, 0, 0] }),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          list: JSON.stringify({
+            contents: ["물 2L 마시기", "스트레칭 하기", "산책 30분 하기"],
+          }),
+          user_id: 1,
+          user_cal_id: 3, //2월 22일
+          daily_check: JSON.stringify({ checked: [0, 0, 0] }),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          list: JSON.stringify({
+            contents: ["물 2L 마시기", "스트레칭 하기", "산책 30분 하기"],
+          }),
+          user_id: 1,
+          user_cal_id: 4, //2월 23일
+          daily_check: JSON.stringify({ checked: [0, 0, 0] }),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          list: JSON.stringify({
+            contents: ["물 2L 마시기", "스트레칭 하기", "산책 30분 하기"],
+          }),
+          user_id: 1,
+          user_cal_id: 5, //2월 24일
+          daily_check: JSON.stringify({ checked: [0, 0, 0] }),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          list: JSON.stringify({
+            contents: ["물 2L 마시기", "스트레칭 하기", "산책 30분 하기"],
+          }),
+          user_id: 1,
+          user_cal_id: 6, //2월 25일
+          daily_check: JSON.stringify({ checked: [0, 0, 0] }),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          list: JSON.stringify({
+            contents: ["물 2L 마시기", "스트레칭 하기", "산책 30분 하기"],
+          }),
+          user_id: 1,
+          user_cal_id: 7, //2월 26일
+          daily_check: JSON.stringify({ checked: [0, 0, 0] }),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          list: JSON.stringify({
+            contents: ["물 2L 마시기", "스트레칭 하기", "산책 30분 하기"],
+          }),
+          user_id: 1,
+          user_cal_id: 8, //2월 27일
+          daily_check: JSON.stringify({ checked: [0, 0, 0] }),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          list: JSON.stringify({
+            contents: ["물 2L 마시기", "스트레칭 하기", "산책 30분 하기"],
+          }),
+          user_id: 1,
+          user_cal_id: 9, //2월 28일
+          daily_check: JSON.stringify({ checked: [0, 0, 0] }),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          list: JSON.stringify({
+            contents: ["물 2L 마시기", "스트레칭 하기", "산책 30분 하기"],
+          }),
+          user_id: 1,
           user_cal_id: 10, //3월 1일
-          daily_check: JSON.stringify({ checked: [0, 0] }),
+          daily_check: JSON.stringify({ checked: [0, 0, 0] }),
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -21,7 +111,7 @@ module.exports = {
           }),
           user_id: 1,
           user_cal_id: 11,
-          daily_check: JSON.stringify({ checked: [0, 0] }),
+          daily_check: JSON.stringify({ checked: [0, 0, 0] }),
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -45,7 +135,7 @@ module.exports = {
           list: JSON.stringify({ contents: ["스트레칭 하기", "물 3L 마시기"] }),
           user_id: 1,
           user_cal_id: 14,
-          daily_check: JSON.stringify({ checked: [0] }),
+          daily_check: JSON.stringify({ checked: [0, 0] }),
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -55,7 +145,7 @@ module.exports = {
           }),
           user_id: 1,
           user_cal_id: 15,
-          daily_check: JSON.stringify({ checked: [0] }),
+          daily_check: JSON.stringify({ checked: [0, 0] }),
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -65,7 +155,7 @@ module.exports = {
           }),
           user_id: 1,
           user_cal_id: 16,
-          daily_check: JSON.stringify({ checked: [0] }),
+          daily_check: JSON.stringify({ checked: [0, 0] }),
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -75,7 +165,7 @@ module.exports = {
           }),
           user_id: 1,
           user_cal_id: 17,
-          daily_check: JSON.stringify({ checked: [0] }),
+          daily_check: JSON.stringify({ checked: [0, 0] }),
           createdAt: new Date(),
           updatedAt: new Date(),
         },
