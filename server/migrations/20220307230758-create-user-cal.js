@@ -9,18 +9,16 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       date: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
       },
       user_routine_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
       },
       createdAt: {
         allowNull: false,

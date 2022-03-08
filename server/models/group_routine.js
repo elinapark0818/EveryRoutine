@@ -16,29 +16,25 @@ module.exports = (sequelize, DataTypes) => {
       routine_name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: false,
       },
       user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        unique: true,
       },
       editor_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        unique: true,
       },
       tag_name: {
         type: DataTypes.STRING,
       },
       image: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       contents: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: false,
       },
     },
     {
