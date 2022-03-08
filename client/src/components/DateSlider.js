@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Slider from "react-slick";
+import axios from "axios";
 import "../../node_modules/slick-carousel/slick/slick.css";
 import "../../node_modules/slick-carousel/slick/slick-theme.css";
+
+const date = new Date();
+const today = date.getDate();
+const todayMonth = date.getMonth();
 
 const DateSliderList = styled(Slider)`
   .slick-track {
@@ -45,7 +50,50 @@ const DateCardToday = styled.div`
 `;
 
 const DateSliderCon = styled.div``;
+
+const dummyDates = [
+  { month: 2, date: 25, yo_il: "금" },
+  { month: 2, date: 26, yo_il: "토" },
+  { month: 2, date: 27, yo_il: "일" },
+  { month: 2, date: 28, yo_il: "월" },
+  { month: 3, date: 1, yo_il: "화" },
+  { month: 3, date: 2, yo_il: "수" },
+  { month: 3, date: 3, yo_il: "목" },
+  { month: 3, date: 4, yo_il: "금" },
+  { month: 3, date: 5, yo_il: "토" },
+  { month: 3, date: 6, yo_il: "일" },
+  { month: 3, date: 7, yo_il: "월" },
+  { month: 3, date: 8, yo_il: "화" },
+  { month: 3, date: 9, yo_il: "수" },
+  { month: 3, date: 10, yo_il: "목" },
+  { month: 3, date: 11, yo_il: "금" },
+];
+
+const serverURL = "http://localhost:4000/user-routine";
+
 export default function DateSlider() {
+  const [dates, setDates] = useState(dummyDates);
+
+  useEffect(() => {
+    const getDatesInfo = async () => {
+      try {
+        const response = await axios.put(serverURL, {
+          date: { month: todayMonth, date: today },
+        });
+        console.log(response.data);
+        if (response.status === 200) {
+          const datesInfo = response.findDateInfo;
+          setDates(datesInfo);
+        }
+        // 데이터는 response.data 안에 들어있습니다.
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    getDatesInfo();
+  }, []);
+
   const settings = {
     dots: false,
     infinite: false,
@@ -57,66 +105,22 @@ export default function DateSlider() {
   return (
     <DateSliderCon>
       <DateSliderList {...settings}>
-        <DateCard>
-          <div className="date">3/1</div>
-          <div className="dow">화</div>
-        </DateCard>
-        <DateCard>
-          <div className="date">3/2</div>
-          <div className="dow">수</div>
-        </DateCard>
-        <DateCard>
-          <div className="date">3/3</div>
-          <div className="dow">목</div>
-        </DateCard>
-        <DateCard>
-          <div className="date">3/4</div>
-          <div className="dow">금</div>
-        </DateCard>
-        <DateCard>
-          <div className="date">3/5</div>
-          <div className="dow">토</div>
-        </DateCard>
-        <DateCard>
-          <div className="date">3/6</div>
-          <div className="dow">일</div>
-        </DateCard>
-        <DateCard>
-          <div className="date">3/7</div>
-          <div className="dow">월</div>
-        </DateCard>
-        <DateCard>
-          <div className="date">3/8</div>
-          <div className="dow">화</div>
-        </DateCard>
-        <DateCard>
-          <div className="date">3/9</div>
-          <div className="dow">수</div>
-        </DateCard>
-        <DateCard>
-          <div className="date">3/10</div>
-          <div className="dow">목</div>
-        </DateCard>
-        <DateCard>
-          <div className="date">3/11</div>
-          <div className="dow">금</div>
-        </DateCard>
-        <DateCard>
-          <div className="date">3/12</div>
-          <div className="dow">토</div>
-        </DateCard>
-        <DateCard>
-          <div className="date">3/13</div>
-          <div className="dow">일</div>
-        </DateCard>
-        <DateCard>
-          <div className="date">3/14</div>
-          <div className="dow">월</div>
-        </DateCard>
-        <DateCardToday>
-          <div className="date">3/15</div>
-          <div className="dow">화</div>
-        </DateCardToday>
+        {dates.slice(0, 14).map((el) => (
+          <DateCard>
+            <div className="date">
+              {el.month}/{el.date}
+            </div>
+            <div className="dow">{el.yo_il}</div>
+          </DateCard>
+        ))}
+        {dates.slice(14).map((el) => (
+          <DateCardToday>
+            <div className="date">
+              {el.month}/{el.date}
+            </div>
+            <div className="dow">{el.yo_il}</div>
+          </DateCardToday>
+        ))}
       </DateSliderList>
     </DateSliderCon>
   );
