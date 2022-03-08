@@ -33,12 +33,6 @@ module.exports = {
 
         // 2 그룹에 가입
         {
-          user_id: 1,
-          group_routine_id: 2,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
           user_id: 4,
           group_routine_id: 2,
           createdAt: new Date(),
@@ -175,12 +169,6 @@ module.exports = {
 
 
         // 7 그룹에 가입
-        {
-          user_id: 1,
-          group_routine_id: 5,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
         {
           user_id: 3,
           group_routine_id: 7,
