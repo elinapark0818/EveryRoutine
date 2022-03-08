@@ -14,23 +14,20 @@ module.exports = (sequelize, DataTypes) => {
   group_cal.init(
     {
       date: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        unique: true,
       },
       group_routine_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        unique: true,
       },
       checked_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        unique: true,
       },
     },
     {

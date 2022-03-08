@@ -11,29 +11,25 @@ module.exports = {
       routine_name: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: false,
       },
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
       },
       editor_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
       },
       tag_name: {
         type: Sequelize.STRING,
       },
       image: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       contents: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: false,
       },
       createdAt: {
         allowNull: false,

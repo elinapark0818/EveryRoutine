@@ -16,16 +16,10 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
-        // references: {
-        //   model: "users",
-        //   key: "id",
-        // },
       },
       user_cal_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
       },
       daily_check: {
         type: Sequelize.STRING, //list 길이와 같은 array
