@@ -12,10 +12,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      user_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
       editor_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -24,6 +20,10 @@ module.exports = {
         type: Sequelize.STRING,
       },
       image: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      comments: {
         type: Sequelize.STRING,
         allowNull: true,
       },
