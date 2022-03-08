@@ -51,6 +51,8 @@ module.exports = {
         id: thisDateRoutineDetails.dataValues.user_routine_id,
       });
 
+      console.log(thisDateRoutineList.dataValues);
+
       const onlyThisDateRoutineList = thisDateRoutineList.dataValues.list;
 
       const findUser = await user.findOne({ where: { email } });
