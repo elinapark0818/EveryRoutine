@@ -60,6 +60,14 @@ module.exports = {
 
       const realIsChecked = isChecked.dataValues.daily_check;
       const onlyThisDateRoutineList = thisDateRoutineList.dataValues.list;
+      let selectedFindDateInfo = [];
+      const a = findDateInfo.map((el) =>
+        selectedFindDateInfo.push({
+          month: el.month,
+          date: el.date,
+          yo_il: el.yo_il,
+        })
+      );
 
       const findUser = await user.findOne({ where: { email } });
       if (!findUser) {
@@ -70,7 +78,7 @@ module.exports = {
         //response example 생략 너무길어요 ㅠㅠ (API 문서 참고해주세요)
         // 오늘 날짜 (포함 이전 15일), 오늘 날짜의 루틴 리스트 (체크여부 포함) => 객체 형태
         return res.status(200).json({
-          findDateInfo,
+          selectedFindDateInfo,
           onlyThisDateRoutineList,
           realIsChecked,
           message: "Success. you can see your personal routines of that date",
