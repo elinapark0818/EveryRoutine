@@ -19,6 +19,7 @@ const UserDeleteInfo = styled.div`
   margin-left: 50px;
 `;
 
+
 const Button = styled.button`
   background-color: #697f6e;
   margin-left: 1em;
@@ -31,7 +32,6 @@ const Button = styled.button`
   border-radius: 5px;
   cursor: pointer;
 `;
-
 const serverURL = "http://localhost:4000/users";
 
 function UserDelete({ settingLogout }) {

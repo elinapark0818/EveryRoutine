@@ -44,18 +44,6 @@ const RoutineCheck = styled.input`
 
 const serverURL = "http://localhost:4000/users";
 
-function getCookie(name) {
-  let matches = document.cookie.match(
-    new RegExp(
-      "(?:^|; )" +
-        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-        "=([^;]*)"
-    )
-  );
-  return matches ? decodeURIComponent(matches[1]) : undefined;
-}
-
-const accessToken = getCookie("accessToken");
 
 const dummyData = {
   checked: [0, 1, 1],
@@ -75,20 +63,15 @@ export default function UserRoutineMyList({ settingLogin }) {
   //     try {
   //       // 요청이 시작 할 때에는 error 와 routineItems 를 초기화하고
   //       setError(null);
-  //       setRoutineItems(dummyData.contents);
-  //       setCheckedItems(dummyData.checked);
+
+  //       // setRoutineItems(dummyData.contents);
+  //       // setCheckedItems(dummyData.checked);
   //       // loading 상태를 true 로 바꿉니다.
   //       setLoading(true);
-  //       const response = await axios.post(
-  //         serverURL + "/user-routine",
-  //         {
-  //           date: Date(),
-  //         },
-  //         {
-  //           headers: { authorization: accessToken },
-  //         }
-  //       );
-  //       setRoutineItems(response.data); // 데이터는 response.data 안에 들어있습니다.
+  //       const response = await axios.get(serverURL + "/user-info");
+  //       console.log(response.data);
+  //       // setRoutineItems(response.data); // 데이터는 response.data 안에 들어있습니다.
+
   //     } catch (e) {
   //       setError(e);
   //     }

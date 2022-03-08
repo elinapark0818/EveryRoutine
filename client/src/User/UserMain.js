@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import LogoImg from "../assets/yof.jpg";
 import axios from "axios";
 
 // axios.defaults.withCredentials = true;
@@ -45,6 +44,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+
 const Label = styled.label`
   background-color: #697f6e;
   margin-left: 1em;
@@ -57,8 +57,6 @@ const Label = styled.label`
   border-radius: 5px;
   cursor: pointer;
   `
-
-
 const serverURL = "http://localhost:4000/users";
 
 function UserMain() {
@@ -67,14 +65,6 @@ function UserMain() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-
-  // const [showEmail, setShowEmail] = useState(false)
-  // const [showImg, setShowImg] = useState(false)
-  // const [showName, setShowName] = useState(false)
-  // 로그인된 데이터를 불러와서 초기값으로 설정으로 해줘야 할 거 같은데..
-  // 닉네임, 비밀번호 [수정] -> 유효성 검사
-  // [수정완료] -> 알럿으로 "{닉네임 | 비밀번호} 수정이 완료되었습니다."
-
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -126,7 +116,6 @@ function UserMain() {
   };
 
   const SendPwdData = async () => {
-    // console.log("찍혔음!");
     const cookieOption = {
       headers: {
         Accept: "application/json",
@@ -178,7 +167,6 @@ function UserMain() {
   // *same password
 
   const SamePassword = async () => {
-    // console.log("찍혔음!");
     const cookieOption = {
       headers: {
         Accept: "application/json",
@@ -190,7 +178,6 @@ function UserMain() {
     await axios
       .get(
         serverURL + "/user-info",
-        // { password: password },
         cookieOption
       )
       .then((res) => {
@@ -207,10 +194,6 @@ function UserMain() {
       })
       .catch((err) => console.log(err));
   };
-
-
-  // *
-
 
   // * onChange
   const handleChangeName = (item) => {
@@ -239,7 +222,6 @@ function UserMain() {
       <UserInfo style={{ margin: "1em", marginBottom: "5em", height: "17em" }}>
         <h1 style={{color:"#697f6e"}}>회원 정보 관리</h1>
         <p style={{color:"#697f6e"}}>여러분을 개성 있게 소개해보세요.</p>
-
 
         <div style={{ margin: "1em" }}>
 
@@ -290,7 +272,7 @@ function UserMain() {
               onChange={(e) => handleChangeName(e.target.value)}
             />
             <Button onClick={(e) => SendNameData(e)}>수정</Button>
-            
+
           </UserMainInfoWrap>
         </div>
 

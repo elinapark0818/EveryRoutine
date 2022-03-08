@@ -6,6 +6,13 @@ import useAsync from "../userAsync";
 
 axios.defaults.withCredentials = true;
 
+const Xmark = styled.span`
+  color: #697f6e;
+  font-weight: 700;
+  font-size: 20px;
+  cursor: pointer;
+`;
+
 const Button = styled.button`
   color: white;
   font-weight: 700;
@@ -87,6 +94,22 @@ const EmailUserCheck = styled.div`
   display: ${(props) => (props.isRightUser ? "none" : "block")};
 `;
 
+const PasswordCheck = styled.div`
+  text-align: left;
+  font-size: 12px;
+  color: red;
+  margin-left: 10%;
+  display: ${(props) => (props.isPasswordOk ? "none" : "block")};
+`;
+
+const ServerCheck = styled.div`
+  text-align: left;
+  font-size: 12px;
+  color: red;
+  margin-left: 10%;
+  display: ${(props) => (props.isServerOk ? "none" : "block")};
+`;
+
 const TextLink = styled.div`
   cursor: pointer;
   text-decoration: underline dotted;
@@ -95,7 +118,7 @@ const TextLink = styled.div`
 const regExp =
   /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
-const serverURL = "http://localhost:4000";
+const serverURL = "http://localhost:4000/users";
 
 export default function ModalLogin({
   settingLogin,
@@ -103,7 +126,9 @@ export default function ModalLogin({
   settingModalIsJustClose,
 }) {
   const [isLoginEmailOk, setIsLoginEmailOk] = useState(true);
+  const [isPasswordOk, setIsPasswordOk] = useState(true);
   const [isRightUser, setIsRightUser] = useState(true);
+  const [isServerOk, setIsServerOk] = useState(true);
   const [passwordStep, setPasswordStep] = useState(false);
   const [userPassword, setUserPassword] = useState("");
   const [userEmail, setUserEmail] = useState("");
@@ -116,11 +141,13 @@ export default function ModalLogin({
         email: userEmail,
         password: userPassword,
       })
-      .catch((err) => console.log(err));
-    console.log("response", response);
+      .catch((err) => setIsServerOk(false));
     if (response.status === 200) {
+      setIsPasswordOk(true);
       settingModalIsJustClose();
       settingLogin();
+    } else {
+      setIsPasswordOk(false);
     }
     return;
   }
@@ -130,16 +157,13 @@ export default function ModalLogin({
       .post(serverURL + "/signup-check", {
         email: userEmail,
       })
-      .catch((err) => {
-        setPasswordStep(true);
-        setIsRightUser(true);
-      });
+      .catch((err) => setIsServerOk(false));
     if (response) {
-      if (response.status === 200) {
-        setIsRightUser(false);
-      } else {
+      if (response.status === 204) {
         setPasswordStep(true);
         setIsRightUser(true);
+      } else if (response.status === 200) {
+        setIsRightUser(false);
       }
     }
     return;
@@ -168,7 +192,9 @@ export default function ModalLogin({
   return (
     <div className="modal">
       <div className="modalLogin">
-        <span className="modalClose">&times;</span>
+        <Xmark className="modalClose" onClick={() => settingModalIsJustClose()}>
+          &times;
+        </Xmark>
         <ModalCon className="modalContents">
           <Logodiv className="logo">
             <img alt="every routine logo" src={logo} />
@@ -205,6 +231,12 @@ export default function ModalLogin({
               setUserPassword(e.target.value);
             }}
           />
+          <PasswordCheck isPasswordOk={isPasswordOk}>
+            ! 비밀번호를 다시 확인해주세요.
+          </PasswordCheck>
+          <ServerCheck isServerOk={isServerOk}>
+            ! 네트워크 연결이 불안정합니다. 잠시 후 다시 시도해주세요.
+          </ServerCheck>
           {passwordStep ? (
             <Button className="finalLoginBtn" onClick={finalLoginHandler}>
               이메일로 로그인하기
@@ -215,12 +247,12 @@ export default function ModalLogin({
             </Button>
           )}
 
-          <Hrstyle />
+          {/* <Hrstyle />
           <div className="socialBox">
             <div className="kakaoLogin">카카오 계정으로 로그인하기</div>
             <div className="naverLogin">네이버 계정으로 로그인하기</div>
             <div className="githubLogin">깃허브 계정으로 로그인하기</div>
-          </div>
+          </div> */}
           <Hrstyle />
           <TextLink className="loginEnd">
             <div className="loginEndText" onClick={toJoinModalHandler}>

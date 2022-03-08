@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import logo from "../assets/er_logo.svg";
 import Slider from "react-slick";
 import "../../node_modules/slick-carousel/slick/slick.css";
 import "../../node_modules/slick-carousel/slick/slick-theme.css";
-
-import Modal from "react-modal";
-import ModalGroupRoutine from "../components/ModalGroupRoutine";
 
 const CardCon = styled(Slider)`
   .slick-track {
@@ -41,6 +38,7 @@ const BigPlus = styled.div`
 
 const CardImg = styled.img`
   background-color: white;
+  border-radius: 10%;
 `;
 const CardBody = styled.div`
   padding-top: 10px;
@@ -54,18 +52,12 @@ const settings = {
   slidesToScroll: 1,
 };
 
-export default function GroupRoutineMyList({ Link }) {
-  const [groupRoutineIsOpen, setGroupRoutineIsOpen] = useState(false);
-
-  const closeGroupRoutineModal = () => {
-    setGroupRoutineIsOpen(false);
-  };
-
+export default function GroupRoutineMyList({ Link, openGropRoutineModal }) {
   return (
     <CardCon {...settings}>
       <NewCard
         onClick={() => {
-          setGroupRoutineIsOpen(true);
+          openGropRoutineModal();
         }}
       >
         <BigPlus>+</BigPlus>
@@ -93,22 +85,6 @@ export default function GroupRoutineMyList({ Link }) {
           <CardTitle>이부자리 정리</CardTitle>
         </CardBody>
       </Card>
-
-      <Modal
-        style={{
-          content: {
-            background: "#F3F8F2",
-            left: "30%",
-            right: "30%",
-            border: "5px solid #697F6E",
-            borderRadius: "2em",
-          },
-        }}
-        isOpen={groupRoutineIsOpen}
-        onRequestClose={() => setGroupRoutineIsOpen(false)}
-      >
-        <ModalGroupRoutine closeGroupRoutineModal={closeGroupRoutineModal} />
-      </Modal>
     </CardCon>
   );
 }

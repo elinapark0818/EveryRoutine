@@ -14,12 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        unique: true,
       },
       group_routine_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        unique: true,
       },
     },
     // { timestamps: false },

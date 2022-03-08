@@ -4,7 +4,6 @@ const app = express();
 const userRouter = require("./app/routes/users");
 const personalRoutineRouter = require("./app/routes/personal_routines");
 const cors = require("cors");
-const router = require("./app/routes");
 
 app.set("port", process.env.PORT || 4000);
 
@@ -31,8 +30,6 @@ app.use(
   })
 );
 
-// app.use(bodyParser.json())
-// app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/users", userRouter);

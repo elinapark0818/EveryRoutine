@@ -11,12 +11,10 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
       },
       group_routine_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
       },
       createdAt: {
         allowNull: false,
@@ -27,7 +25,6 @@ module.exports = {
         type: Sequelize.DATE,
       },
     });
-
   },
 
   async down(queryInterface, Sequelize) {
