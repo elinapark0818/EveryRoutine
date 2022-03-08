@@ -5,10 +5,6 @@ import axios from "axios";
 import "../../node_modules/slick-carousel/slick/slick.css";
 import "../../node_modules/slick-carousel/slick/slick-theme.css";
 
-const date = new Date();
-const today = date.getDate();
-const todayMonth = date.getMonth();
-
 const DateSliderList = styled(Slider)`
   .slick-track {
   }
@@ -37,7 +33,7 @@ const DateCard = styled.div`
 `;
 
 const DateCardToday = styled.div`
-  background-color: #ff1818;
+  background-color: #697f6e;
   color: white;
   border-radius: 0.5em;
   .date {
@@ -77,12 +73,17 @@ export default function DateSlider() {
   useEffect(() => {
     const getDatesInfo = async () => {
       try {
-        const response = await axios.put(serverURL, {
-          date: { month: todayMonth, date: today },
+        const date = new Date();
+        const today = date.getDate();
+        const todayMonth = date.getMonth() + 1;
+
+        const response = await axios({
+          method: "post",
+          url: serverURL,
+          data: { date: { month: todayMonth, date: today } },
         });
-        console.log(response.data);
         if (response.status === 200) {
-          const datesInfo = response.findDateInfo;
+          const datesInfo = response.data.findDateInfo;
           setDates(datesInfo);
         }
         // 데이터는 response.data 안에 들어있습니다.
@@ -105,16 +106,16 @@ export default function DateSlider() {
   return (
     <DateSliderCon>
       <DateSliderList {...settings}>
-        {dates.slice(0, 14).map((el) => (
-          <DateCard>
+        {dates.slice(0, 14).map((el, idx) => (
+          <DateCard key={idx}>
             <div className="date">
               {el.month}/{el.date}
             </div>
             <div className="dow">{el.yo_il}</div>
           </DateCard>
         ))}
-        {dates.slice(14).map((el) => (
-          <DateCardToday>
+        {dates.slice(14).map((el, idx) => (
+          <DateCardToday key={idx}>
             <div className="date">
               {el.month}/{el.date}
             </div>
