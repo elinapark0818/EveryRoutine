@@ -42,13 +42,16 @@ const RoutineCheck = styled.input`
   margin-right: 10px;
 `;
 
-const serverURL = "http://localhost:4000/users";
-
+const serverURL = "http://localhost:4000/user-routine";
 
 const dummyData = {
-  checked: [0, 1, 1],
+  checked: [0, 0, 0],
   contents: ["물 2L 마시기", "스트레칭 하기", "아침 7시에 일어나기"],
 };
+
+const date = new Date();
+const today = date.getDate();
+const todayMonth = date.getMonth() + 1;
 
 export default function UserRoutineMyList({ settingLogin }) {
   const [userRoutineIsOpen, setUserRoutineIsOpen] = useState(false);
@@ -58,28 +61,56 @@ export default function UserRoutineMyList({ settingLogin }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchRoutineItems = async () => {
-  //     try {
-  //       // 요청이 시작 할 때에는 error 와 routineItems 를 초기화하고
-  //       setError(null);
+  useEffect(() => {
+    const fetchRoutineItems = async () => {
+      try {
+        // 요청이 시작 할 때에는 error 와 routineItems 를 초기화하고
+        setError(null);
+        setRoutineItems(dummyData.contents);
+        setCheckedItems(dummyData.checked);
+        // loading 상태를 true 로 바꿉니다.
+        setLoading(true);
+        const response = await axios({
+          method: "post",
+          url: serverURL,
+          data: { date: { month: todayMonth, date: today } },
+        });
+        if (response.status === 200) {
+          const todayRoutineInfo = JSON.parse(
+            response.data.onlyThisDateRoutineList
+          );
+          const todayCheckInfo = new Array(
+            todayRoutineInfo.contents.length
+          ).fill(0);
+          // 받아온 루틴리스트로 루틴 리스트 렌더링
+          setRoutineItems(todayRoutineInfo.contents);
+          // 0으로 채워진 배열로 루틴 체크 리스트 렌더링
+          setCheckedItems(todayCheckInfo);
+        }
+      } catch (e) {
+        console.log(e);
+        setError(e);
+      }
+      setLoading(false);
+    };
 
-  //       // setRoutineItems(dummyData.contents);
-  //       // setCheckedItems(dummyData.checked);
-  //       // loading 상태를 true 로 바꿉니다.
-  //       setLoading(true);
-  //       const response = await axios.get(serverURL + "/user-info");
-  //       console.log(response.data);
-  //       // setRoutineItems(response.data); // 데이터는 response.data 안에 들어있습니다.
+    fetchRoutineItems();
+  }, [userRoutineIsOpen]);
 
-  //     } catch (e) {
-  //       setError(e);
-  //     }
-  //     setLoading(false);
-  //   };
-
-  //   fetchRoutineItems();
-  // }, []);
+  async function fetchCheckBoxes() {
+    const response = await axios
+      .patch(serverURL, {
+        daily_check: checkedItems,
+        date: today,
+      })
+      .catch((err) => console.log(err));
+    if (response.status === 200) {
+      console.log(response.data);
+    } else {
+      console.log(response.status);
+    }
+    return;
+  }
 
   const editRoutineItems = (newRoutineItem) => {
     setRoutineItems([
@@ -110,7 +141,9 @@ export default function UserRoutineMyList({ settingLogin }) {
       ];
       setCheckedItems(newCheckSet);
     }
+
     // 아이템 하나가 체크될 때마다 axios patch 날려준 후 응답을 리스트에 업데이트 함
+    fetchCheckBoxes();
   };
 
   return (

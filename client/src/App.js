@@ -17,6 +17,7 @@ import GroupRoutine from "./Routines/GroupRoutine";
 import Modal from "react-modal";
 import ModalLogin from "./components/ModalLogin";
 import ModalSignup from "./components/ModalSingup";
+import axios from "axios";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -28,6 +29,14 @@ function App() {
   };
 
   const settingLogout = () => {
+    const setLoggedOut = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/users/logout");
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    setLoggedOut();
     setIsLogin(false);
   };
 
@@ -71,9 +80,12 @@ function App() {
         </Route>
         <Route path="/about" element={<About />} />
 
-        <Route path="/myPage" element={<MyPage />}>
+        <Route path="/myPage" element={<MyPage isLogin={isLogin} />}>
           <Route path="" element={<UserMain />} />
-          <Route path="userDelete" element={<UserDelete settingLogout={settingLogout}/>} />
+          <Route
+            path="userDelete"
+            element={<UserDelete settingLogout={settingLogout} />}
+          />
         </Route>
 
         <Route

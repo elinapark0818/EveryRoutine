@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
 
 const Button = styled.button`
@@ -62,6 +63,11 @@ const ButtonCon = styled.div`
   top: 0;
 `;
 
+const date = new Date();
+const today = date.getDate();
+
+const serverURL = "http://localhost:4000/user-routine";
+
 export default function ModalUserRoutine({
   closeUserRoutineModal,
   routineItems,
@@ -69,6 +75,21 @@ export default function ModalUserRoutine({
 }) {
   const [newRoutineList, setNewRoutineList] = useState(routineItems);
   const [newRoutineItem, setNewRoutineItem] = useState("");
+
+  async function postUserRoutineList() {
+    const response = await axios
+      .post(serverURL + "/details", {
+        list: newRoutineList,
+        date: today,
+      })
+      .catch((err) => console.log(err));
+    if (response.status === 200) {
+      console.log(response.data);
+    } else {
+      console.log(response.status);
+      return;
+    }
+  }
 
   const routineDelButtonHandler = (idx) => {
     console.log(idx);
@@ -129,8 +150,8 @@ export default function ModalUserRoutine({
           <Button
             className="loginBtn"
             onClick={() => {
-              console.log(newRoutineList);
-              // closeUserRoutineModal();
+              postUserRoutineList();
+              closeUserRoutineModal();
             }}
           >
             수정 완료
