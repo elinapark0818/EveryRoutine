@@ -13,7 +13,7 @@ module.exports = {
         },
         {
           user_id: 2,
-          group_routine_id: 2,
+          group_routine_id: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
