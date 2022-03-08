@@ -5,6 +5,13 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
+const Xmark = styled.span`
+  color: #697f6e;
+  font-weight: 700;
+  font-size: 20px;
+  cursor: pointer;
+`;
+
 const Button = styled.button`
   color: white;
   font-weight: 700;
@@ -30,14 +37,14 @@ const ButtonJoin = styled.button`
 
 const Logodiv = styled.div`
   /* margin-left: 50%; */
-  margin: 0 50px 30px 50px;
+  margin: 0 60px 20px 60px;
 `;
 
-const Hrstyle = styled.hr`
-  border-top: 1px dotted #697f6e;
-  width: 100%;
-  margin: 30px 0;
-`;
+// const Hrstyle = styled.hr`
+//   border-top: 1px dotted #697f6e;
+//   width: 100%;
+//   margin: 30px 0;
+// `;
 
 const ModalCon = styled.div`
   display: flex;
@@ -95,6 +102,14 @@ const PassReCheck = styled.div`
   display: ${(props) => (props.isPassReOk ? "none" : "block")};
 `;
 
+const ServerCheck = styled.div`
+  text-align: left;
+  font-size: 12px;
+  color: red;
+  margin-left: 10%;
+  display: ${(props) => (props.isServerOk ? "none" : "block")};
+`;
+
 const regExp =
   /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
@@ -123,6 +138,7 @@ export default function ModalSignup({ settingLogin, settingSignModalIsClose }) {
   const [isEmailOk, setIsEmailOk] = useState(true);
   const [isPassOk, setIsPassOk] = useState(true);
   const [isPassReOk, setIsPassReOk] = useState(true);
+  const [isServerOk, setIsServerOk] = useState(true);
 
   const validHandler = () => {
     // 1. 이메일 중복 검사 -> 통과하지 못하면 '이미 가입된 회원입니다.'
@@ -163,20 +179,22 @@ export default function ModalSignup({ settingLogin, settingSignModalIsClose }) {
   };
 
   async function getUsers() {
+    setIsValid(false);
+    setIsEmailOk(true);
     const response = await axios
       .post(serverURL + "/signup-check", {
         email: userEmail,
       })
       .catch((err) => {
-        setIsRightUser(false);
+        setIsServerOk(false);
       });
     // console.log(response);
     if (response) {
-      if (response.status === 200) {
+      if (response.status === 204) {
+        setIsRightUser(false);
+      } else if (response.status === 200) {
         setIsValid(true);
         setIsRightUser(true);
-      } else {
-        setIsRightUser(false);
       }
     }
     return;
@@ -191,7 +209,7 @@ export default function ModalSignup({ settingLogin, settingSignModalIsClose }) {
         nickname: userNickName,
       })
       .catch((err) => {
-        console.log(err);
+        setIsServerOk(false);
       });
     if (response) {
       console.log(response);
@@ -200,7 +218,7 @@ export default function ModalSignup({ settingLogin, settingSignModalIsClose }) {
         settingLogin();
         settingSignModalIsClose();
       } else {
-        console.log("회원가입 실패");
+        setIsServerOk(false);
       }
     }
   }
@@ -212,7 +230,9 @@ export default function ModalSignup({ settingLogin, settingSignModalIsClose }) {
   return (
     <div className="modal">
       <div className="modalLogin">
-        <span className="modalClose">&times;</span>
+        <Xmark className="modalClose" onClick={() => settingSignModalIsClose()}>
+          &times;
+        </Xmark>
         {isValid ? (
           <ModalCon className="modalContents">
             <Logodiv className="logo">
@@ -273,7 +293,10 @@ export default function ModalSignup({ settingLogin, settingSignModalIsClose }) {
               }}
               onBlur={checkEverything}
             />
-            <div className="recaptchaHolder">reCaptCha</div>
+            <ServerCheck isServerOk={isServerOk}>
+              ! 네트워크 연결이 불안정합니다. 잠시 후 다시 시도해주세요.
+            </ServerCheck>
+            {/* <div className="recaptchaHolder">reCaptCha</div> */}
             <ButtonJoin
               everythingIsOk={everythingIsOk}
               className="loginBtn"
@@ -305,12 +328,15 @@ export default function ModalSignup({ settingLogin, settingSignModalIsClose }) {
             <EmailUserCheck isRightUser={isRightUser}>
               ! 이미 등록된 사용자입니다.
             </EmailUserCheck>
+            <ServerCheck isServerOk={isServerOk}>
+              ! 네트워크 연결이 불안정합니다. 잠시 후 다시 시도해주세요.
+            </ServerCheck>
 
             <Button className="loginBtn" onClick={validHandler}>
               이메일로 가입하기
             </Button>
 
-            <Hrstyle />
+            {/* <Hrstyle />
 
             <div className="socialBox">
               <div className="kakaoLogin">카카오 계정으로 가입하기</div>
@@ -324,7 +350,7 @@ export default function ModalSignup({ settingLogin, settingSignModalIsClose }) {
               <div className="joinEndText" onClick={toFindModalHandler}>
                 비밀번호를 잃어버리셨나요?
               </div>
-            </div>
+            </div> */}
           </ModalCon>
         )}
       </div>
