@@ -44,6 +44,7 @@ const RoutineCheck = styled.input`
 
 const serverURL = "http://localhost:4000/users";
 
+
 const dummyData = {
   checked: [0, 1, 1],
   contents: ["물 2L 마시기", "스트레칭 하기", "아침 7시에 일어나기"],
@@ -62,6 +63,7 @@ export default function UserRoutineMyList({ settingLogin }) {
   //     try {
   //       // 요청이 시작 할 때에는 error 와 routineItems 를 초기화하고
   //       setError(null);
+
   //       // setRoutineItems(dummyData.contents);
   //       // setCheckedItems(dummyData.checked);
   //       // loading 상태를 true 로 바꿉니다.
@@ -69,6 +71,7 @@ export default function UserRoutineMyList({ settingLogin }) {
   //       const response = await axios.get(serverURL + "/user-info");
   //       console.log(response.data);
   //       // setRoutineItems(response.data); // 데이터는 response.data 안에 들어있습니다.
+
   //     } catch (e) {
   //       setError(e);
   //     }
