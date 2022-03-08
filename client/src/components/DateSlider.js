@@ -67,7 +67,7 @@ const dummyDates = [
 
 const serverURL = "http://localhost:4000/user-routine";
 
-export default function DateSlider() {
+export default function DateSlider({ selectDate, changeSelectDate }) {
   const [dates, setDates] = useState(dummyDates);
 
   useEffect(() => {
@@ -103,24 +103,57 @@ export default function DateSlider() {
     initialSlide: 5,
   };
 
+  const getSelectedIdx = () => {
+    for (let i = 0; i < dates.length; i++) {
+      if (
+        selectDate.date === dates[i].date &&
+        selectDate.month === dates[i].month
+      ) {
+        return i;
+      }
+    }
+  };
+
+  const seletedIdx = getSelectedIdx();
+  const frontArr = dates.slice(0, seletedIdx);
+  const todayArr = dates.slice(seletedIdx, seletedIdx + 1);
+  const backArr = dates.slice(seletedIdx + 1);
+
   return (
     <DateSliderCon>
       <DateSliderList {...settings}>
-        {dates.slice(0, 14).map((el, idx) => (
-          <DateCard key={idx}>
+        {frontArr.map((el, idx) => (
+          <DateCard
+            key={idx}
+            onClick={() => changeSelectDate({ date: el.date, month: el.month })}
+          >
             <div className="date">
               {el.month}/{el.date}
             </div>
             <div className="dow">{el.yo_il}</div>
           </DateCard>
         ))}
-        {dates.slice(14).map((el, idx) => (
-          <DateCardToday key={idx}>
+        {todayArr.map((el, idx) => (
+          <DateCardToday
+            key={idx}
+            onClick={() => changeSelectDate({ date: el.date, month: el.month })}
+          >
             <div className="date">
               {el.month}/{el.date}
             </div>
             <div className="dow">{el.yo_il}</div>
           </DateCardToday>
+        ))}
+        {backArr.map((el, idx) => (
+          <DateCard
+            key={idx}
+            onClick={() => changeSelectDate({ date: el.date, month: el.month })}
+          >
+            <div className="date">
+              {el.month}/{el.date}
+            </div>
+            <div className="dow">{el.yo_il}</div>
+          </DateCard>
         ))}
       </DateSliderList>
     </DateSliderCon>
