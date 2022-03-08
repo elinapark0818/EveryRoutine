@@ -16,7 +16,6 @@ const CardCon = styled(Slider)`
   .slick-slide {
   }
   .slick-slide div {
-    margin-right: 10px;
     padding: 10px;
     cursor: pointer;
   }
@@ -28,6 +27,7 @@ const Card = styled.div`
 `;
 const CardImg = styled.img`
   background-color: white;
+  border-radius: 10%;
 `;
 const CardBody = styled.div`
   padding-top: 10px;

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import logo from "../assets/er_logo.svg";
 
 const Button = styled.button`
   color: white;
@@ -21,14 +22,51 @@ const ModalCon = styled.div`
 `;
 
 const StyledInput = styled.input`
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  width: 80%;
+  margin-left: 10%;
+  border: 0;
+  border-bottom: 2px solid #697f6e;
+`;
+
+const StyledTextArea = styled.textarea`
+  margin-bottom: 10px;
+  width: 80%;
+  margin-left: 10%;
+  border: 0;
+  border-bottom: 2px solid #697f6e;
+`;
+
+const StyledLabel = styled.label`
+  text-align: left;
+  margin-left: 10%;
+  font-size: 15px;
+  padding: 5px 0;
+  font-weight: 500;
+`;
+
+const Logodiv = styled.div`
+  background-color: white;
+  margin: 0 60px 20px 60px;
+  img {
+    width: 100%;
+  }
 `;
 
 export default function ModalGroupRoutine({ closeGroupRoutineModal }) {
   const [groupRoutineTitle, setgroupRoutineTitle] = useState("");
+  const [groupRoutineContent, setGroupRoutineContent] = useState("");
+  const [imageSrc, setImageSrc] = useState(logo);
 
-  const titleChange = (e) => {
-    setgroupRoutineTitle(e.target.value);
+  const encodeFileToBase64 = (fileBlob) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBlob);
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setImageSrc(reader.result);
+        resolve();
+      };
+    });
   };
 
   return (
@@ -36,18 +74,23 @@ export default function ModalGroupRoutine({ closeGroupRoutineModal }) {
       <div className="modalLogin">
         <span className="modalClose">&times;</span>
         <ModalCon className="modalContents">
-          <label for="groupTitle">루틴 그룹명:</label>
+          <StyledLabel for="groupTitle">루틴 그룹명:</StyledLabel>
           <StyledInput
             id="groupTitle"
             className="groupTitle"
             type="text"
             placeholder="그룹의 이름을 입력해주세요."
             value={groupRoutineTitle}
-            onChange={titleChange}
+            onChange={(e) => setgroupRoutineTitle(e.target.value)}
           />
-          <label for="groupEx">루틴 그룹 소개:</label>
-          <textarea name="groupEx" className="groupEx" value="" />
-          <label for="groupTagSet">그룹 태그</label>
+          <StyledLabel for="groupEx">루틴 그룹 소개:</StyledLabel>
+          <StyledTextArea
+            name="groupEx"
+            className="groupEx"
+            value={groupRoutineContent.value}
+            onChange={(e) => setGroupRoutineContent(e.target.value)}
+          />
+          <StyledLabel for="groupTagSet">그룹 태그</StyledLabel>
           <formset name="groupTagSet">
             <input id="health" type="checkbox" />
             <label for="health">건강</label>
@@ -58,13 +101,16 @@ export default function ModalGroupRoutine({ closeGroupRoutineModal }) {
             <input id="mission" type="checkbox" />
             <label for="mission">미션</label>
           </formset>
-          <label for="groupImg">그룹 대표 이미지:</label>
+          <StyledLabel for="groupImg">그룹 대표 이미지:</StyledLabel>
           <StyledInput
             id="groupImg"
             className="groupImg"
             type="file"
-            value=""
+            onChange={(e) => encodeFileToBase64(e.target.files[0])}
           />
+          <Logodiv className="logo">
+            <img src={imageSrc} alt="group-img" />
+          </Logodiv>
           <Button
             className="loginBtn"
             onClick={() => {
