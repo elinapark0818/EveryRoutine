@@ -233,7 +233,8 @@ function UserMain() {
           {image && (
             <img 
               alt="profile_img" 
-              src={image} 
+              src={image}
+              value={image}
               style={{width:"200px", height:"200px",  borderRadius:"50%"}}
               onChange={(e) => handleChangeImg(e.target.value)}
               />)
