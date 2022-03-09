@@ -40,13 +40,13 @@ const GroupCommentTime = styled.div`
   display: inline;
   padding: 0 10px;
 `;
-export default function GroupRoutineOurs() {
+export default function GroupRoutineOurs({ selectDate, changeSelectDate }) {
   return (
     <div>
       <GroupInfo>
         <GroupInfoTitle>하루에 줄넘기 1,000개 하기!</GroupInfoTitle>
       </GroupInfo>
-      <DateSlider />
+      {/* <DateSlider selectDate={selectDate} changeSelectDate={changeSelectDate} /> */}
       <GroupCommentAdd>
         <input
           type="text"
