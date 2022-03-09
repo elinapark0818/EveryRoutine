@@ -16,6 +16,9 @@ router.get("/tag", controller.group_routine_tag.get);
 // 그룹 루틴 만들기
 router.post("/create", controller.group_routine_create.post);
 
+// 그룹 루틴 삭제하기
+router.post("/delete", controller.delete_group_routine.get);
+
 // 그릅 루틴 누르기
 router.get("/select", controller.select_group_routine.get);
 

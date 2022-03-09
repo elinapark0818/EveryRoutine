@@ -57,8 +57,6 @@ module.exports = {
   // 내가 가입한 그룹 루틴 보여주기
   group_routines: {
     get: async (req, res) => {
-      // TODO: client 연결 후 이메일은 토큰으로 바꾸기
-      // const { email } = await req.body;
 
       function getCookie(name) {
         let matches = req.headers.cookie.match(
@@ -70,6 +68,7 @@ module.exports = {
         );
         return matches ? decodeURIComponent(matches[1]) : undefined;
       }
+
       const accessToken = getCookie("accessToken");
       const { email } = jwt.verify(accessToken, process.env.ACCESS_SECRET);
 
@@ -80,9 +79,10 @@ module.exports = {
           .then((data) => data.id);
 
         // 내가 가입한 그룹 아이디 찾기 => [1, 3, 4, 5, 6, 8]
-        const myGroupId = await group_user
-          .findAll({ where: { user_id: myUserId } })
-          .then((data) => data.map((el) => el.group_routine_id));
+
+        const myGroupId = await group_user.findAll({ where : { user_id : myUserId} })
+        .then(data => data.map(el => el.group_routine_id))
+        console.log(typeof myUserId)
 
         // 가입한 그룹 아이디 배열을 이용하여 가입된 그룹 루틴을 한번에 검색
         const registeredGroup = await group_routine.findAll({
@@ -110,21 +110,19 @@ module.exports = {
   // console.log(req.query)  ==>  { name: 'health' }
   group_routine_tag: {
     get: async (req, res) => {
-      // TODO: client 연결 후 이메일은 토큰으로 바꾸기
-      //  const { email } = await req.body;
 
-      function getCookie(name) {
-        let matches = req.headers.cookie.match(
-          new RegExp(
-            "(?:^|; )" +
-              name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-              "=([^;]*)"
-          )
-        );
-        return matches ? decodeURIComponent(matches[1]) : undefined;
-      }
-      const accessToken = getCookie("accessToken");
-      const { email } = jwt.verify(accessToken, process.env.ACCESS_SECRET);
+       function getCookie(name) {
+         let matches = req.headers.cookie.match(
+           new RegExp(
+             "(?:^|; )" +
+               name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+               "=([^;]*)"
+           )
+         );
+         return matches ? decodeURIComponent(matches[1]) : undefined;
+       }
+       const accessToken = getCookie("accessToken");
+       const { email } = jwt.verify(accessToken, process.env.ACCESS_SECRET);
 
       try {
         // 내가 가입 안한 루틴
@@ -173,10 +171,8 @@ module.exports = {
 
   group_routine_create: {
     post: async (req, res) => {
-      const { routine_name, tag_name, image, contents } = await req.body;
-      console.log(req.body);
-      // TODO: client 연결 후 이메일은 토큰으로 바꾸기
-      // const { email } = await req.body;
+
+      const {routine_name, tag_name, image, contents} = await req.body;
 
       function getCookie(name) {
         let matches = req.headers.cookie.match(
@@ -195,9 +191,9 @@ module.exports = {
 
       try {
         // 유저테이블에서 나의 user.id 찾기
-        const editorId = await user
-          .findOne({ where: { email } })
-          .then((data) => data.id);
+
+        const editorId = await user.findOne({ where : { email }}).then(data => data.id)
+        console.log('editorId', editorId)
 
         // 그룹 루틴 데이터 추가하기 (최소한 루틴 네임, 루틴 소개는 포함해야됨)
         if (routine_name && contents) {
@@ -212,18 +208,11 @@ module.exports = {
 
           // 그룹장도 그룹에 일원이므로 group-user에 데이터 넣어주기
           // 가장 최신에 만들어진 그룹루틴 찾기
-          const newGroup = await group_routine.findOne({
-            order: [["id", "DESC"]],
-          });
-          await group_user.create({
-            user_id: editorId,
-            group_routine_id: newGroup.id,
-          });
+          const newGroup = await group_routine.findOne({ order: [[ 'id', 'DESC' ]] })
+          console.log('newGroup', newGroup.id)
+          await group_user.create({ user_id: editorId, group_routine_id: newGroup.id})
 
-          return res.status(201).json({
-            data: newGroup,
-            message: "Created your new group routine",
-          });
+          return res.status(201).json({ data: newGroup, message: "Created your new group routine" })
         }
       } catch {
         return res.status(400).json({ message: "Bad request" });
@@ -231,17 +220,19 @@ module.exports = {
     },
   },
 
-  // TODO: Front에서 가입된 그룹루틴 누를떄랑 가입안된 그룹루틴 누를때랑 똑같음!
-  // 가입된 그룹 루틴 선택 : 코멘트를 쓰는 인풋창 있음, 콘텐츠, 날짜선택, 댓글, 루틴달성률, 그룹탈퇴하기 버튼
-  // 가입안된 그룹 루틴 선택 : 콘텐츠, 날짜선택, 댓글, 루틴달성률, 그룹가입하기 버튼
 
-  // GET : localhost:4000/group-routine/select?id=3
+  delete_group_routine: {
+    get: (req, res) => {
+
+    }
+  },
+
+    
+
+// GET : localhost:4000/group-routine/select?id=3
   select_group_routine: {
     get: async (req, res) => {
       // 나의 토큰 이메일과, 그룹루틴 id를 이용하여 그룹루틴 클릭하기.
-
-      // TODO: client 연결 후 이메일은 토큰으로 바꾸기
-      // const { email } = await req.body;
 
       function getCookie(name) {
         let matches = req.headers.cookie.match(
@@ -324,11 +315,7 @@ module.exports = {
         } else {
           // 가입안된 그룹 루틴 선택 : 콘텐츠, 날짜선택, 댓글, 루틴달성률, 그룹가입하기 버튼, 전체 멤버수
           // TODO: 전체 멤버수, 해당 날 달성률, 댓글작성자 이름 (comments : [{writer: overflowbin, commemt: '안녕하세요~~'}])
-          return res.status(200).json({
-            data: selectedGroupRoutineData,
-            registed: false,
-            message: "가입안한 그룹 루틴 데이터",
-          });
+          return res.status(200).json({ data: selectedGroupRoutineData, registed : false, message: "가입안한 그룹 루틴 데이터"})
         }
       } catch {
         return res.status(400).json({ message: "Bad request" });
