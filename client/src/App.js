@@ -106,7 +106,7 @@ function App() {
         />
       </Routes>
 
-      <Footer />
+      {/* <Footer /> */}
 
       {/* 로그인 모달입니다. */}
       <Modal
