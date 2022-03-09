@@ -5,6 +5,8 @@ import Slider from "react-slick";
 import "../../node_modules/slick-carousel/slick/slick.css";
 import "../../node_modules/slick-carousel/slick/slick-theme.css";
 
+import AOS from "aos";
+
 const CardCon = styled(Slider)`
   .slick-track {
     display: flex;
@@ -52,10 +54,15 @@ const settings = {
   slidesToScroll: 1,
 };
 
+AOS.init({
+  duration: 1200,
+});
+
 export default function GroupRoutineMyList({ Link, openGropRoutineModal }) {
   return (
     <CardCon {...settings}>
       <NewCard
+        data-aos="flip-right"
         onClick={() => {
           openGropRoutineModal();
         }}
@@ -64,7 +71,7 @@ export default function GroupRoutineMyList({ Link, openGropRoutineModal }) {
       </NewCard>
 
       <Link to="/groupRoutine">
-        <Card>
+        <Card data-aos="flip-right">
           <CardImg src={logo} alt="Card image" />
           <CardBody>
             <CardTitle>매일 물 2L 마시기</CardTitle>
@@ -72,14 +79,14 @@ export default function GroupRoutineMyList({ Link, openGropRoutineModal }) {
         </Card>
       </Link>
 
-      <Card>
+      <Card data-aos="flip-right">
         <CardImg src={logo} alt="Card image" />
         <CardBody>
           <CardTitle>이부자리 정리</CardTitle>
         </CardBody>
       </Card>
 
-      <Card>
+      <Card data-aos="flip-right">
         <CardImg src={logo} alt="Card image" />
         <CardBody>
           <CardTitle>이부자리 정리</CardTitle>

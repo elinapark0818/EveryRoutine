@@ -11,6 +11,7 @@ const Button = styled.button`
   background-color: #697f6e;
   border: none;
   border-radius: 5em;
+  cursor: pointer;
 `;
 
 const ModalCon = styled.div`
@@ -37,6 +38,8 @@ const ModButton = styled.button`
   border: none;
   border-radius: 1em;
   background-color: ${(props) => (props.isEditMode ? "green" : "#ffc300")};
+  cursor: pointer;
+  margin-right: 0.3em;
 `;
 
 const DelButton = styled.button`
@@ -46,6 +49,7 @@ const DelButton = styled.button`
   background-color: #ff1818;
   border: none;
   border-radius: 1em;
+  cursor: pointer;
 `;
 
 const AddButton = styled.button`
@@ -55,6 +59,7 @@ const AddButton = styled.button`
   background-color: #697f6e;
   border: none;
   border-radius: 1em;
+  cursor: pointer;
 `;
 
 const ButtonCon = styled.div`
@@ -116,6 +121,7 @@ export default function ModalUserRoutine({
     if (newRoutineItem === "") {
     } else {
       setNewRoutineList([...newRoutineList, newRoutineItem]);
+      setNewRoutineItem("");
     }
   };
 

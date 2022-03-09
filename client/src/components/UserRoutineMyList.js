@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import DateSlider from "./DateSlider";
 import axios from "axios";
+import AOS from "aos";
 
 import Modal from "react-modal";
 import ModalUserRoutine from "../components/ModalUserRoutine";
@@ -21,6 +22,10 @@ const Button = styled.button`
   right: 0;
   bottom: 0;
   cursor: pointer;
+  &.notToday {
+    cursor: not-allowed;
+    background-color: gray;
+  }
 `;
 const UserRoutineListCon = styled.div`
   min-height: 300px;
@@ -33,6 +38,7 @@ const UserRotineList = styled.ul`
   padding: 30px;
   background-color: #f3f8f2;
 `;
+
 const RoutineListItemLi = styled.li`
   padding: 5px 0;
   text-decoration: underline dotted;
@@ -40,6 +46,10 @@ const RoutineListItemLi = styled.li`
 
 const RoutineCheck = styled.input`
   margin-right: 10px;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  background-color: #eee;
 `;
 
 const serverURL = "http://localhost:4000/user-routine";
@@ -49,6 +59,10 @@ const dummyData = {
   contents: ["물 2L 마시기", "스트레칭 하기", "아침 7시에 일어나기"],
 };
 
+AOS.init({
+  duration: 1200,
+});
+
 const date = new Date();
 const today = date.getDate();
 const todayMonth = date.getMonth() + 1;
@@ -57,6 +71,7 @@ export default function UserRoutineMyList({ settingLogin }) {
   const [userRoutineIsOpen, setUserRoutineIsOpen] = useState(false);
   const [checkedItems, setCheckedItems] = useState(dummyData.checked);
   const [routineItems, setRoutineItems] = useState(dummyData.contents);
+  const [isNowToday, setIsNowToday] = useState(true);
   const [selectDate, setSelectDate] = useState({
     date: today,
     month: todayMonth,
@@ -65,29 +80,49 @@ export default function UserRoutineMyList({ settingLogin }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // 선택한 날짜의 루틴리스트를 출력합니다.
   useEffect(() => {
-    const changeSelectDateFromServer = async (selected) => {
+    const changeSelectDateFromServer = async () => {
       try {
-        console.log("1", selected);
-        setSelectDate(selected);
-        console.log("2", selectDate);
-        console.log(
-          selectDate.month +
-            "월" +
-            selectDate.date +
-            "일의 루틴리스토로 변경합니다."
-        );
-        getRoutineListOfThatDate();
-      } catch {}
+        const response = await axios
+          .post(serverURL, {
+            date: { month: selectDate.month, date: selectDate.date },
+          })
+          .catch((err) => console.log(err));
+        if (response.status === 200) {
+          const thatDayRoutineInfo = JSON.parse(
+            response.data.onlyThisDateRoutineList
+          );
+          const thatDayCheckInfo = JSON.parse(response.data.IsChecked);
+          setRoutineItems(thatDayRoutineInfo.contents);
+          // 받아온 체크 배열로 루틴 체크 리스트 렌더링
+          setCheckedItems(thatDayCheckInfo.checked);
+          // 선택한 날짜가 오늘인지 체크 (편집모드 활성화/비활성화를 위해)
+          if (selectDate.date === today && selectDate.month === todayMonth) {
+            console.log("오늘입니다.");
+            setIsNowToday(true);
+          } else {
+            console.log("아닙니다.");
+            setIsNowToday(false);
+          }
+        } else {
+          console.log(response.status);
+        }
+      } catch (e) {
+        console.log(e);
+      }
     };
+    changeSelectDateFromServer();
   }, [selectDate]);
 
+  // 모달(루틴편집모드)를 종료합니다.
   const closeUserRoutineModal = () => {
     setUserRoutineIsOpen(false);
   };
 
   useEffect(() => {
     const fetchRoutineItems = async () => {
+      console.log("today", today);
       try {
         // 요청이 시작 할 때에는 error 와 routineItems 를 초기화하고
         setError(null);
@@ -103,9 +138,7 @@ export default function UserRoutineMyList({ settingLogin }) {
           const todayRoutineInfo = JSON.parse(
             response.data.onlyThisDateRoutineList
           );
-          const todayCheckInfo = JSON.parse(response.data.realIsChecked);
-          console.log(todayCheckInfo.checked);
-          console.log(todayRoutineInfo.contents);
+          const todayCheckInfo = JSON.parse(response.data.IsChecked);
           // 받아온 루틴리스트로 루틴 리스트 렌더링
           setRoutineItems(todayRoutineInfo.contents);
           // 받아온 체크 배열로 루틴 체크 리스트 렌더링
@@ -121,26 +154,6 @@ export default function UserRoutineMyList({ settingLogin }) {
     fetchRoutineItems();
   }, [userRoutineIsOpen]);
 
-  async function getRoutineListOfThatDate() {
-    const response = await axios
-      .post(serverURL, {
-        date: { month: selectDate.month, date: selectDate.date },
-      })
-      .catch((err) => console.log(err));
-    if (response.status === 200) {
-      const thatDayRoutineInfo = JSON.parse(
-        response.data.onlyThisDateRoutineList
-      );
-      const thatDayCheckInfo = JSON.parse(response.data.realIsChecked);
-      setRoutineItems(thatDayRoutineInfo.contents);
-      // 받아온 체크 배열로 루틴 체크 리스트 렌더링
-      setCheckedItems(thatDayCheckInfo.checked);
-    } else {
-      console.log(response.status);
-    }
-    return;
-  }
-
   //? 체크 관리 start
 
   // 체크 될 때마다 체크 arr를 서버로 patch 해줍니다.
@@ -150,7 +163,7 @@ export default function UserRoutineMyList({ settingLogin }) {
       const response = await axios
         .patch(serverURL, {
           daily_check: checkedItems,
-          date: today,
+          date: selectDate.date,
         })
         .catch((err) => console.log(err));
       if (response.status === 200) {
@@ -203,13 +216,17 @@ export default function UserRoutineMyList({ settingLogin }) {
           />
         </UserRotineList>
 
-        <Button
-          onClick={() => {
-            setUserRoutineIsOpen(true);
-          }}
-        >
-          +
-        </Button>
+        {isNowToday ? (
+          <Button
+            onClick={() => {
+              setUserRoutineIsOpen(true);
+            }}
+          >
+            +
+          </Button>
+        ) : (
+          <Button className="notToday">+</Button>
+        )}
       </UserRoutineListCon>
 
       <Modal
