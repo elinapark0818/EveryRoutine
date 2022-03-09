@@ -25,17 +25,20 @@ const CardCon = styled(Slider)`
 const Card = styled.div`
   border-radius: 1em;
   background-color: #ddeede;
-  min-height: 230px;
+  min-height: 220px;
+  box-shadow: 3px 3px 2px 2px #697f6e;
 `;
 const NewCard = styled.div`
   border-radius: 1em;
   background-color: #ececec;
-  min-height: 230px;
+  min-height: 220px;
+  box-shadow: 3px 3px 2px 2px gray;
 `;
 const BigPlus = styled.div`
-  line-height: 200px;
+  line-height: 180px;
   text-align: center;
   font-size: 50px;
+  color: #697f6e;
 `;
 
 const CardImg = styled.img`

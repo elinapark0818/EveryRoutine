@@ -5,6 +5,8 @@ import Slider from "react-slick";
 import "../../node_modules/slick-carousel/slick/slick.css";
 import "../../node_modules/slick-carousel/slick/slick-theme.css";
 
+import AOS from "aos";
+
 const CardCon = styled(Slider)`
   .slick-track {
     display: flex;
@@ -24,6 +26,7 @@ const Card = styled.div`
   border-radius: 1em;
   background-color: #ddeede;
   min-height: 370px;
+  box-shadow: 3px 3px 2px 2px #697f6e;
 `;
 const CardImg = styled.img`
   background-color: white;
@@ -39,14 +42,21 @@ const settings = {
   speed: 500,
   slidesToShow: 3,
   slidesToScroll: 1,
+  rows: 2,
+  slidesPerRow: 1,
 };
 const CardSubtitle = styled.div``;
 const CardText = styled.div``;
+
+AOS.init({
+  duration: 1200,
+});
+
 export default function GroupRoutineNewList({ Link }) {
   return (
     <CardCon {...settings}>
       <Link to="/groupRoutine">
-        <Card>
+        <Card data-aos="flip-right">
           <CardImg src={logo} alt="Card image" />
           <CardBody>
             <CardTitle>줄넘기 1000개</CardTitle>
@@ -58,7 +68,7 @@ export default function GroupRoutineNewList({ Link }) {
         </Card>
       </Link>
 
-      <Card>
+      <Card data-aos="flip-right">
         <CardImg src={logo} alt="Card image" />
         <CardBody>
           <CardTitle>미라클 런!</CardTitle>
@@ -70,7 +80,7 @@ export default function GroupRoutineNewList({ Link }) {
         </CardBody>
       </Card>
 
-      <Card>
+      <Card data-aos="flip-right">
         <CardImg src={logo} alt="Card image" />
         <CardBody>
           <CardTitle>미라클 런!</CardTitle>
@@ -82,7 +92,7 @@ export default function GroupRoutineNewList({ Link }) {
         </CardBody>
       </Card>
 
-      <Card>
+      <Card data-aos="flip-right">
         <CardImg src={logo} alt="Card image" />
         <CardBody>
           <CardTitle>미라클 런!</CardTitle>
@@ -94,7 +104,7 @@ export default function GroupRoutineNewList({ Link }) {
         </CardBody>
       </Card>
 
-      <Card>
+      <Card data-aos="flip-right">
         <CardImg src={logo} alt="Card image" />
         <CardBody>
           <CardTitle>미라클 런!</CardTitle>

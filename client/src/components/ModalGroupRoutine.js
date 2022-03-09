@@ -2,6 +2,13 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import logo from "../assets/er_logo.svg";
 
+const Xmark = styled.span`
+  color: #697f6e;
+  font-weight: 700;
+  font-size: 20px;
+  cursor: pointer;
+`;
+
 const Button = styled.button`
   color: white;
   font-weight: 700;
@@ -11,6 +18,18 @@ const Button = styled.button`
   background-color: #697f6e;
   border: none;
   border-radius: 5em;
+  cursor: pointer;
+`;
+
+const Tag = styled.div`
+  background-color: #697f6e;
+  color: white;
+  border-radius: 5em;
+  display: inline-block;
+  width: auto;
+  padding: 0.5em 1em;
+  margin: 0.5em;
+  cursor: unset;
 `;
 
 const ModalCon = styled.div`
@@ -45,18 +64,52 @@ const StyledLabel = styled.label`
   font-weight: 500;
 `;
 
+const StyledSpan = styled.span`
+  margin-bottom: 10px;
+  text-align: left;
+  margin-left: 10%;
+  padding: 5px 0;
+  background-color: white;
+  font-size: 15px;
+  color: black;
+`;
+
 const Logodiv = styled.div`
   background-color: white;
   margin: 0 60px 20px 60px;
   img {
     width: 100%;
+    height: 120px;
+    object-fit: cover;
   }
+`;
+
+const InputLabel = styled.label`
+  margin-right: 1em;
+`;
+
+const StyledCheckbox = styled.input`
+  margin-right: 0.2em;
+  margin-bottom: 1em;
 `;
 
 export default function ModalGroupRoutine({ closeGroupRoutineModal }) {
   const [groupRoutineTitle, setgroupRoutineTitle] = useState("");
   const [groupRoutineContent, setGroupRoutineContent] = useState("");
   const [imageSrc, setImageSrc] = useState(logo);
+  const [step, setStep] = useState(true);
+
+  const [checkedItems, setCheckedItems] = useState(new Set());
+
+  const checkedItemHandler = (id, isChecked) => {
+    if (isChecked) {
+      checkedItems.add(id);
+      setCheckedItems(checkedItems);
+    } else if (!isChecked && checkedItems.has(id)) {
+      checkedItems.delete(id);
+      setCheckedItems(checkedItems);
+    }
+  };
 
   const encodeFileToBase64 = (fileBlob) => {
     const reader = new FileReader();
@@ -72,55 +125,116 @@ export default function ModalGroupRoutine({ closeGroupRoutineModal }) {
   return (
     <div className="modal">
       <div className="modalLogin">
-        <span className="modalClose">&times;</span>
-        <ModalCon className="modalContents">
-          <StyledLabel for="groupTitle">루틴 그룹명:</StyledLabel>
-          <StyledInput
-            id="groupTitle"
-            className="groupTitle"
-            type="text"
-            placeholder="그룹의 이름을 입력해주세요."
-            value={groupRoutineTitle}
-            onChange={(e) => setgroupRoutineTitle(e.target.value)}
-          />
-          <StyledLabel for="groupEx">루틴 그룹 소개:</StyledLabel>
-          <StyledTextArea
-            name="groupEx"
-            className="groupEx"
-            value={groupRoutineContent.value}
-            onChange={(e) => setGroupRoutineContent(e.target.value)}
-          />
-          <StyledLabel for="groupTagSet">그룹 태그</StyledLabel>
-          <formset name="groupTagSet">
-            <input id="health" type="checkbox" />
-            <label for="health">건강</label>
-            <input id="life" type="checkbox" />
-            <label for="life">생활</label>
-            <input id="workout" type="checkbox" />
-            <label for="workout">운동</label>
-            <input id="mission" type="checkbox" />
-            <label for="mission">미션</label>
-          </formset>
-          <StyledLabel for="groupImg">그룹 대표 이미지:</StyledLabel>
-          <StyledInput
-            id="groupImg"
-            className="groupImg"
-            type="file"
-            onChange={(e) => encodeFileToBase64(e.target.files[0])}
-          />
-          <Logodiv className="logo">
-            <img src={imageSrc} alt="group-img" />
-          </Logodiv>
-          <Button
-            className="loginBtn"
-            onClick={() => {
-              closeGroupRoutineModal();
-            }}
-          >
-            루틴 시작하기!
-          </Button>
-        </ModalCon>
+        <Xmark className="modalClose" onClick={() => closeGroupRoutineModal()}>
+          &times;
+        </Xmark>
+        {step ? (
+          <ModalCon className="modalContents">
+            <StyledLabel for="groupTitle">루틴 그룹명:</StyledLabel>
+            <StyledInput
+              id="groupTitle"
+              className="groupTitle"
+              type="text"
+              placeholder="그룹의 이름을 입력해주세요."
+              value={groupRoutineTitle}
+              onChange={(e) => setgroupRoutineTitle(e.target.value)}
+            />
+            <StyledLabel for="groupEx">루틴 그룹 소개:</StyledLabel>
+            <StyledTextArea
+              name="groupEx"
+              className="groupEx"
+              placeholder="우리 그룹을 멋지게 소개해보세요."
+              value={groupRoutineContent.value}
+              onChange={(e) => setGroupRoutineContent(e.target.value)}
+            />
+            <StyledLabel for="groupTagSet">그룹 태그:</StyledLabel>
+            <CheckBoxes checkedItemHandler={checkedItemHandler} />
+            <StyledLabel for="groupImg">그룹 대표 이미지:</StyledLabel>
+            <StyledInput
+              id="groupImg"
+              className="groupImg"
+              type="file"
+              onChange={(e) => encodeFileToBase64(e.target.files[0])}
+            />
+            <Logodiv className="logo">
+              <img src={imageSrc} alt="group-img" />
+            </Logodiv>
+            <Button
+              className="loginBtn"
+              onClick={() => {
+                setStep(false);
+              }}
+            >
+              이 정보로 만들게요!
+            </Button>
+          </ModalCon>
+        ) : (
+          <ModalCon className="modalContents">
+            <StyledLabel for="groupTitle">루틴 그룹명:</StyledLabel>
+            <StyledSpan>{groupRoutineTitle}</StyledSpan>
+            <StyledLabel for="groupEx">루틴 그룹 소개:</StyledLabel>
+            <StyledSpan>{groupRoutineContent}</StyledSpan>
+            <StyledLabel for="groupTagSet">그룹 태그:</StyledLabel>
+            <div>
+              {[...checkedItems].map((el, idx) => (
+                <Tag key={idx}># {el}</Tag>
+              ))}
+            </div>
+            <StyledLabel for="groupImg">그룹 대표 이미지:</StyledLabel>
+            <Logodiv className="logo">
+              <img src={imageSrc} alt="group-img" />
+            </Logodiv>
+            <Button
+              className="loginBtn"
+              onClick={() => {
+                closeGroupRoutineModal();
+              }}
+            >
+              그룹 루틴 시작하기!
+            </Button>
+          </ModalCon>
+        )}
       </div>
     </div>
+  );
+}
+
+function CheckBoxes({ checkedItemHandler }) {
+  const itemArray = [
+    { id: "health", name: "건강" },
+    { id: "life", name: "생활" },
+    { id: "workout", name: "운동" },
+    { id: "mission", name: "미션" },
+  ];
+
+  return (
+    <form name="groupTagSet">
+      {itemArray.map((el, idx) => (
+        <CheckBox key={idx} el={el} checkedItemHandler={checkedItemHandler} />
+      ))}
+    </form>
+  );
+}
+
+function CheckBox({ el, checkedItemHandler }) {
+  const [bChecked, setChecked] = useState(false);
+
+  const checkHandler = (e) => {
+    setChecked(!bChecked);
+    const id = e.target.id;
+    const checked = e.target.checked;
+    checkedItemHandler(id, checked);
+  };
+
+  return (
+    <>
+      <StyledCheckbox
+        id={el.name}
+        type="checkbox"
+        checked={bChecked}
+        onChange={(e) => checkHandler(e)}
+      />
+      <InputLabel htmlFor={el.id}>{el.name}</InputLabel>
+    </>
   );
 }

@@ -2,6 +2,13 @@ import React, { useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 
+const Xmark = styled.span`
+  color: #697f6e;
+  font-weight: 700;
+  font-size: 20px;
+  cursor: pointer;
+`;
+
 const Button = styled.button`
   color: white;
   font-weight: 700;
@@ -128,7 +135,9 @@ export default function ModalUserRoutine({
   return (
     <div className="modal">
       <div className="modalLogin">
-        <span className="modalClose">&times;</span>
+        <Xmark className="modalClose" onClick={() => closeUserRoutineModal()}>
+          &times;
+        </Xmark>
         <ModalCon className="modalContents">
           <RoutineUl>
             {newRoutineList.map((el, idx) => (

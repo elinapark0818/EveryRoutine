@@ -21,6 +21,12 @@ const Con = styled.div`
   padding: 20px;
 `;
 
+const Hrstyle = styled.hr`
+  border-top: 1px dotted #697f6e;
+  width: 100%;
+  margin: 30px 0;
+`;
+
 const serverURL = "http://localhost:4000/user-routine";
 
 const date = new Date();
@@ -59,7 +65,7 @@ function GroupRoutineMain() {
             Link={Link}
           />
         </Con>
-        <hr />
+        <Hrstyle />
         <Con>
           <GroupRoutineSearch />
         </Con>
