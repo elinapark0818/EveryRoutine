@@ -9,6 +9,7 @@ function UserRoutine({ settingLogin }) {
     width: 800px;
     margin-left: calc((100% - 800px) / 2);
     padding: 30px;
+    margin-bottom: 50px;
   `;
 
   return (
