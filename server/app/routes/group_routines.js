@@ -16,5 +16,11 @@ router.get("/tag", controller.group_routine_tag.get);
 // 그룹 루틴 만들기
 router.post("/create", controller.group_routine_create.post);
 
+// 그릅 루틴 누르기
+router.get("/select", controller.select_group_routine.get);
+
+// 댓글 남기기
+router.post("/select", controller.write_comment.post);
+
 
 module.exports = router;
