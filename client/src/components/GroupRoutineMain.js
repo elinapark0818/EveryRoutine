@@ -5,7 +5,6 @@ import axios from "axios";
 
 import GroupRoutineMyList from "./GroupRoutineMyList";
 import GroupRoutineNewList from "./GroupRoutineNewList";
-import GroupRoutineSearch from "./GroupRoutineSearch";
 
 import Modal from "react-modal";
 import ModalGroupRoutine from "../components/ModalGroupRoutine";
@@ -15,6 +14,7 @@ const Container = styled.div`
   width: 800px;
   margin-left: calc((100% - 800px) / 2);
   padding: 30px;
+  margin-bottom: 50px;
 `;
 
 const Con = styled.div`
@@ -66,9 +66,6 @@ function GroupRoutineMain() {
           />
         </Con>
         <Hrstyle />
-        <Con>
-          <GroupRoutineSearch />
-        </Con>
         <Con>
           <GroupRoutineNewList Link={Link} />
         </Con>
