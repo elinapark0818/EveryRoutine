@@ -105,6 +105,14 @@ module.exports = {
       const accessToken = getCookie("accessToken");
       const { email } = jwt.verify(accessToken, process.env.ACCESS_SECRET);
 
+      const patchDate = await user_cal.findOne({
+        where: {
+          date: JSON.stringify({ month: 3, date: date }),
+        },
+      });
+
+      console.log(patchDate.dataValues);
+
       const findUser = await user.findOne({ where: { email } });
       if (!findUser) {
         return res.status(204).json({ message: "Bad request : user error" });
@@ -113,11 +121,11 @@ module.exports = {
       } else if (!date) {
         return res.status(203).json({ message: "Bad request : date error" });
       } else {
-        await user_cal.update(
-          { daily_check: JSON.stringify(daily_check) },
+        await user_routine.update(
+          { daily_check: JSON.stringify({ checked: daily_check }) },
           {
             where: {
-              date: JSON.stringify({ month: 3, date: date }),
+              id: patchDate.dataValues.user_routine_id,
             },
           }
         );
@@ -182,8 +190,8 @@ module.exports = {
       } else {
         await user_routine.update(
           {
-            list: JSON.stringify(list),
-            daily_check: JSON.stringify(uncheckedArray),
+            list: JSON.stringify({ contents: list }),
+            daily_check: JSON.stringify({ checked: uncheckedArray }),
           },
           {
             where: {
