@@ -50,18 +50,9 @@ module.exports = {
         },
       });
 
-      console.log(thisDateRoutineDetails.dataValues);
       console.log(thisDateRoutineList.dataValues);
 
-      const isChecked = await user_routine.findOne({
-        daily_check: {
-          where: {
-            user_cal_id: thisDateRoutineDetails.id,
-          },
-        },
-      });
-
-      const realIsChecked = isChecked.dataValues.daily_check;
+      const IsChecked = thisDateRoutineList.dataValues.daily_check;
       const onlyThisDateRoutineList = thisDateRoutineList.dataValues.list;
       let selectedFindDateInfo = [];
       const a = findDateInfo.map((el) =>
@@ -83,7 +74,7 @@ module.exports = {
         return res.status(200).json({
           selectedFindDateInfo,
           onlyThisDateRoutineList,
-          realIsChecked,
+          IsChecked,
           message: "Success. you can see your personal routines of that date",
         });
       }
