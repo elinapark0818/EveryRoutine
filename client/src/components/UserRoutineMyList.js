@@ -65,22 +65,22 @@ export default function UserRoutineMyList({ settingLogin }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const changeSelectDate = (selected) => {
-    console.log("1", selected);
-    setSelectDate(selected);
-    andThen();
-  };
-
-  const andThen = () => {
-    console.log("2", selectDate);
-    console.log(
-      selectDate.month +
-        "월" +
-        selectDate.date +
-        "일의 루틴리스토로 변경합니다."
-    );
-    getRoutineListOfThatDate();
-  };
+  useEffect(() => {
+    const changeSelectDateFromServer = async (selected) => {
+      try {
+        console.log("1", selected);
+        setSelectDate(selected);
+        console.log("2", selectDate);
+        console.log(
+          selectDate.month +
+            "월" +
+            selectDate.date +
+            "일의 루틴리스토로 변경합니다."
+        );
+        getRoutineListOfThatDate();
+      } catch {}
+    };
+  }, [selectDate]);
 
   const closeUserRoutineModal = () => {
     setUserRoutineIsOpen(false);
@@ -91,8 +91,6 @@ export default function UserRoutineMyList({ settingLogin }) {
       try {
         // 요청이 시작 할 때에는 error 와 routineItems 를 초기화하고
         setError(null);
-        // setRoutineItems(dummyData.contents);
-        // setCheckedItems(dummyData.checked);
         // loading 상태를 true 로 바꿉니다.
         setLoading(true);
         console.log("데이터 불러오는 중~");
@@ -143,21 +141,33 @@ export default function UserRoutineMyList({ settingLogin }) {
     return;
   }
 
-  async function fetchCheckBoxes() {
-    const response = await axios
-      .patch(serverURL, {
-        daily_check: checkedItems,
-        date: today,
-      })
-      .catch((err) => console.log(err));
-    if (response.status === 200) {
-      console.log(response.data);
-    } else {
-      console.log(response.status);
-    }
-    return;
-  }
+  //? 체크 관리 start
 
+  // 체크 될 때마다 체크 arr를 서버로 patch 해줍니다.
+  useEffect(() => {
+    async function fetchCheckBoxes() {
+      console.log("arr======>", checkedItems);
+      const response = await axios
+        .patch(serverURL, {
+          daily_check: checkedItems,
+          date: today,
+        })
+        .catch((err) => console.log(err));
+      if (response.status === 200) {
+        console.log(response.data);
+      } else {
+        console.log(response.status);
+      }
+      return;
+    }
+    fetchCheckBoxes();
+  }, [checkedItems]);
+
+  const changeSelectDate = (selected) => {
+    setSelectDate(selected);
+  };
+
+  // 루틴 아이템 체크/언체크를 할 때마다 전체 체크 배열 [0,0,1,0]을 변경해줍니다.
   const checkedItemHandler = (idx, checked) => {
     console.log("idx====>", idx);
     if (checked) {
@@ -176,10 +186,9 @@ export default function UserRoutineMyList({ settingLogin }) {
       ];
       setCheckedItems(newCheckSet);
     }
-
-    // 아이템 하나가 체크될 때마다 axios patch 날려준 후 응답을 리스트에 업데이트 함
-    fetchCheckBoxes();
   };
+
+  //? 체크 관리 end
 
   return (
     <div>

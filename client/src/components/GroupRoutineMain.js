@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
 
 import GroupRoutineMyList from "./GroupRoutineMyList";
 import GroupRoutineNewList from "./GroupRoutineNewList";
@@ -19,8 +20,24 @@ const Container = styled.div`
 const Con = styled.div`
   padding: 20px;
 `;
+
+const serverURL = "http://localhost:4000/user-routine";
+
+const date = new Date();
+const today = date.getDate();
+const todayMonth = date.getMonth() + 1;
+
 function GroupRoutineMain() {
   const [groupRoutineIsOpen, setGroupRoutineIsOpen] = useState(false);
+  const [selectDate, setSelectDate] = useState({
+    date: today,
+    month: todayMonth,
+  });
+
+  const changeSelectDate = (selected) => {
+    console.log("1", selected);
+    setSelectDate(selected);
+  };
 
   const closeGroupRoutineModal = () => {
     setGroupRoutineIsOpen(false);
@@ -37,6 +54,8 @@ function GroupRoutineMain() {
         <Con>
           <GroupRoutineMyList
             openGropRoutineModal={openGropRoutineModal}
+            selectDate={selectDate}
+            changeSelectDate={changeSelectDate}
             Link={Link}
           />
         </Con>
