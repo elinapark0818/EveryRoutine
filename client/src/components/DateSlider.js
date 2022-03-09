@@ -83,7 +83,7 @@ export default function DateSlider({ selectDate, changeSelectDate }) {
           data: { date: { month: todayMonth, date: today } },
         });
         if (response.status === 200) {
-          const datesInfo = response.data.findDateInfo;
+          const datesInfo = response.data.selectedFindDateInfo;
           setDates(datesInfo);
         }
         // 데이터는 response.data 안에 들어있습니다.
