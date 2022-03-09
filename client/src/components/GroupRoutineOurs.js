@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import ProgressBar from "@ramonak/react-progress-bar";
-import DateSlider from "./DateSlider";
+import DateSliderGroup from "./DateSliderGroup";
 
 const GroupProgress = styled(ProgressBar)``;
 const Label = styled.div``;
@@ -46,7 +46,7 @@ export default function GroupRoutineOurs({ selectDate, changeSelectDate }) {
       <GroupInfo>
         <GroupInfoTitle>하루에 줄넘기 1,000개 하기!</GroupInfoTitle>
       </GroupInfo>
-      {/* <DateSlider selectDate={selectDate} changeSelectDate={changeSelectDate} /> */}
+      <DateSliderGroup />
       <GroupCommentAdd>
         <input
           type="text"
@@ -77,7 +77,7 @@ export default function GroupRoutineOurs({ selectDate, changeSelectDate }) {
       </GroupCommentList>
       <hr />
       <Label>우리 그룹의 오늘 루틴 달성률</Label>
-      <GroupProgress completed={70} bgColor="#697f6e" BaseBgColor="#ececec" />
+      <GroupProgress completed={40} bgColor="#697f6e" BaseBgColor="#ececec" />
       <Button>이 그룹 탈퇴하기</Button>
     </div>
   );

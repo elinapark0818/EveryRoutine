@@ -23,8 +23,8 @@ function GroupRoutine() {
   };
   return (
     <>
-      {/* <button onClick={handleClickTrue}>내 그룹 모두</button>
-      <button onClick={handleClickFalse}>남의 그룹 모드</button> */}
+      <button onClick={handleClickTrue}>내 그룹 모두</button>
+      <button onClick={handleClickFalse}>남의 그룹 모드</button>
       {isMyGroup ? (
         <Container>
           <div>

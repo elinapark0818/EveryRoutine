@@ -5,6 +5,8 @@ import axios from "axios";
 import "../../node_modules/slick-carousel/slick/slick.css";
 import "../../node_modules/slick-carousel/slick/slick-theme.css";
 
+import AOS from "aos";
+
 const DateSliderList = styled(Slider)`
   .slick-track {
   }
@@ -66,6 +68,10 @@ const dummyDates = [
 ];
 
 const serverURL = "http://localhost:4000/user-routine";
+
+AOS.init({
+  duration: 1200,
+});
 
 export default function DateSlider({ selectDate, changeSelectDate }) {
   const [dates, setDates] = useState(dummyDates);
@@ -135,6 +141,7 @@ export default function DateSlider({ selectDate, changeSelectDate }) {
         ))}
         {todayArr.map((el, idx) => (
           <DateCardToday
+            data-aos="flip-right"
             key={idx}
             onClick={() => changeSelectDate({ date: el.date, month: el.month })}
           >
