@@ -17,8 +17,8 @@ const HomeBody = styled.div`
 `;
 
 const HomeContainer = styled.div`
-  /* background-image: url(${backgroundImg});
-  background-repeat: no-repeat; */
+  background-image: url(${backgroundImg});
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
