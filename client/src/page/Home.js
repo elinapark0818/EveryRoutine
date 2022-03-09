@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import backgroundImg from "../assets/background-image.png";
 import { Link, Outlet } from "react-router-dom";
 
 import EveryRoutineInfo from "../components/EveryRoutineInfo";
@@ -17,8 +16,6 @@ const HomeBody = styled.div`
 `;
 
 const HomeContainer = styled.div`
-  /* background-image: url(${backgroundImg});
-  background-repeat: no-repeat; */
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
@@ -194,12 +191,6 @@ function Home({ settingModalIsOpen, isLogin }) {
                 Every Routine <br />
                 <p>Make a Smart life</p>
               </h1>
-
-              {/* <img
-              style={{ width: 500 }}
-              src={LogoImg}
-              alt="About_logo_image"
-            ></img> */}
 
               <div>
                 <EveryRoutineInfo />
