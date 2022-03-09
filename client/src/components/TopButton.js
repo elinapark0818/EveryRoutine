@@ -1,32 +1,27 @@
 import React, { useState, useEffect } from "react";
-// import { MdArrowUpward } from "react-icons/md";
 import styled from "styled-components";
+import { FaArrowUp } from "react-icons/fa";
 
 const TopButton = styled.button`
   position: fixed;
   cursor: pointer;
-  background-color: #697f6e;
-  color: white;
-  /* font-weight: bold; */
+  color: #697f6e;
+  border: 5px solid #697f6e;
+  background-color: transparent;
   opacity: 0;
-  bottom: 2em;
-  right: 2em;
+  bottom: 3em;
+  right: 3em;
   width: 5em;
   height: 5em;
   border-radius: 50%;
-  border: 0 none;
-  font-size: 1em;
+  font-size: 0.8em;
   text-transform: uppercase;
   letter-spacing: 2.5px;
   transition: all 0.3s ease 0s;
   outline: none;
 
   &:hover {
-    color: #697f6e;
-    /* font-weight: bold; */
-    border: 5px solid #697f6e;
-    background-color: transparent;
-    transform: translateY(-7px);
+    transform: translateY(-2em);
   }
 
   &.active {
@@ -39,10 +34,6 @@ const TopButton = styled.button`
   &:active {
     outline: 0 none;
   }
-`;
-
-const Top = styled.p`
-  font-size: 2em;
 `;
 
 const Wrap = styled.div`
@@ -88,7 +79,7 @@ export default function TopBtn() {
         className={BtnStatus ? "TopButton active" : "TopButton"}
         onClick={handleTop}
       >
-        <Top>Top</Top>
+        <FaArrowUp style={{ fontSize: "3em" }} />
       </TopButton>
     </Wrap>
   );
