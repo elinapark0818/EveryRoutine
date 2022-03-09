@@ -144,8 +144,8 @@ export default function ModalLogin({
       .catch((err) => setIsServerOk(false));
     if (response.status === 200) {
       setIsPasswordOk(true);
-      settingModalIsJustClose();
       settingLogin();
+      settingModalIsJustClose();
     } else {
       setIsPasswordOk(false);
     }
