@@ -252,6 +252,7 @@ module.exports = {
         // localhost:4000/group-routine/select?id=2&date=1646715662218
         const groupRoutineID = +req.query.id;
         const date = +req.query.date;
+        console.log('date', date)
 
         // 유저테이블에서 나의 user.id 찾기
         const myUserId = await user
@@ -262,11 +263,17 @@ module.exports = {
         const myGroupId = await group_user
           .findAll({ where: { user_id: myUserId } })
           .then((data) => data.map((el) => el.group_routine_id));
+        console.log('myGroupId', myGroupId)
 
         // 선택된 그룹 루틴 데이터
         const selectedGroupRoutineData = await group_routine.findOne({
-          where: { id: groupRoutineID },
+          where: { id: groupRoutineID }, raw: true
         });
+
+        // 선택된 그룹 루틴 가입자 찾기 -> 인원수 확인용
+        console.log('selectedGroupRoutineData', selectedGroupRoutineData)
+        const joinedMember = await group_user.findAll({ raw: true, where: { group_routine_id: groupRoutineID }})
+        
 
         // 선택된 달, 요일
         const year = () => new Date(date).getFullYear();
@@ -287,7 +294,7 @@ module.exports = {
 
         // xxxx-xx-xx 형식의 선택된 데이터값
         const selectedDate = `${year()}-${month()}-${day()}`;
-        // console.log(selectedDate)
+        console.log('selectedDate -------------------------- ', selectedDate)
 
         // 해당 날짜의 댓글 가져오기
         const selectedComment = await comment.findAll({
@@ -296,18 +303,44 @@ module.exports = {
               { group_routine_id: groupRoutineID },
               { createdAt: { [Op.startsWith]: selectedDate } },
             ],
-          },
+          }, raw: true
         });
 
-        // const selectedComment = await comment.findAll({ where : { group_routine_id: groupRoutineID.toString()}})
-        // console.log('selectedComment', selectedComment)
+        // 달성률 체크 : 선택된 커맨트 갯수 / 가입자수
+        const goal =  Math.floor((selectedComment.length / joinedMember.length) * 100)
+        console.log('goal', goal) 
+
+        // 유저테이블에서 comment 작성자 이름 찾기
+        const findUserName = async (userid) => {
+          const userName = await user
+          .findOne({ raw: true, where: { id: userid } })
+          .then(user => user.nickname)
+          // .then((data) =>  console.log('data --------------- ', data.nickname))
+          // console.log('userName', userName)
+          return userName
+        }
+
+  
+        // 그냥 하면 맵을 써서 맵안에서 findOne하면 펜딩이 되는데 다음과 같이 Array를 따로 만들어 줘서하면 pending 안됨.. 이유는??
+        let selectedCommentArray = [];
+        const makeCommentArray = async () => {
+          for(let el of selectedComment) {
+            const name = await findUserName(el.user_id)
+            selectedCommentArray.push({ writer: name, comment: el.comment})
+            // console.log('selectedCommentArray', selectedCommentArray)
+          }
+        }
+        await makeCommentArray();
+       
+
 
         if (myGroupId.includes(groupRoutineID)) {
           // 가입된 그룹 루틴 선택 : 코멘트를 쓰는 인풋창 있음, 콘텐츠, 날짜선택, 댓글, 루틴달성률, 그룹탈퇴하기 버튼
           // TODO: 해당 날 달성률, 댓글작성자 이름 (comments : [{writer: overflowbin, commemt: '안녕하세요~~'}])
           return res.status(200).json({
             data: selectedGroupRoutineData,
-            comments: selectedComment,
+            comments: selectedCommentArray,
+            goal,
             registed: true,
             message: "가입한 그룹 루틴 데이터",
           });
@@ -315,7 +348,10 @@ module.exports = {
         } else {
           // 가입안된 그룹 루틴 선택 : 콘텐츠, 날짜선택, 댓글, 루틴달성률, 그룹가입하기 버튼, 전체 멤버수
           // TODO: 전체 멤버수, 해당 날 달성률, 댓글작성자 이름 (comments : [{writer: overflowbin, commemt: '안녕하세요~~'}])
-          return res.status(200).json({ data: selectedGroupRoutineData, registed : false, message: "가입안한 그룹 루틴 데이터"})
+          return res.status(200).json({ 
+            data: selectedGroupRoutineData, 
+            registed : false, 
+            message: "가입안한 그룹 루틴 데이터"})
         }
       } catch {
         return res.status(400).json({ message: "Bad request" });
