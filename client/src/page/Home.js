@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 import EveryRoutineInfo from "../components/EveryRoutineInfo";
 import TopBtn from "../components/TopButton";
@@ -174,6 +174,15 @@ function Home({ settingModalIsOpen, isLogin }) {
   const changeModeToGroup = () => {
     setUsermode("false");
   };
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname.includes("group")) {
+      setUsermode("false");
+    } else setUsermode("true");
+  }, [location]);
+
   return (
     <div>
       {isLogin ? (

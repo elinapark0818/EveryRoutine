@@ -33,7 +33,7 @@ const BigPlus = styled.div`
   color: #697f6e;
 `;
 
-const CardImg = styled.div`
+const CardImg = styled.img`
   width: 100%;
   height: 120px;
   object-fit: cover;
