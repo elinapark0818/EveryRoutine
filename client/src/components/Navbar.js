@@ -13,13 +13,15 @@ const NavbarContainer = styled.nav`
 `;
 
 const LeftContainer = styled.div`
-  flex: 30%;
+  flex: 40%;
+  /* display: block; */
   display: flex;
-  padding-right: 15%;
+  padding-right: 50px;
+  flex-direction: row;
 `;
 
 const RightContainer = styled.div`
-  flex: 70%;
+  flex: 60%;
   align-items: center;
   display: flex;
   justify-content: flex-end;
@@ -90,8 +92,22 @@ const Logo = styled.img`
   margin: 10px;
   max-width: 100px;
   height: auto;
-  display: block;
+  /* display: inline-block; */
   width: 300px;
+`;
+
+const Styleddiv = styled.div`
+  font-size: 18px;
+  line-height: 10px;
+  margin-top: -55px;
+  margin-left: 120px;
+  text-decoration: underline #f3f8f2 !important;
+  font-weight: 700;
+  color: #697f6e;
+  &:link {
+    text-decoration: none !important;
+  }
+  /* display: inline-block; */
 `;
 
 const OpenLinksButton = styled.button`
@@ -125,8 +141,8 @@ function Navbar({ settingModalIsOpen, isLogin, settingLogout, settingLogin }) {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname.includes("group")) settingLogin();
-  }, [location]);
+    if (document.cookie.includes("accessToken")) settingLogin();
+  }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -146,6 +162,7 @@ function Navbar({ settingModalIsOpen, isLogin, settingLogout, settingLogin }) {
         <LeftContainer>
           <Link to="/">
             <Logo src={LogoImg}></Logo>
+            <Styleddiv>ROUTINE NOW</Styleddiv>
           </Link>
         </LeftContainer>
 

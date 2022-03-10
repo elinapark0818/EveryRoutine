@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import smileImg from "../assets/smile.png";
+import logo from "../assets/er_logo.svg";
 
 // axios.defaults.withCredentials = true;
 
@@ -38,7 +39,7 @@ const UserMainImg = styled.img.attrs({
 
 const Button = styled.button`
   background-color: #697f6e;
-  margin-left: 1em;
+  margin-left: 0.5em;
   width: 70px;
   height: 30px;
   border: none;
@@ -50,9 +51,10 @@ const Button = styled.button`
 `;
 
 const Label = styled.label`
+  display: inline-block;
   background-color: #697f6e;
-  margin-left: 1em;
-  width: 100px;
+  margin-left: 0.5em;
+  width: 70px;
   height: 30px;
   border: none;
   color: white;
@@ -60,6 +62,8 @@ const Label = styled.label`
   font-weight: bold;
   border-radius: 5px;
   cursor: pointer;
+  text-align: center;
+  line-height: 30px;
 `;
 
 const Input = styled.input`
@@ -69,7 +73,7 @@ const Input = styled.input`
 const serverURL = "http://localhost:4000/users";
 
 function UserMain() {
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(logo);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -246,7 +250,13 @@ function UserMain() {
 
         <UserMainDiv>
           <h3>프로필 변경</h3>
-          {image && (
+          <img
+            alt="profile_img"
+            src={image}
+            // value={image}
+            style={{ width: "15em", height: "auto" }}
+          />
+          {/* {image && (
             <img
               alt="profile_img"
               src={image}
@@ -254,7 +264,7 @@ function UserMain() {
               style={{ width: "15em", height: "auto" }}
               onChange={(e) => handleChangeImg(e.target.value)}
             />
-          )}
+          )} */}
 
           <Label htmlFor="file">업로드</Label>
           <input
