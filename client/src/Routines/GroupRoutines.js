@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
@@ -27,22 +27,42 @@ const Hrstyle = styled.hr`
   margin: 30px 0;
 `;
 
-const serverURL = "http://localhost:4000/user-routine";
-
 const date = new Date();
 const today = date.getDate();
 const todayMonth = date.getMonth() + 1;
 
-function GroupRoutines({ settingDetailMode, sendGroupId }) {
+const serverURL = "http://localhost:4000/group-routine";
+
+const dummyData = [
+  {
+    contents:
+      "하루동안 물을 2L 마시는 루틴입니다. 출석률에 따라 물양 조정합니다.",
+    createdAt: "2022-03-09T12:35:12.000Z",
+    editor_id: 1,
+    id: 1,
+    image:
+      "https://dmwedtsa0n9p4.cloudfront.net/media/uploads/2021/07/12/06_-1.png",
+    routine_name: "물 2L 마시기",
+    tag_name: "[health, lifestyle, workout]",
+    updatedAt: "2022-03-09T12:35:12.000Z",
+  },
+];
+
+function GroupRoutines() {
   const [groupRoutineIsOpen, setGroupRoutineIsOpen] = useState(false);
   const [selectDate, setSelectDate] = useState({
     date: today,
     month: todayMonth,
   });
+  const [myGroupRoutineList, setMyGroupRoutineList] = useState(dummyData);
 
   const changeSelectDate = (selected) => {
     setSelectDate(selected);
   };
+
+  useEffect(() => {
+    return () => setGroupRoutineIsOpen(false);
+  }, []);
 
   const closeGroupRoutineModal = () => {
     setGroupRoutineIsOpen(false);
@@ -52,6 +72,28 @@ function GroupRoutines({ settingDetailMode, sendGroupId }) {
     setGroupRoutineIsOpen(true);
   };
 
+  const modGroupRoutineList = (newgroup) => {
+    setMyGroupRoutineList([newgroup, ...myGroupRoutineList.reverse()]);
+  };
+
+  useEffect(() => {
+    const getMyGroupRoutineList = async () => {
+      try {
+        const response = await axios
+          .get(serverURL)
+          .catch((err) => console.log(err));
+        if (response.status === 200) {
+          setMyGroupRoutineList(response.data.data.reverse());
+        } else {
+          console.log(response.status);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getMyGroupRoutineList();
+  }, []);
+
   return (
     <div>
       <Container>
@@ -60,16 +102,12 @@ function GroupRoutines({ settingDetailMode, sendGroupId }) {
             openGropRoutineModal={openGropRoutineModal}
             selectDate={selectDate}
             changeSelectDate={changeSelectDate}
-            settingDetailMode={settingDetailMode}
-            sendGroupId={sendGroupId}
+            myGroupRoutineList={myGroupRoutineList}
           />
         </Con>
         <Hrstyle />
         <Con>
-          <GroupRoutineNewList
-            settingDetailMode={settingDetailMode}
-            sendGroupId={sendGroupId}
-          />
+          <GroupRoutineNewList />
         </Con>
       </Container>
 
@@ -86,10 +124,12 @@ function GroupRoutines({ settingDetailMode, sendGroupId }) {
         isOpen={groupRoutineIsOpen}
         onRequestClose={() => setGroupRoutineIsOpen(false)}
       >
-        <ModalGroupRoutine closeGroupRoutineModal={closeGroupRoutineModal} />
+        <ModalGroupRoutine
+          closeGroupRoutineModal={closeGroupRoutineModal}
+          modGroupRoutineList={modGroupRoutineList}
+        />
       </Modal>
     </div>
   );
 }
-
 export default GroupRoutines;

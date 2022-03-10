@@ -53,6 +53,7 @@ const Button = styled.button`
   background-color: #697f6e;
   border: none;
   border-radius: 5em;
+  cursor: pointer;
 `;
 const CommentButton = styled(Button)`
   margin-left: calc(50% - 110px);
@@ -137,7 +138,9 @@ const dummyData = [
 //         "image": "",
 //         "contents": "아침 7시에 조깅하는 루틴입니다. 조깅으로 시작하여 활기찬 하루를 만들어보아요!!",
 //         "createdAt": "2022-03-10T00:31:13.000Z",
-//         "updatedAt": "2022-03-10T00:31:13.000Z"
+//         "updatedAt": "2022-03-10T00:31:13.000Z",
+//         "goal" : 60,
+//         "editor" : true,
 //     },
 //     "comments": [],
 //     "registed": true,
@@ -154,7 +157,14 @@ function GroupRoutine({ settingLogin }) {
   const [goalRate, setGoalRate] = useState(60);
   const [goalComment, setGoalComment] = useState("");
   const [groupComment, setGroupComment] = useState(dummyData);
+  const [newComment, setNewComment] = useState("");
+  const [amIeditor, setAmIeditor] = useState(false);
   const { id } = useParams();
+  const [selectDate, setSelectDate] = useState(Date.now());
+
+  const changeSelectDate = (date) => {
+    setSelectDate(date);
+  };
 
   useEffect(() => {
     settingLogin();
@@ -164,18 +174,17 @@ function GroupRoutine({ settingLogin }) {
           serverURL + "/select?id=" + id + "&date=" + todayDate
         );
         if (response.status === 200) {
-          console.log("돌려받는다", response.data);
           // 가입된 그룹인지 먼저 파악하여 조건부 렌더링 처리
-
           if (response.data.registed) setIsMyGroup(true);
           else setIsMyGroup(false);
           setGroupTitle(response.data.data.routine_name);
           setGroupContent(response.data.data.contents);
+          setGroupComment(response.data.comments);
+          setGoalRate(response.data.goal);
+          setAmIeditor(response.data.editor);
+
           // const selectedComment = selectComment(goalRate);
           // setGoalComment(selectedComment);
-          // console.log("response===>", response.data);
-          // console.log("그룹이름===>", response.data.data);
-          // console.log(response.data);
         }
         // 데이터는 response.data 안에 들어있습니다.
       } catch (e) {
@@ -186,6 +195,45 @@ function GroupRoutine({ settingLogin }) {
     getGroupDataInfo();
   }, []);
 
+  // 다른 날짜 클릭 시
+  useEffect(() => {
+    const getGroupDataInfo = async () => {
+      try {
+        const response = await axios.get(
+          serverURL + "/select?id=" + id + "&date=" + selectDate
+        );
+        if (response.status === 200) {
+          // 가입된 그룹인지 먼저 파악하여 조건부 렌더링 처리
+          setGroupComment(response.data.comments);
+          setGoalRate(response.data.goal);
+          setAmIeditor(response.data.editor);
+
+          // const selectedComment = selectComment(goalRate);
+          // setGoalComment(selectedComment);
+        }
+        // 데이터는 response.data 안에 들어있습니다.
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    getGroupDataInfo();
+  }, [selectDate, id]);
+
+  // 댓글 작성 시
+  const sendNewComment = async () => {
+    try {
+      const response = await axios.post(serverURL + "/comment?id=" + id, {
+        comment: newComment,
+      });
+      if (response.status === 200) {
+      }
+      // 데이터는 response.data 안에 들어있습니다.
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <>
       {isMyGroup ? (
@@ -193,14 +241,25 @@ function GroupRoutine({ settingLogin }) {
           <GroupInfo>
             <GroupInfoTitle>&#127947; {groupTitle}</GroupInfoTitle>
           </GroupInfo>
-          <DateSliderGroup />
-          <GroupCommentAdd>
-            <StyledInput
-              type="text"
-              placeholder="오늘의 달성 내용과 함께 루틴 체크를 남겨주세요!"
-            ></StyledInput>
-            <Button>ok</Button>
-          </GroupCommentAdd>
+
+          <DateSliderGroup
+            changeSelectDate={changeSelectDate}
+            selectDate={selectDate}
+          />
+
+          {Date(selectDate) === Date(Date.now()) ? (
+            <GroupCommentAdd>
+              <StyledInput
+                type="text"
+                placeholder="오늘의 달성 내용과 함께 루틴 체크를 남겨주세요!"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+              ></StyledInput>
+              <Button onClick={() => sendNewComment()}>ok</Button>
+            </GroupCommentAdd>
+          ) : (
+            ""
+          )}
           <GroupCommentList>
             {groupComment.map((el, idx) => (
               <GroupComment key={idx}>
@@ -219,7 +278,11 @@ function GroupRoutine({ settingLogin }) {
             BaseBgColor="#ececec"
           />
           <GroupProgressComment>{goalComment}</GroupProgressComment>
-          <CommentButton>이 그룹 탈퇴하기</CommentButton>
+          {amIeditor ? (
+            <CommentButton>이 그룹 삭제하기</CommentButton>
+          ) : (
+            <CommentButton>이 그룹 탈퇴하기</CommentButton>
+          )}
         </Container>
       ) : (
         <Container>

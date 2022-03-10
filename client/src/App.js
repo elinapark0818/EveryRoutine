@@ -64,6 +64,7 @@ function App() {
     <Router>
       <Navbar
         isLogin={isLogin}
+        settingLogin={settingLogin}
         settingLogout={settingLogout}
         settingModalIsOpen={settingModalIsOpen}
       />

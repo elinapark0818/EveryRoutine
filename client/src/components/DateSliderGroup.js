@@ -5,6 +5,8 @@ import axios from "axios";
 import "../../node_modules/slick-carousel/slick/slick.css";
 import "../../node_modules/slick-carousel/slick/slick-theme.css";
 
+import AOS from "aos";
+
 const DateSliderList = styled(Slider)`
   .slick-track {
   }
@@ -23,19 +25,10 @@ const DateSliderList = styled(Slider)`
 const DateCard = styled.div`
   background-color: #ececec;
   border-radius: 0.5em;
-  .date {
-    font-size: 15px;
+  &.today {
+    background-color: #697f6e;
+    color: white;
   }
-  .dow {
-    font-weight: 500;
-    font-size: 25px;
-  }
-`;
-
-const DateCardToday = styled.div`
-  background-color: #697f6e;
-  color: white;
-  border-radius: 0.5em;
   .date {
     font-size: 15px;
   }
@@ -65,9 +58,13 @@ const makeDateNums = () => {
   return dates;
 };
 
+AOS.init({
+  duration: 1200,
+});
+
 const dummyDates = makeDateNums();
 
-export default function DateSlider({ selectDate, changeSelectDate }) {
+export default function DateSliderGroup({ selectDate, changeSelectDate }) {
   const [dates, setDates] = useState(dummyDates);
 
   const settings = {
@@ -81,27 +78,21 @@ export default function DateSlider({ selectDate, changeSelectDate }) {
   return (
     <DateSliderCon>
       <DateSliderList {...settings}>
-        {dates.slice(0, 14).map((el, idx) => (
+        {dates.map((el, idx) => (
           <DateCard
             key={idx}
-            onClick={() => changeSelectDate({ date: el.date, month: el.month })}
+            onClick={() => changeSelectDate(el.nums)}
+            className={
+              new Date(selectDate).getDate() === new Date(el.nums).getDate()
+                ? "today"
+                : "none"
+            }
           >
             <div className="date">
               {el.month}/{el.date}
             </div>
             <div className="dow">{el.yo_il}</div>
           </DateCard>
-        ))}
-        {dates.slice(14).map((el, idx) => (
-          <DateCardToday
-            key={idx}
-            onClick={() => changeSelectDate({ date: el.date, month: el.month })}
-          >
-            <div className="date">
-              {el.month}/{el.date}
-            </div>
-            <div className="dow">{el.yo_il}</div>
-          </DateCardToday>
         ))}
       </DateSliderList>
     </DateSliderCon>

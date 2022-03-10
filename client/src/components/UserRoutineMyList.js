@@ -162,7 +162,6 @@ export default function UserRoutineMyList() {
         })
         .catch((err) => console.log(err));
       if (response.status === 200) {
-        console.log(response.data);
       } else {
         console.log(response.status);
       }

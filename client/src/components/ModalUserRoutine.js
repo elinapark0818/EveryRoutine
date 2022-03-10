@@ -103,12 +103,10 @@ export default function ModalUserRoutine({
   }
 
   const routineDelButtonHandler = (idx) => {
-    console.log(idx);
     let newListFromModal = [
       ...newRoutineList.slice(0, idx),
       ...newRoutineList.slice(idx + 1),
     ];
-    console.log(newListFromModal);
     setNewRoutineList(newListFromModal);
   };
 

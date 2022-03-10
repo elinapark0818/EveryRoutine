@@ -188,7 +188,6 @@ export default function ModalSignup({ settingLogin, settingSignModalIsClose }) {
       .catch((err) => {
         setIsServerOk(false);
       });
-    // console.log(response);
     if (response) {
       if (response.status === 204) {
         setIsRightUser(false);
@@ -213,7 +212,6 @@ export default function ModalSignup({ settingLogin, settingSignModalIsClose }) {
     if (response) {
       console.log(response);
       if (response.status === 201) {
-        console.log("회원가입 성공, 로그인 된 상태로 메인으로 돌아갑니다.");
         settingLogin();
         settingSignModalIsClose();
       } else {
