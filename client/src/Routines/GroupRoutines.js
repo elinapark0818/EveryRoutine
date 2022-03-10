@@ -49,7 +49,6 @@ const dummyData = [
 ];
 
 function GroupRoutines() {
-  const [groupRoutineIsOpen, setGroupRoutineIsOpen] = useState(false);
   const [selectDate, setSelectDate] = useState({
     date: today,
     month: todayMonth,
@@ -60,9 +59,7 @@ function GroupRoutines() {
     setSelectDate(selected);
   };
 
-  useEffect(() => {
-    return () => setGroupRoutineIsOpen(false);
-  }, []);
+  const [groupRoutineIsOpen, setGroupRoutineIsOpen] = useState(false);
 
   const closeGroupRoutineModal = () => {
     setGroupRoutineIsOpen(false);

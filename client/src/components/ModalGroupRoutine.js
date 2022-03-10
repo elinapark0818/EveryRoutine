@@ -142,10 +142,11 @@ export default function ModalGroupRoutine({
         modGroupRoutineList(response.data.data);
       } catch (e) {
         console.log(e);
+      } finally {
+        closeGroupRoutineModal();
       }
     };
     postGroupInfo();
-    closeGroupRoutineModal();
   };
 
   return (
