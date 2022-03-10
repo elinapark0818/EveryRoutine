@@ -2,7 +2,7 @@ import { React, useState, useEffect } from "react";
 import LogoImg from "../assets/er_logo.svg";
 import styled from "styled-components";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const NavbarContainer = styled.nav`
   width: 100%;
@@ -118,9 +118,15 @@ const NavbarExtendedContainer = styled.div`
   }
 `;
 
-function Navbar({ settingModalIsOpen, isLogin, settingLogout }) {
+function Navbar({ settingModalIsOpen, isLogin, settingLogout, settingLogin }) {
   const [scrollTop, setScrollTop] = useState(0);
   const [extendNavbar, setExtendNavbar] = useState(false);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname.includes("group")) settingLogin();
+  }, [location]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);

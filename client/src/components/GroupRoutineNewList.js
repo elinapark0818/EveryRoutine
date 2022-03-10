@@ -56,7 +56,7 @@ const CardLink = styled(Link)`
   }
 `;
 const settings = {
-  dots: false,
+  dots: true,
   infinite: false,
   speed: 800,
   slidesToShow: 3,
@@ -126,10 +126,7 @@ const dummyData = [
   },
 ];
 
-export default function GroupRoutineNewList({
-  settingDetailMode,
-  sendGroupId,
-}) {
+export default function GroupRoutineNewList() {
   const [newGroupRoutineList, setNewGroupRoutineList] = useState(dummyData);
   const [selectedTag, setSelectedTag] = useState("all");
   const [tagCheck, setTagCheck] = useState([
@@ -194,7 +191,6 @@ export default function GroupRoutineNewList({
             className={el.id}
             onClick={(e) => {
               dragging && e.preventDefault();
-              settingDetailMode();
             }}
           >
             <Card id={el.id} data-aos="flip-right">

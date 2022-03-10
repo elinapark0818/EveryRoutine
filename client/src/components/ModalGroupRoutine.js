@@ -96,7 +96,10 @@ const StyledCheckbox = styled.input`
 
 const serverURL = "http://localhost:4000/group-routine";
 
-export default function ModalGroupRoutine({ closeGroupRoutineModal }) {
+export default function ModalGroupRoutine({
+  closeGroupRoutineModal,
+  modGroupRoutineList,
+}) {
   const [groupRoutineTitle, setgroupRoutineTitle] = useState("");
   const [groupRoutineContent, setGroupRoutineContent] = useState("");
   const [imageBlob, setImageBlob] = useState("");
@@ -136,6 +139,7 @@ export default function ModalGroupRoutine({ closeGroupRoutineModal }) {
           image: imageSrc,
           contents: groupRoutineContent,
         });
+        modGroupRoutineList(response.data.data);
       } catch (e) {
         console.log(e);
       }
