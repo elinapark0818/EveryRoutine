@@ -34,6 +34,7 @@ const CardImg = styled.img`
   object-fit: cover;
   background-color: white;
   margin-bottom: 10px;
+  pointer-events: none;
 `;
 const CardBody = styled.div``;
 const CardTitle = styled.div`
@@ -126,7 +127,10 @@ const dummyData = [
   },
 ];
 
-export default function GroupRoutineNewList() {
+export default function GroupRoutineNewList({
+  settingDetailMode,
+  sendGroupId,
+}) {
   const [newGroupRoutineList, setNewGroupRoutineList] = useState(dummyData);
   const [selectedTag, setSelectedTag] = useState("all");
   const [tagCheck, setTagCheck] = useState([
@@ -184,7 +188,15 @@ export default function GroupRoutineNewList() {
 
       <CardCon {...settings}>
         {newGroupRoutineList.map((el) => (
-          <CardLink to="/groupRoutine" key={el.id} id={el.id}>
+          <CardLink
+            to="/groupRoutines/detail"
+            key={el.id}
+            id={el.id}
+            onClick={(e) => {
+              sendGroupId(e.target.id);
+              settingDetailMode();
+            }}
+          >
             <Card
               data-aos="flip-right"
               onClick={(e) => dragging && e.preventDefault()}
@@ -194,8 +206,8 @@ export default function GroupRoutineNewList() {
                 <CardTitle>&#9994; {el.routine_name}</CardTitle>
                 <CardSubtitle>{el.contents}</CardSubtitle>
                 <CardText>
-                  {stringToArray(el.tag_name).map((tag) => (
-                    <TagButtonSmall> # {tag}</TagButtonSmall>
+                  {stringToArray(el.tag_name).map((tag, idx) => (
+                    <TagButtonSmall key={idx}> # {tag}</TagButtonSmall>
                   ))}
                 </CardText>
               </CardBody>

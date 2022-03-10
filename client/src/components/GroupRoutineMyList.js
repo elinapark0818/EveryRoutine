@@ -36,11 +36,12 @@ const BigPlus = styled.div`
   color: #697f6e;
 `;
 
-const CardImg = styled.img`
+const CardImg = styled.div`
   width: 100%;
   height: 120px;
   object-fit: cover;
   background-color: white;
+  pointer-events: none;
 `;
 const CardBody = styled.div`
   padding-top: 10px;
@@ -102,7 +103,11 @@ const dummyData = [
 
 let dragging = false;
 
-export default function GroupRoutineMyList({ openGropRoutineModal }) {
+export default function GroupRoutineMyList({
+  openGropRoutineModal,
+  settingDetailMode,
+  sendGroupId,
+}) {
   const [myGroupRoutineList, setMyGroupRoutineList] = useState(dummyData);
 
   useEffect(() => {
@@ -137,10 +142,22 @@ export default function GroupRoutineMyList({ openGropRoutineModal }) {
         </NewCard>
 
         {myGroupRoutineList.map((el) => (
-          <CardLink key={el.id} id={el.id} to="/groupRoutine">
+          <CardLink
+            key={el.id}
+            id={el.id}
+            to="/grouproutines/detail"
+            className={el.id}
+            onClick={(e) => {
+              sendGroupId(e.target.id);
+              settingDetailMode();
+            }}
+          >
             <Card
+              id={el.id}
               data-aos="flip-right"
-              onClick={(e) => dragging && e.preventDefault()}
+              onClick={(e) => {
+                dragging && e.preventDefault();
+              }}
             >
               <CardImg src={el.image ? el.image : logo} alt="Card image" />
               <CardBody>

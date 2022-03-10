@@ -63,16 +63,16 @@ function EveryRoutineInfo() {
       <div data-aos="fade-up">
         <Text>루틴을 완료할 경우 체크합니다</Text>
         <CheckBoxDiv style={{ display: "flex", margin: "1em" }}>
-          <CheckBox type="checkbox" id="check1" checked />
-          <Label for="check1">아침에 영양제 챙겨먹기</Label>
+          <CheckBox type="checkbox" id="check1" defaultChecked />
+          <Label htmlFor="check1">아침에 영양제 챙겨먹기</Label>
         </CheckBoxDiv>
         <CheckBoxDiv style={{ display: "flex", margin: "1em" }}>
-          <CheckBox type="checkbox" id="check1" checked />
-          <Label for="check1">아침 스트레칭 15분</Label>
+          <CheckBox type="checkbox" id="check1" defaultChecked />
+          <Label htmlFor="check1">아침 스트레칭 15분</Label>
         </CheckBoxDiv>
         <CheckBoxDiv style={{ display: "flex", margin: "1em" }}>
           <CheckBox type="checkbox" id="check1" />
-          <Label for="check1">오늘의 할일 정리하기</Label>
+          <Label htmlFor="check1">오늘의 할일 정리하기</Label>
         </CheckBoxDiv>
       </div>
 

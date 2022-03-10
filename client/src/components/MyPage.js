@@ -22,7 +22,8 @@ const MyPageUserMain = styled(Link)`
   text-align: center;
   padding: 10px 30px;
   outline: none;
-  background-color: ${(props) => (props.userMode ? "#697f6e" : "gray")};
+  background-color: ${(props) =>
+    props.usermode === "true" ? "#697f6e" : "gray"};
   cursor: pointer;
   margin-right: 5px;
 `;
@@ -34,7 +35,8 @@ const MyPageUserDelete = styled(Link)`
   text-align: center;
   padding: 10px 30px;
   outline: none;
-  background-color: ${(props) => (props.userMode ? "gray" : "#697f6e")};
+  background-color: ${(props) =>
+    props.usermode === "true" ? "gray" : "#697f6e"};
   cursor: pointer;
   margin-right: 5px;
 `;
@@ -49,12 +51,12 @@ const EditWrap = styled.div`
 function MyPage({ isLogin }) {
   // 어차피 바로 로그아웃 되어야 하니까
   // useEffect로 페이지로드시 바로 적용하면 되는거다...
-  const [userMode, setUserMode] = useState(true);
+  const [usermode, setUsermode] = useState("true");
   const changeToUserMain = () => {
-    setUserMode(true);
+    setUsermode("true");
   };
   const changeToUserDelete = () => {
-    setUserMode(false);
+    setUsermode("false");
   };
 
   const navigate = useNavigate();
@@ -76,14 +78,14 @@ function MyPage({ isLogin }) {
     <Container>
       <MyPageContainer>
         <MyPageUserMain
-          userMode={userMode}
+          usermode={usermode}
           onClick={() => changeToUserMain()}
           to=""
         >
           회원정보 수정
         </MyPageUserMain>
         <MyPageUserDelete
-          userMode={userMode}
+          usermode={usermode}
           onClick={() => changeToUserDelete()}
           to="userDelete"
         >

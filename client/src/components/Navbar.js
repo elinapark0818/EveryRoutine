@@ -138,7 +138,7 @@ function Navbar({ settingModalIsOpen, isLogin, settingLogout }) {
     <NavbarContainer extendNavbar={extendNavbar}>
       <NavbarInnerContainer>
         <LeftContainer>
-          <Link to="/" exact>
+          <Link to="/">
             <Logo src={LogoImg}></Logo>
           </Link>
         </LeftContainer>

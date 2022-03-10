@@ -109,16 +109,14 @@ export default function ModalGroupRoutine({ closeGroupRoutineModal }) {
     if (isChecked) {
       checkedItems.add(id);
       setCheckedItems(checkedItems);
-      console.log(checkedItems);
     } else if (!isChecked && checkedItems.has(id)) {
       checkedItems.delete(id);
       setCheckedItems(checkedItems);
-      console.log(checkedItems);
     }
   };
 
   const encodeFileToBase64 = (fileBlob) => {
-    setImageBlob("blob====>", fileBlob);
+    setImageBlob(fileBlob);
     const reader = new FileReader();
     reader.readAsDataURL(fileBlob);
     return new Promise((resolve) => {
@@ -130,7 +128,6 @@ export default function ModalGroupRoutine({ closeGroupRoutineModal }) {
   };
 
   const makeGroup = () => {
-    console.log(imageBlob);
     const postGroupInfo = async () => {
       try {
         const response = await axios.post(serverURL + "/create", {
@@ -139,7 +136,6 @@ export default function ModalGroupRoutine({ closeGroupRoutineModal }) {
           image: imageSrc,
           contents: groupRoutineContent,
         });
-        console.log(response);
       } catch (e) {
         console.log(e);
       }

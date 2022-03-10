@@ -256,7 +256,7 @@ function UserMain() {
             />
           )}
 
-          <Label for="file">업로드</Label>
+          <Label htmlFor="file">업로드</Label>
           <input
             id="file"
             name="file"

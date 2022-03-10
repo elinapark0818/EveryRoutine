@@ -72,7 +72,8 @@ const MyRoutineLinkUser = styled(Link)`
   padding: 10px 30px;
   /* border-radius: 0 20% 0 0; */
   outline: none;
-  background-color: ${(props) => (props.userMode ? "#697f6e" : "gray")};
+  background-color: ${(props) =>
+    props.usermode === "true" ? "#697f6e" : "gray"};
   cursor: pointer;
   margin-right: 5px;
 `;
@@ -85,7 +86,8 @@ const MyRoutineLinkGroup = styled(Link)`
   padding: 10px 30px;
   /* border-radius: 0 20% 0 0; */
   outline: none;
-  background-color: ${(props) => (props.userMode ? "gray" : "#697f6e")};
+  background-color: ${(props) =>
+    props.usermode === "true" ? "gray" : "#697f6e"};
   cursor: pointer;
   margin-right: 5px;
 `;
@@ -153,7 +155,7 @@ const Color = styled.h1`
 `;
 
 function Home({ settingModalIsOpen, isLogin }) {
-  const [userMode, setUserMode] = useState(true);
+  const [usermode, setUsermode] = useState("true");
 
   const proverbs = [
     "삶이 달라질 수 있는 단 하나의 열쇠는 바로 습관이다.",
@@ -170,10 +172,10 @@ function Home({ settingModalIsOpen, isLogin }) {
   };
 
   const changeModeToUser = () => {
-    setUserMode(true);
+    setUsermode("true");
   };
   const changeModeToGroup = () => {
-    setUserMode(false);
+    setUsermode("false");
   };
   return (
     <div>
@@ -183,15 +185,15 @@ function Home({ settingModalIsOpen, isLogin }) {
             <MyRoutineLinkWrap>
               <MyRoutineLinkUser
                 onClick={() => changeModeToUser()}
-                userMode={userMode}
+                usermode={usermode}
                 to=""
               >
                 내 루틴
               </MyRoutineLinkUser>
               <MyRoutineLinkGroup
                 onClick={() => changeModeToGroup()}
-                userMode={userMode}
-                to="groupRoutines"
+                usermode={usermode}
+                to="grouproutines"
               >
                 그룹 루틴
               </MyRoutineLinkGroup>
