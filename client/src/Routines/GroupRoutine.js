@@ -3,7 +3,7 @@ import styled from "styled-components";
 import ProgressBar from "@ramonak/react-progress-bar";
 import DateSliderGroup from "../components/DateSliderGroup";
 import axios from "axios";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 
 const Container = styled.div`
   border: 3px solid #697f6e;
@@ -56,6 +56,7 @@ const Button = styled.button`
 `;
 const CommentButton = styled(Button)`
   margin-left: calc(50% - 110px);
+  margin-top: 100px;
 `;
 const GroupCommentAdd = styled.div``;
 const GroupCommentList = styled.ul`
@@ -94,6 +95,25 @@ const Hrstyle = styled.hr`
   width: 100%;
   margin: 30px 0;
 `;
+const GroupProgressComment = styled.span``;
+
+const commentData = [
+  "오늘은 아직 참여율이 저조해요! 나부터 루틴 달성해서 힘을 보태주세요!",
+  "좋은 출발이네요! 이대로 우리 모두 루틴을 달성해봐요!",
+  "잘 하고 있어요! 조금만 더 힘내면 우리 모두 루틴을 달성할 수 있어요!",
+  "거의 다 왔어요! 아직 참여하지 않은 그룹원을 독려해줘요.",
+  "축하해요! 모든 그룹원이 오늘 루틴을 달성했어요.",
+];
+
+const selectComment = (num) => {
+  const result = "";
+  if (num === 0) result = commentData[0];
+  if (num < 30) result = commentData[1];
+  if (num < 60) result = commentData[2];
+  if (num < 100) result = commentData[3];
+  if (num === 100) result = commentData[4];
+  return result;
+};
 
 const dummyData = [
   { name: "chovy", comment: "오늘도 다녀갑니다~ 성공!", time: "07:55" },
@@ -127,24 +147,35 @@ const dummyData = [
 const serverURL = "http://localhost:4000/group-routine";
 const todayDate = Date.now();
 
-function GroupRoutine() {
+function GroupRoutine({ settingLogin }) {
   const [isMyGroup, setIsMyGroup] = useState(true);
+  const [groupTitle, setGroupTitle] = useState("로딩중...");
+  const [groupContent, setGroupContent] = useState("로딩중...");
+  const [goalRate, setGoalRate] = useState(60);
+  const [goalComment, setGoalComment] = useState("");
   const [groupComment, setGroupComment] = useState(dummyData);
-  const [selectedGroupId, setSelectedGroupId] = useOutletContext();
+  const { id } = useParams();
 
   useEffect(() => {
+    settingLogin();
     const getGroupDataInfo = async () => {
       try {
         const response = await axios.get(
-          serverURL + "/select?id=" + selectedGroupId + "&date=" + todayDate
+          serverURL + "/select?id=" + id + "&date=" + todayDate
         );
         if (response.status === 200) {
+          console.log("돌려받는다", response.data);
+          // 가입된 그룹인지 먼저 파악하여 조건부 렌더링 처리
+
           if (response.data.registed) setIsMyGroup(true);
           else setIsMyGroup(false);
-          console.log("가입여부===>", response.data.registed);
-          console.log("그룹이름===>", response.data.data.routine_name);
-          console.log(response.data);
-          // const datesInfo = response.data.selectedFindDateInfo;
+          setGroupTitle(response.data.data.routine_name);
+          setGroupContent(response.data.data.contents);
+          // const selectedComment = selectComment(goalRate);
+          // setGoalComment(selectedComment);
+          // console.log("response===>", response.data);
+          // console.log("그룹이름===>", response.data.data);
+          // console.log(response.data);
         }
         // 데이터는 response.data 안에 들어있습니다.
       } catch (e) {
@@ -160,9 +191,7 @@ function GroupRoutine() {
       {isMyGroup ? (
         <Container>
           <GroupInfo>
-            <GroupInfoTitle>
-              &#127947; 하루에 줄넘기 1,000개 하기!
-            </GroupInfoTitle>
+            <GroupInfoTitle>&#127947; {groupTitle}</GroupInfoTitle>
           </GroupInfo>
           <DateSliderGroup />
           <GroupCommentAdd>
@@ -184,27 +213,19 @@ function GroupRoutine() {
           <Hrstyle />
           <GroupInfoTitle>우리 그룹의 오늘 루틴 달성률</GroupInfoTitle>
           <GroupProgress
-            completed={40}
+            completed={goalRate}
             height="30px"
             bgColor="#697f6e"
             BaseBgColor="#ececec"
           />
+          <GroupProgressComment>{goalComment}</GroupProgressComment>
           <CommentButton>이 그룹 탈퇴하기</CommentButton>
         </Container>
       ) : (
         <Container>
           <GroupInfo>
-            <GroupInfoTitle>하루에 줄넘기 1,000개 하기!</GroupInfoTitle>
-            <GroupInfoContents>
-              안녕하세요, 하루에 줄넘기 천개씩을 목표로 하는 건강 루틴
-              그룹입니다.
-              <br />
-              똑같은 이야기를 몇 번을 쓰는건지 모르겠습니다.
-              <br />
-              이정도면 어디 저장해놓고 복붙할법도 한데 매번 새로 그냥 쓰는 것도
-              참 대~단합니다.
-              <br />
-            </GroupInfoContents>
+            <GroupInfoTitle>&#127947; {groupTitle}</GroupInfoTitle>
+            <GroupInfoContents>{groupContent}</GroupInfoContents>
             <GroupInfoTags>
               <TagButton># 건강</TagButton>
               <TagButton># 운동</TagButton>

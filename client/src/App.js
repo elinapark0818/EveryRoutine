@@ -78,7 +78,10 @@ function App() {
           <Route path="" element={<UserRoutine />} />
           <Route path="/grouproutines" element={<GroupMain />}>
             <Route path="" element={<GroupRoutines />} />
-            <Route path="/grouproutines/detail" element={<GroupRoutine />} />
+            <Route
+              path="/grouproutines/detail/:id"
+              element={<GroupRoutine settingLogin={settingLogin} />}
+            />
           </Route>
         </Route>
         <Route path="/about" element={<About />} />

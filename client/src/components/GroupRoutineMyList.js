@@ -41,7 +41,6 @@ const CardImg = styled.div`
   height: 120px;
   object-fit: cover;
   background-color: white;
-  pointer-events: none;
 `;
 const CardBody = styled.div`
   padding-top: 10px;
@@ -145,23 +144,21 @@ export default function GroupRoutineMyList({
           <CardLink
             key={el.id}
             id={el.id}
-            to="/grouproutines/detail"
+            to={"/grouproutines/detail/" + el.id}
             className={el.id}
             onClick={(e) => {
-              sendGroupId(e.target.id);
+              dragging && e.preventDefault();
               settingDetailMode();
             }}
           >
-            <Card
-              id={el.id}
-              data-aos="flip-right"
-              onClick={(e) => {
-                dragging && e.preventDefault();
-              }}
-            >
-              <CardImg src={el.image ? el.image : logo} alt="Card image" />
-              <CardBody>
-                <CardTitle>&#128526; {el.routine_name}</CardTitle>
+            <Card id={el.id} data-aos="flip-right">
+              <CardImg
+                id={el.id}
+                src={el.image ? el.image : logo}
+                alt="Card image"
+              />
+              <CardBody id={el.id}>
+                <CardTitle id={el.id}>&#128526; {el.routine_name}</CardTitle>
               </CardBody>
             </Card>
           </CardLink>
