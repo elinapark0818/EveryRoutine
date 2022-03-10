@@ -61,8 +61,6 @@ const settings = {
   speed: 800,
   slidesToShow: 3,
   slidesToScroll: 3,
-  beforeChange: () => (dragging = true),
-  afterChange: () => (dragging = false),
 };
 const CardText = styled.div`
   margin: -5px;
@@ -106,8 +104,6 @@ const TagButtonSmall = styled(TagButton)`
 AOS.init({
   duration: 1200,
 });
-
-let dragging = false;
 
 const serverURL = "http://localhost:4000/group-routine";
 
@@ -184,21 +180,18 @@ export default function GroupRoutineNewList() {
 
       <CardCon {...settings}>
         {newGroupRoutineList.map((el) => (
-          <CardLink
-            key={el.id}
-            id={el.id}
-            to={"/groupRoutines/detail/" + el.id}
-            className={el.id}
-            onClick={(e) => {
-              dragging && e.preventDefault();
-            }}
-          >
-            <Card id={el.id} data-aos="flip-right">
-              <CardImg
-                id={el.id}
-                src={el.image ? el.image : logo}
-                alt="Card image"
-              />
+          <Card key={el.id} id={el.id} data-aos="flip-right">
+            <CardImg
+              id={el.id}
+              src={el.image ? el.image : logo}
+              alt="Card image"
+            />
+            <CardLink
+              key={el.id}
+              id={el.id}
+              to={"/groupRoutines/detail/" + el.id}
+              className={el.id}
+            >
               <CardBody id={el.id}>
                 <CardTitle id={el.id}>&#9994; {el.routine_name}</CardTitle>
                 <CardSubtitle id={el.id}>{el.contents}</CardSubtitle>
@@ -208,8 +201,8 @@ export default function GroupRoutineNewList() {
                   ))}
                 </CardText>
               </CardBody>
-            </Card>
-          </CardLink>
+            </CardLink>
+          </Card>
         ))}
       </CardCon>
     </div>

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import ProgressBar from "@ramonak/react-progress-bar";
 import DateSliderGroup from "../components/DateSliderGroup";
 import axios from "axios";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useOutletContext, useParams, useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   border: 3px solid #697f6e;
@@ -11,15 +11,22 @@ const Container = styled.div`
   margin-left: calc((100% - 800px) / 2);
   padding: 30px;
   margin-bottom: 50px;
+  text-align: center;
 `;
 const GroupProgress = styled(ProgressBar)`
   width: 80%;
   margin-left: 10%;
 `;
 const Label = styled.div``;
-const GroupMembers = styled.div``;
+const GroupMembers = styled.div`
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 50px;
+`;
 const GroupInfo = styled.div`
-  background-color: #ddeede;
+  background-color: white;
+  text-align: center;
 `;
 const GroupInfoTitle = styled.div`
   border: 3px solid #697f6e;
@@ -28,9 +35,11 @@ const GroupInfoTitle = styled.div`
   font-weight: 700;
   padding: 10px 30px;
   margin-bottom: 30px;
+  text-align: left;
 `;
 const GroupInfoContents = styled.div`
-  padding: 30px;
+  background-color: white;
+  padding: 0 30px;
 `;
 const GroupInfoTags = styled.div`
   padding: 30px;
@@ -48,7 +57,7 @@ const Button = styled.button`
   color: white;
   font-weight: 700;
   font-size: 1em;
-  margin: 1em;
+  margin: 50px;
   padding: 0.7em 3em;
   background-color: #697f6e;
   border: none;
@@ -102,7 +111,9 @@ const Hrstyle = styled.hr`
   width: 100%;
   margin: 30px 0;
 `;
-const GroupProgressComment = styled.span``;
+const GroupProgressComment = styled.span`
+  height: 50px;
+`;
 const EmptyDiv = styled.div`
   height: 50px;
 `;
@@ -147,10 +158,12 @@ function GroupRoutine({ settingLogin }) {
   const [groupComment, setGroupComment] = useState(dummyData);
   const [newComment, setNewComment] = useState("");
   const [amIeditor, setAmIeditor] = useState(false);
-  const [selectDate, setSelectDate] = useState(Date.now());
-  const [, updateState] = useState();
-  const forceUpdate = useCallback(() => updateState({}), []);
+  const [selectDate, setSelectDate] = useState(todayDate);
+  const [members, setMembers] = useState(7);
+  const [tag, setTag] = useState(["생활", "건강"]);
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   const changeSelectDate = (date) => {
     setSelectDate(date);
@@ -172,6 +185,8 @@ function GroupRoutine({ settingLogin }) {
           setGroupComment(response.data.comments); // 그룹 코멘트 렌더링
           setGoalRate(response.data.goal); // 루틴 달성률 렌더링
           setAmIeditor(response.data.editor); // 그룹 소유자인지 확인 후 버튼 조건부 렌더링
+          setTag(response.data.data.tag_name.split(",")); // 그룹 태그 렌더링
+          // setMembers(response.data.members); // 그룹 멤버 숫자 렌더링
 
           // const selectedComment = selectComment(goalRate);
           // setGoalComment(selectedComment);
@@ -187,7 +202,7 @@ function GroupRoutine({ settingLogin }) {
 
   // 다른 날짜 클릭 시
   useEffect(() => {
-    const getGroupDataInfo = async () => {
+    const getGroupThatDateInfo = async () => {
       try {
         const response = await axios.get(
           serverURL + "/select?id=" + id + "&date=" + selectDate
@@ -207,20 +222,34 @@ function GroupRoutine({ settingLogin }) {
       }
     };
 
-    getGroupDataInfo();
-  }, [selectDate, id]);
+    getGroupThatDateInfo();
+  }, [selectDate]);
 
   // 댓글 작성 시
   const sendNewComment = async () => {
     try {
-      const response = await axios.post(serverURL + "/comment?id=" + id, {
-        comment: newComment,
-      });
-      if (response.status === 200) {
-        const newComments = response.data.data.comment;
+      const response = await axios.post(
+        serverURL + "/comment?id=" + id + "&date=" + todayDate,
+        {
+          comment: newComment,
+        }
+      );
+      if (response.status === 201) {
+        const newCommentSet = response.data.data.comment;
+        setGroupComment(newCommentSet.reverse());
         setNewComment("");
-        setGroupComment([...newComments]);
-        forceUpdate();
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // 그룹 삭제 시
+  const deleteGroup = async () => {
+    try {
+      const response = await axios.get(serverURL + "/delete?id=" + id);
+      if (response.status === 200) {
+        navigate("/grouproutines");
       }
     } catch (e) {
       console.log(e);
@@ -278,7 +307,9 @@ function GroupRoutine({ settingLogin }) {
           />
           <GroupProgressComment>{goalComment}</GroupProgressComment>
           {amIeditor ? (
-            <CommentButton>이 그룹 삭제하기</CommentButton>
+            <CommentButton onClick={() => deleteGroup()}>
+              이 그룹 삭제하기
+            </CommentButton>
           ) : (
             <CommentButton>이 그룹 탈퇴하기</CommentButton>
           )}
@@ -289,16 +320,18 @@ function GroupRoutine({ settingLogin }) {
             <GroupInfoTitle>&#127947; {groupTitle}</GroupInfoTitle>
             <GroupInfoContents>{groupContent}</GroupInfoContents>
             <GroupInfoTags>
-              <TagButton># 건강</TagButton>
-              <TagButton># 운동</TagButton>
+              {tag.map((el, idx) => (
+                <TagButton key={idx}># {el}</TagButton>
+              ))}
             </GroupInfoTags>
           </GroupInfo>
-          <hr />
-          <Label>이 루틴 그룹에 참여중인 멤버</Label>
-          <GroupMembers>7 명</GroupMembers>
-          <Label>이 루틴 그룹의 평균 루틴 달성률</Label>
+          <Hrstyle />
+          <GroupInfoTitle>이 루틴 그룹에 참여중인 멤버</GroupInfoTitle>
+          <GroupMembers>{members} 명</GroupMembers>
+          <GroupInfoTitle>이 루틴 그룹의 평균 루틴 달성률</GroupInfoTitle>
           <GroupProgress
-            completed={70}
+            completed={goalRate}
+            height="30px"
             bgColor="#697f6e"
             BaseBgColor="#ececec"
           />
