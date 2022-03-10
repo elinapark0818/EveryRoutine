@@ -4,6 +4,7 @@ import { Link, Outlet } from "react-router-dom";
 
 import EveryRoutineInfo from "../components/EveryRoutineInfo";
 import TopBtn from "../components/TopButton";
+import Proverbs from "../etc/Proverbs";
 
 const HomeBody = styled.div`
   display: flex;
@@ -34,13 +35,13 @@ const HomeButton = styled.button`
   font-weight: bold;
   font-size: 30px;
   padding: 10px 0;
-  transition: 0.3s ease-in;
+  transition: 0.5s ease-in;
 
   &:hover {
     background-color: #697f6e;
     color: #fff;
     cursor: pointer;
-    transform: scale(1.1);
+    transform: scale(1.02);
   }
 `;
 
@@ -99,18 +100,6 @@ const RoutineEditWrap = styled.div`
   justify-content: center;
 `;
 
-const ProverbsDiv = styled.h2`
-  color: #697f6e;
-  opacity: 0.7;
-  font-size: 2em;
-  margin-top: 3em;
-  margin-bottom: 5em;
-  padding: 1em;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.07),
-    0 4px 8px rgba(0, 0, 0, 0.07), 0 8px 16px rgba(0, 0, 0, 0.07),
-    0 16px 32px rgba(0, 0, 0, 0.07), 0 32px 64px rgba(0, 0, 0, 0.07);
-`;
-
 const Background = styled.div`
   /* background-image: url();
   background-repeat: no-repeat; */
@@ -120,7 +109,7 @@ const Background = styled.div`
   align-items: center;
   width: 80%;
   height: 40em;
-  margin: 3em 0;
+  margin-top: 3em;
 `;
 
 const ColorChange = keyframes`
@@ -145,13 +134,12 @@ const ColorChange = keyframes`
 `;
 
 const Color = styled.h1`
-  animation: ${ColorChange} 5s linear infinite;
   width: 100%;
-  height: auto;
-  font-size: 5em;
   display: flex;
-  justify-content: center;
   margin-top: 1em;
+  font-size: 6em;
+  justify-content: center;
+  animation: ${ColorChange} 5s linear infinite;
 `;
 
 function Home({ settingModalIsOpen, isLogin }) {
@@ -167,9 +155,18 @@ function Home({ settingModalIsOpen, isLogin }) {
     "좋은 습관을 버리기는 쉽지만, 다시 길들이기는 어려운 일이다.",
   ];
 
-  const getRandomIdx = (length) => {
-    return parseInt(Math.random() * length);
-  };
+  // const getRandomIdx = (length) => {
+  //   return parseInt(Math.random() * length);
+  // };
+
+  let index = 0;
+
+  setInterval(() => {
+    index++;
+    if (index === proverbs.length) {
+      index = 0;
+    }
+  }, 5000);
 
   const changeModeToUser = () => {
     setUsermode("true");
@@ -208,20 +205,15 @@ function Home({ settingModalIsOpen, isLogin }) {
         <>
           <HomeBody>
             <HomeContainer>
-              <Background data-aos="fade-in">
+              <Background>
                 <Color>Every Routine</Color>
-                <ProverbsDiv data-aos="fade-in">
-                  {proverbs[getRandomIdx(proverbs.length)]}
-                </ProverbsDiv>
-
+                <Proverbs />
                 <HomeButton onClick={() => settingModalIsOpen()}>
                   시작하기
                 </HomeButton>
               </Background>
 
-              <div>
-                <EveryRoutineInfo />
-              </div>
+              <EveryRoutineInfo />
 
               <div
                 style={{
@@ -231,7 +223,7 @@ function Home({ settingModalIsOpen, isLogin }) {
                   alignItems: "center",
                 }}
               >
-                <Color style={{ fontSize: "2.5em" }}>
+                <Color style={{ fontSize: "2.5em", marginTop: "3em" }}>
                   " Make a Smart Life "
                 </Color>
 
