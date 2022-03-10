@@ -219,17 +219,9 @@ module.exports = {
       }
     },
   },
-
-
-  delete_group_routine: {
-    get: (req, res) => {
-
-    }
-  },
-
     
 
-// GET : localhost:4000/group-routine/select?id=3
+// GET : localhost:4000/group-routine/select?id=3&data=1646715662218
   select_group_routine: {
     get: async (req, res) => {
       // 나의 토큰 이메일과, 그룹루틴 id를 이용하여 그룹루틴 클릭하기.
@@ -320,7 +312,7 @@ module.exports = {
           return userName
         }
 
-  
+        // 해당 날짜의 댓글 보내기 => [{writer: nickname, comment: '댓글입니다.'}, {writer: nickname2, comment: '댓글입니다2.'}, ... ]
         // 그냥 하면 맵을 써서 맵안에서 findOne하면 펜딩이 되는데 다음과 같이 Array를 따로 만들어 줘서하면 pending 안됨.. 이유는??
         let selectedCommentArray = [];
         const makeCommentArray = async () => {
@@ -331,7 +323,10 @@ module.exports = {
           }
         }
         await makeCommentArray();
-       
+
+        // editor 여부 판단하기 editor: true or false;
+        const imEditor = selectedGroupRoutineData.editor_id === myUserId ? true : false
+        console.log('imEditor', imEditor)
 
 
         if (myGroupId.includes(groupRoutineID)) {
@@ -341,6 +336,7 @@ module.exports = {
             data: selectedGroupRoutineData,
             comments: selectedCommentArray,
             goal,
+            editor: imEditor,
             registed: true,
             message: "가입한 그룹 루틴 데이터",
           });
@@ -348,6 +344,7 @@ module.exports = {
         } else {
           // 가입안된 그룹 루틴 선택 : 콘텐츠, 날짜선택, 댓글, 루틴달성률, 그룹가입하기 버튼, 전체 멤버수
           // TODO: 전체 멤버수, 해당 날 달성률, 댓글작성자 이름 (comments : [{writer: overflowbin, commemt: '안녕하세요~~'}])
+          console.log('selectedGroupRoutineData ==========================', selectedGroupRoutineData)
           return res.status(200).json({ 
             data: selectedGroupRoutineData, 
             registed : false, 
@@ -359,8 +356,73 @@ module.exports = {
     },
   },
 
+
+
+
   // 댓글 남기기
+
   write_comment: {
-    post: (req, res) => {},
+    post: async (req, res) => {
+
+      // 토큰을 통해 유저 아이디 받아오기
+      function getCookie(name) {
+        let matches = req.headers.cookie.match(
+          new RegExp(
+            "(?:^|; )" +
+              name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+              "=([^;]*)"
+          )
+        );
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+      }
+      const accessToken = getCookie("accessToken");
+      const { email } = jwt.verify(accessToken, process.env.ACCESS_SECRET);
+
+      // 그룹아이디
+      const groupRoutineID = +req.query.id;
+
+      // 요청 받은 코멘트 
+      // const { comment } = await req.body;
+
+      // 유저테이블에서 나의 user.id 찾기
+      const myUserId = await user
+      .findOne({ where: { email } })
+      .then((data) => data.id);
+
+      // 받은 코멘트 데이터 베이스에 넣기 -> 날짜는 저절로 바뀜
+      // 근데 만약 수정을 한다? ===> 우선 수정, 삭제 키 없이 하기로!
+      await comment.create({ comment: req.body.comment, user_id: myUserId, group_routine_id: groupRoutineID })
+      return res.status(201).json({ data: null, message: "댓글이 추가되었습니다" })
+    },
   },
+
+
+  // 루틴 그룹 삭제하기
+  // 삭제에 대한 여부 파악은 client에서 조건부 랜더링으로 파악된 상황임.
+  // 쿼리로 해당 그룹 루틴 id 받아오기
+  // destroy
+  delete_group_routine: {
+    get: async (req, res) => {
+
+      // 그룹아이디
+      const groupRoutineID = +req.query.id;
+
+      try {
+
+        // 해당 댓글 삭제하기
+        // 해당그룹에 소속된 모든 댓글 삭제하기
+        await comment.destroy({ where: { group_routine_id: groupRoutineID }})
+
+        // 그룹루틴 삭제하기
+        await group_routine.destroy({ where: { id: groupRoutineID }});
+
+        return res.status(200).json({ data: null, message: "그룹 루틴이 삭제되었습니다"});
+      }
+
+      catch {
+        return res.status(400).json({ message: "Bad request"});
+      }
+    }
+  },
+
 };
