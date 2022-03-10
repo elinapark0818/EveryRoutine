@@ -85,7 +85,12 @@ function EveryRoutineInfo() {
         <img alt="GroupRoutine_join" src={GroupRoutine_join} />
       </GifDiv>
 
-      <div data-aos="fade-up">
+      <div
+        data-aos="fade-up"
+        style={{
+          marginLeft: "35em",
+        }}
+      >
         <Text>그룹원과 함께 진행 상태를 체크합니다</Text>
         <div style={{ margin: "1em" }}>
           <p>참여자 : 4명</p>
@@ -144,7 +149,7 @@ function EveryRoutineInfo() {
           </div>
         </div>
       </div>
-
+      {/* 
       <GifDiv
         data-aos="fade-right"
         data-aos-easing="ease-out-cubic"
@@ -152,7 +157,7 @@ function EveryRoutineInfo() {
       >
         <Text>그룹 루틴을 만들어보세요</Text>
         <img src={GroupRoutine_created} alt="GroupRoutine_created" />
-      </GifDiv>
+      </GifDiv> */}
     </div>
   );
 }
