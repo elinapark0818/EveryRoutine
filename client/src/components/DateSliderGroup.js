@@ -56,6 +56,7 @@ const makeDateNums = () => {
   }
   const dates = dateNums.reverse().map((el) => {
     return {
+      nums: el,
       date: new Date(el).getDate(),
       month: new Date(el).getMonth() + 1,
       yo_il: weekdays[new Date(el).getDay()],

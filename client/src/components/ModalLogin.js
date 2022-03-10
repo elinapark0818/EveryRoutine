@@ -179,7 +179,6 @@ export default function ModalLogin({
   };
 
   const finalLoginHandler = () => {
-    // console.log("click");
     loginUser();
   };
 

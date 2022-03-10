@@ -201,7 +201,6 @@ export default function ModalSignup({ settingLogin, settingSignModalIsClose }) {
   }
 
   async function joinHandler() {
-    console.log("click!");
     const response = await axios
       .post(serverURL + "/signup", {
         email: userEmail,

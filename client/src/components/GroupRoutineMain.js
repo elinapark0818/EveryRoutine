@@ -41,7 +41,6 @@ function GroupRoutineMain() {
   });
 
   const changeSelectDate = (selected) => {
-    console.log("1", selected);
     setSelectDate(selected);
   };
 

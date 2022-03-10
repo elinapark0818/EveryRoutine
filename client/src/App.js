@@ -13,6 +13,7 @@ import UserDelete from "./User/UserDelete";
 import UserRoutine from "./Routines/UserRoutine";
 import GroupRoutines from "./Routines/GroupRoutines";
 import GroupRoutine from "./Routines/GroupRoutine";
+import GroupMain from "./Routines/GroupMain";
 
 import Modal from "react-modal";
 import ModalLogin from "./components/ModalLogin";
@@ -75,8 +76,10 @@ function App() {
           }
         >
           <Route path="" element={<UserRoutine />} />
-          <Route path="groupRoutine" element={<GroupRoutine />} />
-          <Route path="groupRoutines" element={<GroupRoutines />} />
+          <Route path="/grouproutines" element={<GroupMain />}>
+            <Route path="" element={<GroupRoutines />} />
+            <Route path="/grouproutines/detail" element={<GroupRoutine />} />
+          </Route>
         </Route>
         <Route path="/about" element={<About />} />
 
