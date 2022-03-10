@@ -480,13 +480,7 @@ module.exports = {
           createdAt: new Date("2022-03-10T20:14:08.000Z"),
           updatedAt: new Date("2022-03-10T20:14:08.000Z"),
         },
-        {
-          user_id: 4,
-          group_routine_id: 1,
-          comment: "2L 여전히 쉬운데요?ㅎㅎ?",
-          createdAt: new Date("2022-03-10T20:59:08.000Z"),
-          updatedAt: new Date("2022-03-10T20:59:08.000Z"),
-        },
+       
         
         // 스트레칭 하기 ( 10일 )
         {
@@ -1226,13 +1220,6 @@ module.exports = {
         comment: "2L 여전히..... 쉽지않네",
         createdAt: new Date("2022-03-10T23:11:08.000Z"),
         updatedAt: new Date("2022-03-10T23:11:08.000Z"),
-      },
-      {
-        user_id: 3,
-        group_routine_id: 9,
-        comment: "했습니다",
-        createdAt: new Date("2022-03-10T20:14:08.000Z"),
-        updatedAt: new Date("2022-03-10T20:14:08.000Z"),
       },
       {
         user_id: 4,
