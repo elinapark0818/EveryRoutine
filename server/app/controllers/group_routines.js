@@ -1,8 +1,6 @@
 const {
   user,
-  group_cal,
   group_routine,
-  march22_date,
   comment,
   group_user,
 } = require("../../models");
@@ -10,26 +8,6 @@ const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
 
 module.exports = {
-  // TODO: 날짜 데이터 보내기 => 현재 날 - 15일까지
-
-  // FIXME: 그룹 루틴 초기 화면 (group_routines)
-  // get: 내가 가입한 그룹루틴 보여주기
-  //      내가 가입하지 않은 그룹루틴 보여주기(최신 그룹 순으로)
-
-  // FIXME: 그룹루틴 검색 (search_group_routines)
-  // 초기화면은 우선 내가 가입하지 않은 그룹 보여주기
-  // 태그를 누르면 가입하지 않은 그룹 중 태그가 포함된 그룹 보여주기
-
-  // ==========> 그룹 루틴 초기 화면은 ajax call이 두번 생긴다.
-
-  // FIXME: 그룹 루틴 생성 (create_group_routines)
-  // post: 그룹 루틴 만들기(그룹이름, 그룹소개, 태그, 이미지)
-  // 유저 이메일 or ID 보내기(토큰)
-
-  // TODO: 특정 그룹 루틴 초기 화면 (group_rotine_name)
-  // get: 소개, 가입인원, 댓글, 달성률, 날짜별 데이터 자료
-  // post: 코멘트 남기기
-  // get(?): 탈퇴하기
 
   // 테스트용
   test: {
@@ -288,18 +266,24 @@ module.exports = {
 
         // 해당 날짜의 댓글 가져오기
         const selectedComment = await comment.findAll({
-          where: {
+          where: 
+          {
             [Op.and]: [
               { group_routine_id: groupRoutineID },
               { createdAt: { [Op.startsWith]: selectedDate } },
             ],
-          }, raw: true
+          }, 
+          raw: true,
+          order: [['createdAt', 'DESC']]          
         });
+        console.log('selectedComment =============================', selectedComment)
 
-        const fillterdselectedComment = []
+        const fillterdselectedComment = [];
+        const commemtUser = [];  // 유저 필터용 : 없을때만 commnet 객체를 추가한다
         const filterComment = () => {
           for(let el of selectedComment) {
-            if(!fillterdselectedComment.includes(el)) {
+            if(!commemtUser.includes(el.user_id)) {
+              commemtUser.push(el.user_id);
               fillterdselectedComment.push(el);
             }
           }
@@ -308,8 +292,10 @@ module.exports = {
 
 
         // 달성률 체크 : 선택된 커맨트 갯수 / 가입자수
-        const goal =  Math.floor((fillterdselectedComment.length / joinedMember.length) * 100)
-        console.log('goal', goal)
+        const goal =  Math.round((fillterdselectedComment.length / joinedMember.length) * 100)
+        // console.log('selectedComment', selectedComment)
+        // console.log('joinedMember',joinedMember)
+        // console.log('goal', goal)
 
         // 유저테이블에서 comment 작성자 이름 찾기
         const findUserName = async (userid) => {
