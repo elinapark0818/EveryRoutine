@@ -58,7 +58,7 @@ module.exports = {
           // 새로운 유저에 대한 데이터 추가 in db
           user.create({ email, password, nickname, profile });
           // email, nickname을 playload에 담아 토큰 생성
-          const accessToken = jwt.sign({ email }, process.env.ACCESS_SECRET, { expiresIn: "3h" });
+          const accessToken = jwt.sign({ email }, process.env.ACCESS_SECRET, { expiresIn: "10h" });
           // email, nickname을 playload에 담은 토큰을 쿠키로 전달
           res.cookie("accessToken", accessToken, { sameSite: "None", secure: true });
           return res.status(201).json({ data: req.body , message: "Successfully created" })  
@@ -142,7 +142,7 @@ module.exports = {
             if(!correctUser) {
               return res.status(202).json({ data: null, message : "Not correct your password"})
             } else {
-              const accessToken = jwt.sign({ email }, process.env.ACCESS_SECRET, { expiresIn: "3h" });
+              const accessToken = jwt.sign({ email }, process.env.ACCESS_SECRET, { expiresIn: "10h" });
               // email, nickname을 playload에 담은 토큰을 쿠키로 전달
               res.cookie("accessToken", accessToken, { sameSite: "None", secure: true });
               return res.status(200).json({ data: null, message: "Successfully logged in" });
