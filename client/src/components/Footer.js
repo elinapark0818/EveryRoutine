@@ -7,12 +7,12 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0.5em;
+  padding: 1em;
   background-color: #f3f8f2;
 `;
 
 const Github = styled.div`
-  font-size: 3.5em;
+  font-size: 3em;
   color: darkgray;
   cursor: pointer;
   transition: all 0.3s linear;
@@ -24,7 +24,7 @@ const Github = styled.div`
 `;
 
 const Text = styled.p`
-  font-size: 1.2em;
+  font-size: 0.8em;
   color: #697f6e;
 `;
 

@@ -97,7 +97,7 @@ export default function GroupRoutineMyList({
         </NewCard>
 
         {myGroupRoutineList.map((el) => (
-          <Card id={el.id} data-aos="flip-right">
+          <Card key={el.id} id={el.id} data-aos="flip-right">
             <CardImg
               id={el.id}
               src={el.image ? el.image : logo}

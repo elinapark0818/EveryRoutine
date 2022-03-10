@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import ProgressBar from "@ramonak/react-progress-bar";
 import DateSliderGroup from "../components/DateSliderGroup";
@@ -66,24 +66,30 @@ const GroupCommentList = styled.ul`
   margin-bottom: 50px;
 `;
 const GroupComment = styled.li`
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   list-style: none;
   color: #697f6e;
 `;
 const GroupCommentNick = styled.div`
   display: inline;
-  padding: 0 10px;
+  padding: 2px 10px;
   font-weight: 500;
+  color: white;
+  background-color: #697f6e;
 `;
 const GroupCommentContent = styled.div`
   display: inline;
-  padding: 0 10px;
+  padding: 1px 10px;
+  border: 2px dotted #697f6e;
 `;
 const GroupCommentTime = styled.div`
   display: inline;
-  padding: 0 10px;
+  padding: 2px 10px;
+  color: white;
+  background-color: #697f6e;
 `;
 const StyledInput = styled.input`
+  height: 30px;
   margin-bottom: 10px;
   width: 60%;
   margin: 50px 0;
@@ -97,6 +103,9 @@ const Hrstyle = styled.hr`
   margin: 30px 0;
 `;
 const GroupProgressComment = styled.span``;
+const EmptyDiv = styled.div`
+  height: 50px;
+`;
 
 const commentData = [
   "오늘은 아직 참여율이 저조해요! 나부터 루틴 달성해서 힘을 보태주세요!",
@@ -117,35 +126,14 @@ const selectComment = (num) => {
 };
 
 const dummyData = [
-  { name: "chovy", comment: "오늘도 다녀갑니다~ 성공!", time: "07:55" },
-  { name: "침착맨", comment: "침착하게 성공했습니다.", time: "14:23" },
+  { writer: "chovy", comment: "오늘도 다녀갑니다~ 성공!", time: "07:55" },
+  { writer: "침착맨", comment: "침착하게 성공했습니다.", time: "14:23" },
   {
-    name: "대황젠지",
+    writer: "대황젠지",
     comment: "젠지 승리를 기원하며 줄넘기 성공!",
     time: "19:37",
   },
 ];
-
-// GET : localhost:4000/group-routine/select?id=3?date=
-// (id=3 은 그룹루틴의 database id)
-
-// {
-//     "data": {
-//         "id": 3,
-//         "routine_name": "아침 조깅 3km",
-//         "editor_id": 1,
-//         "tag_name": "health,lifestyle,workout",
-//         "image": "",
-//         "contents": "아침 7시에 조깅하는 루틴입니다. 조깅으로 시작하여 활기찬 하루를 만들어보아요!!",
-//         "createdAt": "2022-03-10T00:31:13.000Z",
-//         "updatedAt": "2022-03-10T00:31:13.000Z",
-//         "goal" : 60,
-//         "editor" : true,
-//     },
-//     "comments": [],
-//     "registed": true,
-//     "message": "가입한 그룹 루틴 데이터"
-// }
 
 const serverURL = "http://localhost:4000/group-routine";
 const todayDate = Date.now();
@@ -159,15 +147,17 @@ function GroupRoutine({ settingLogin }) {
   const [groupComment, setGroupComment] = useState(dummyData);
   const [newComment, setNewComment] = useState("");
   const [amIeditor, setAmIeditor] = useState(false);
-  const { id } = useParams();
   const [selectDate, setSelectDate] = useState(Date.now());
+  const [, updateState] = useState();
+  const forceUpdate = useCallback(() => updateState({}), []);
+  const { id } = useParams();
 
   const changeSelectDate = (date) => {
     setSelectDate(date);
   };
 
+  // 처음 로딩 시 데이터 불러오기
   useEffect(() => {
-    settingLogin();
     const getGroupDataInfo = async () => {
       try {
         const response = await axios.get(
@@ -177,11 +167,11 @@ function GroupRoutine({ settingLogin }) {
           // 가입된 그룹인지 먼저 파악하여 조건부 렌더링 처리
           if (response.data.registed) setIsMyGroup(true);
           else setIsMyGroup(false);
-          setGroupTitle(response.data.data.routine_name);
-          setGroupContent(response.data.data.contents);
-          setGroupComment(response.data.comments);
-          setGoalRate(response.data.goal);
-          setAmIeditor(response.data.editor);
+          setGroupTitle(response.data.data.routine_name); // 그룹 제목 렌더링
+          setGroupContent(response.data.data.contents); // 그룹 소개글 렌더링
+          setGroupComment(response.data.comments); // 그룹 코멘트 렌더링
+          setGoalRate(response.data.goal); // 루틴 달성률 렌더링
+          setAmIeditor(response.data.editor); // 그룹 소유자인지 확인 후 버튼 조건부 렌더링
 
           // const selectedComment = selectComment(goalRate);
           // setGoalComment(selectedComment);
@@ -193,7 +183,7 @@ function GroupRoutine({ settingLogin }) {
     };
 
     getGroupDataInfo();
-  }, []);
+  }, [id]);
 
   // 다른 날짜 클릭 시
   useEffect(() => {
@@ -227,8 +217,11 @@ function GroupRoutine({ settingLogin }) {
         comment: newComment,
       });
       if (response.status === 200) {
+        const newComments = response.data.data.comment;
+        setNewComment("");
+        setGroupComment([...newComments]);
+        forceUpdate();
       }
-      // 데이터는 response.data 안에 들어있습니다.
     } catch (e) {
       console.log(e);
     }
@@ -247,7 +240,7 @@ function GroupRoutine({ settingLogin }) {
             selectDate={selectDate}
           />
 
-          {Date(selectDate) === Date(Date.now()) ? (
+          {new Date(selectDate).getDate() === new Date().getDate() ? (
             <GroupCommentAdd>
               <StyledInput
                 type="text"
@@ -255,15 +248,21 @@ function GroupRoutine({ settingLogin }) {
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
               ></StyledInput>
-              <Button onClick={() => sendNewComment()}>ok</Button>
+              <Button
+                onClick={() => {
+                  sendNewComment();
+                }}
+              >
+                ok
+              </Button>
             </GroupCommentAdd>
           ) : (
-            ""
+            <EmptyDiv></EmptyDiv>
           )}
           <GroupCommentList>
             {groupComment.map((el, idx) => (
               <GroupComment key={idx}>
-                <GroupCommentNick>&#128526; {el.name}</GroupCommentNick>
+                <GroupCommentNick>&#128526; {el.writer}</GroupCommentNick>
                 <GroupCommentContent>{el.comment}</GroupCommentContent>
                 <GroupCommentTime>{el.time}</GroupCommentTime>
               </GroupComment>
