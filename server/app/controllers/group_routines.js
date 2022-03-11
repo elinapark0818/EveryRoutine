@@ -257,6 +257,7 @@ module.exports = {
 
       // xxxx-xx-xx 형식의 선택된 데이터 (년-월-일)
       const selectedDate = `${year()}-${month()}-${day()}`;
+      console.log('selectedDate ===========================', selectedDate)
 
       // 해당 날짜의 댓글 가져오기
       const selectedComment = await comment.findAll({
@@ -389,7 +390,6 @@ module.exports = {
         });
 
         // 선택된 그룹 루틴 가입자 찾기 -> 인원수 확인용
-        console.log('selectedGroupRoutineData', selectedGroupRoutineData)
         const joinedMember = await group_user.findAll({ 
           raw: true, 
           where: { 
@@ -489,6 +489,7 @@ module.exports = {
             data: selectedGroupRoutineData, 
             registed : false,
             members : joinedMember.length,
+            goal : goal,
             message: "가입안한 그룹 루틴 데이터"})
         }
       } catch {
