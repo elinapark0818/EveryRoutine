@@ -65,7 +65,6 @@ const Button = styled.button`
   cursor: pointer;
 `;
 const CommentButton = styled(Button)`
-  margin-left: calc(50% - 110px);
   margin-top: 100px;
 `;
 const GroupCommentAdd = styled.div``;
@@ -73,6 +72,7 @@ const GroupCommentList = styled.ul`
   width: 80%;
   margin-left: 10%;
   margin-bottom: 50px;
+  text-align: left;
 `;
 const GroupComment = styled.li`
   margin-bottom: 10px;
@@ -256,6 +256,31 @@ function GroupRoutine({ settingLogin }) {
     }
   };
 
+  // 그룹 탈퇴 시
+  const dropGroup = async () => {
+    try {
+      const response = await axios.get(serverURL + "/withdrawal?id=" + id);
+      if (response.status === 200) {
+        navigate("/grouproutines");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // 그룹 가입 시
+  const joinGroup = async () => {
+    try {
+      const response = await axios.get(serverURL + "/join?id=" + id);
+      if (response.status === 200) {
+        console.log("ok");
+        window.location.reload();
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <>
       {isMyGroup ? (
@@ -311,7 +336,9 @@ function GroupRoutine({ settingLogin }) {
               이 그룹 삭제하기
             </CommentButton>
           ) : (
-            <CommentButton>이 그룹 탈퇴하기</CommentButton>
+            <CommentButton onClick={() => dropGroup()}>
+              이 그룹 탈퇴하기
+            </CommentButton>
           )}
         </Container>
       ) : (
@@ -335,7 +362,13 @@ function GroupRoutine({ settingLogin }) {
             bgColor="#697f6e"
             BaseBgColor="#ececec"
           />
-          <Button>이 그룹 가입하기</Button>
+          <Button
+            onClick={() => {
+              joinGroup();
+            }}
+          >
+            이 그룹 가입하기
+          </Button>
         </Container>
       )}
     </>
