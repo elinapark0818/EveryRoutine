@@ -32,7 +32,7 @@ const UserRoutineListCon = styled.div`
   position: relative;
 `;
 
-const UserRotineList = styled.ul`
+const UserRoutineList = styled.ul`
   list-style: none;
   margin-top: 20px;
   padding: 30px;
@@ -197,17 +197,17 @@ export default function UserRoutineMyList() {
   //? 체크 관리 end
 
   return (
-    <div>
+    <div style={{ marginBottom: "10em" }}>
       <DateSlider selectDate={selectDate} changeSelectDate={changeSelectDate} />
 
       <UserRoutineListCon>
-        <UserRotineList>
+        <UserRoutineList>
           <UserRoutine
             checkedItemHandler={checkedItemHandler}
             routineItems={routineItems}
             checkedItems={checkedItems}
           />
-        </UserRotineList>
+        </UserRoutineList>
 
         {isNowToday ? (
           <Button

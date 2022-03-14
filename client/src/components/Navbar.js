@@ -129,6 +129,23 @@ const NavbarExtendedContainer = styled.div`
   flex-direction: column;
   align-items: center;
 
+  & button {
+    background-color: transparent;
+    font-size: medium;
+    color: #697f6e;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    padding: 10px 10px;
+
+    &:hover {
+      background-color: #697f6e;
+      color: #fff;
+      transition: 0.5s ease-in;
+    }
+  }
+
   @media (min-width: 700px) {
     display: none;
   }
@@ -212,7 +229,7 @@ function Navbar({ settingModalIsOpen, isLogin, settingLogout, settingLogin }) {
         <NavbarExtendedContainer>
           <NavbarLinkExtended to="/"> HOME</NavbarLinkExtended>
           <NavbarLinkExtended to="/about"> ABOUT</NavbarLinkExtended>
-          <NavbarLinkExtended to="/myPage"> MY PAGE</NavbarLinkExtended>
+          {/* <NavbarLinkExtended to="/myPage"> MY PAGE</NavbarLinkExtended> */}
           <button onClick={() => settingModalIsOpen()}> SIGN IN</button>
           <NavbarLink to="/routines">ROUTINES</NavbarLink>
         </NavbarExtendedContainer>

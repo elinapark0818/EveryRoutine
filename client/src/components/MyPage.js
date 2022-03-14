@@ -62,7 +62,7 @@ function MyPage({ isLogin }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkLoginUser = async () => {
+    const checkLoginUser = () => {
       try {
         if (!isLogin) {
           navigate("/");
